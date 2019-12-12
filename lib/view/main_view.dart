@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webo/view/login.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -32,13 +33,24 @@ class _WebOHomePageState extends State<WebOHomePage> {
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
-          children: const <Widget>[
+          children: <Widget>[
             DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue
+              ),
               child: Text('UserName'),
             ),
             ListTile(
               leading: Icon(Icons.person),
               title: Text('Account'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => WebOLoginPage()
+                  )
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.settings),
