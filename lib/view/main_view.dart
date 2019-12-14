@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:webo/view/login.dart';
+import 'package:webo/view/webo_list_view.dart';
 
-class MyApp extends StatelessWidget {
+class WebOApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -63,7 +64,7 @@ class _WebOHomePageState extends State<WebOHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Text("Hello"),
+        child: WebOListView(data: <String>['Hugefiver', 'MinGW', 'Hoo', '']),
 
       ),
     );

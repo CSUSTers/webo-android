@@ -13,7 +13,7 @@ import 'package:webo/view/main_view.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+    await tester.pumpWidget(WebOApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
