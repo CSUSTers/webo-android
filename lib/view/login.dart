@@ -14,8 +14,12 @@ class WebOLoginPage extends StatefulWidget {
 
 class _WebOLoginPageState extends State<WebOLoginPage> {
   final _formKey = GlobalKey<FormState>();
+
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  final buttonWidth = 108.0, buttonHeight = 42.0;
+
   bool isLoading = false;
 
 
@@ -33,7 +37,6 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
             TextFormField(
               keyboardType: TextInputType.text,
               maxLength: 12,
-              style: TextStyle(fontSize: 16.0),
               controller: _usernameController,
               decoration: const InputDecoration(
 //                  hintText: 'username',
@@ -64,55 +67,89 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
                 return null;
               },
             ),
-            isLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
+            Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.only(top: 64.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  ButtonTheme(
+                    minWidth: buttonWidth,
+                    height: buttonHeight,
+                    child: RaisedButton(
+                      child: Text('Register'),
+                      color: Colors.white,
+                      textColor: Colors.lightBlue,
+                      onPressed: () {
+                        //TODO: turn to register page
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  ),
+                  isLoading
+                    ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                    : ButtonTheme(
+                        minWidth: buttonWidth,
+                        height: buttonHeight,
+                        child: RaisedButton(
+                          child: Text('Login'),
+                          color: Colors.lightBlue,
+                          textColor: Colors.white,
+                          onPressed: () => _login(),
+                        )
                   )
-                : RaisedButton(
-                    child: Text('Login'),
-                    color: Colors.lightBlue,
-                    textColor: Colors.white,
-                    onPressed: () async {
-                      if(_formKey.currentState.validate()) {
-                        final String username = _usernameController.text;
-                        final String pass = _passwordController.text;
-                        setState(() {
-                          isLoading = true;
-                        });
-                        try {
-                          Response resp = await Dio().post(WebOURL.login, data: {
-                            "username": username,
-                            "password": pass
-                          });
-                          print(resp.data.toString());
-                          if (resp.statusCode == 200) {
-                            if (resp.data['code'] == 0) {
-                              dynamic data = resp.data['data'];
-                              SharedPreferences prefs = await SharedPreferences.getInstance();
-                              await prefs.setString("token", data['token']);
-                              await prefs.setString("refreshToken", data['refreshToken']);
-                              await prefs.setInt("userId", data['userId']);
-                              await prefs.setString("username", data['username']);
-                              await prefs.setString("nickname", data['nickname']);
-                              Fluttertoast.showToast(msg: "登录成功");
-                            } else if (resp.data['code'] == 9) {
-                              Fluttertoast.showToast(msg: "Error: " + resp.data['data']['exceptionMessage']);
-                            }
-                          } else {
-                            Fluttertoast.showToast(msg: "Error: " + resp.statusCode.toString());
-                          }
-                        } on Exception catch (e) {
-                          print(e);
-                        } finally {
-                          setState(() {
-                            isLoading = false;
-                          });
-                        }
-                      }
-                    },
-                  )
+
+                ],
+              ),
+            )
+
           ],
         ))),
     );
   }
+
+  void _login() async {
+    if(_formKey.currentState.validate()) {
+      final String username = _usernameController.text;
+      final String pass = _passwordController.text;
+      setState(() {
+        isLoading = true;
+      });
+      try {
+        Response resp = await Dio().post(WebOURL.login, data: {
+          "username": username,
+          "password": pass
+        });
+        print(resp.data.toString());
+        if (resp.statusCode == 200) {
+          if (resp.data['code'] == 0) {
+            dynamic data = resp.data['data'];
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            await prefs.setString("token", data['token']);
+            await prefs.setString("refreshToken", data['refreshToken']);
+            await prefs.setInt("userId", data['userId']);
+            await prefs.setString("username", data['username']);
+            await prefs.setString("nickname", data['nickname']);
+            Fluttertoast.showToast(msg: "登录成功");
+          } else if (resp.data['code'] == 9) {
+            Fluttertoast.showToast(msg: "Error: " + resp.data['data']['exceptionMessage']);
+          }
+        } else {
+          Fluttertoast.showToast(msg: "Error: " + resp.statusCode.toString());
+        }
+      } on Exception catch (e) {
+        print(e);
+      } finally {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
+
+
 }
