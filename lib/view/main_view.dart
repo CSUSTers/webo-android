@@ -86,14 +86,15 @@ class _WebOHomePageState extends State<WebOHomePage> {
         child: WebOListView(data: <String>['Hugefiver', 'MinGW', 'Hoo', '']),
       ),
       floatingActionButton: Container(
-        width: 72.0,
-        height: 72.0,
+        width: 64.0,
+        height: 64.0,
         child: FittedBox(
           child: FloatingActionButton(
-            child: Icon(Icons.create),
+            child: const Icon(Icons.create),
             backgroundColor: Colors.lightBlue,
             onPressed: () {
               //TODO turn to create WebO page
+
             },
           ),
         ),

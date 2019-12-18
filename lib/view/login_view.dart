@@ -26,9 +26,17 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.lightBlue,
+        leading: IconButton(
+          icon: const Icon(Icons.close, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        )
+      ),
       body: Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.all(32),
+        padding: const EdgeInsets.all(32.0),
+        margin: const EdgeInsets.only(top: -54.0),
         child: Form(
           key: _formKey,
           child: Column(
