@@ -15,8 +15,8 @@ class WebOListView extends StatefulWidget {
 class _WebOListViewState extends State<WebOListView> {
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: const EdgeInsets.all(8),
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
       itemCount: widget.data.length,
       itemBuilder: (BuildContext context, int index) {
         return Card(
@@ -29,13 +29,13 @@ class _WebOListViewState extends State<WebOListView> {
               ));
             },
             child: Container(
-              height: 196,
+              height: 196.0,
               child: Text(widget.data[index] + ' tttttql', style: TextStyle(fontSize:18.0),),
             ),
           ),
         );
       },
-      separatorBuilder: (BuildContext context, int index) => const Divider()
+//      separatorBuilder: (BuildContext context, int index) => const Divider()
     );
   }
 
