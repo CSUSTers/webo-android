@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:webo/view/login.dart';
+import 'package:webo/view/login_view.dart';
 import 'package:webo/view/webo_list_view.dart';
+import 'package:webo/widget/circle_image.dart';
 
 class WebOApp extends StatelessWidget {
   @override
@@ -39,7 +40,25 @@ class _WebOHomePageState extends State<WebOHomePage> {
               decoration: BoxDecoration(
                 color: Colors.blue
               ),
-              child: Text('UserName'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  CircleImageWidget.fromImage(
+                      radius: 96.0,
+                      image: AssetImage("images/avatar.jpeg")
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                  ),
+                  Text(
+                    "Hugefiver",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                ],
+              ),
             ),
             ListTile(
               leading: Icon(Icons.person),
@@ -65,8 +84,21 @@ class _WebOHomePageState extends State<WebOHomePage> {
       ),
       body: Center(
         child: WebOListView(data: <String>['Hugefiver', 'MinGW', 'Hoo', '']),
-
       ),
+      floatingActionButton: Container(
+        width: 64.0,
+        height: 64.0,
+        child: FittedBox(
+          child: FloatingActionButton(
+            child: const Icon(Icons.create),
+            backgroundColor: Colors.lightBlue,
+            onPressed: () {
+              //TODO turn to create WebO page
+
+            },
+          ),
+        ),
+      )
     );
   }
 }
