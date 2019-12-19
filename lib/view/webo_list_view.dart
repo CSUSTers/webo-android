@@ -16,7 +16,7 @@ class _WebOListViewState extends State<WebOListView> {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
       itemCount: widget.data.length,
       itemBuilder: (BuildContext context, int index) {
         return Card(
