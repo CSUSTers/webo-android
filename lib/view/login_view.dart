@@ -54,7 +54,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
                 maxLength: 12,
                 controller: _usernameController,
                 decoration: const InputDecoration(
-                    labelText: '用户名',
+                    labelText: Strings.userName,
                     prefixIcon: Icon(Icons.person)
                 ),
                 validator: (value) {
@@ -70,7 +70,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
                 controller: _passwordController,
                 obscureText: true,
                 decoration: const InputDecoration(
-                    labelText: '密码',
+                    labelText: Strings.password,
                     prefixIcon: Icon(Icons.lock)
                 ),
                 validator: (value) {
@@ -94,7 +94,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
                         minWidth: buttonWidth,
                         height: buttonHeight,
                         child: RaisedButton(
-                          child: Text('注 册'),
+                          child: Text(Strings.registered),
                           color: Colors.white,
                           textColor: Colors.lightBlue,
                           onPressed: () {
@@ -109,7 +109,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
                         minWidth: buttonWidth,
                         height: buttonHeight,
                         child: RaisedButton(
-                          child: Text('登 录'),
+                          child: Text(Strings.login),
                           color: Colors.lightBlue,
                           textColor: Colors.white,
                           onPressed: () => _login(),
