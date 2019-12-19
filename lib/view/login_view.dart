@@ -4,6 +4,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webo/webo_url.dart';
 
+import '../res/values.dart';
+
 class WebOLoginPage extends StatefulWidget {
 
   @override
@@ -31,12 +33,13 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
         leading: IconButton(
           icon: const Icon(Icons.close, color: Colors.white),
           onPressed: () => Navigator.pop(context),
-        )
+        ),
+        title: Text(Strings.login),
       ),
       body: Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.all(32.0),
-        margin: const EdgeInsets.only(top: -54.0),
+        margin: const EdgeInsets.only(bottom: 52),
         child: Form(
           key: _formKey,
           child: Column(
