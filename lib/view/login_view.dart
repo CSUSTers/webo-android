@@ -51,7 +51,6 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
                 maxLength: 12,
                 controller: _usernameController,
                 decoration: const InputDecoration(
-  //                  hintText: 'username',
                     labelText: '用户名',
                     prefixIcon: Icon(Icons.person)
                 ),
@@ -68,7 +67,6 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
                 controller: _passwordController,
                 obscureText: true,
                 decoration: const InputDecoration(
-  //                  hintText: 'password',
                     labelText: '密码',
                     prefixIcon: Icon(Icons.lock)
                 ),
