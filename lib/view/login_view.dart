@@ -157,6 +157,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
         setState(() {
           isLoading = false;
         });
+        Navigator.pop(context);
       }
     }
   }
