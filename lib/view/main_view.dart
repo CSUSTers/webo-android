@@ -62,19 +62,16 @@ class _WebOHomePageState extends State<WebOHomePage> {
             ),
             ListTile(
               leading: Icon(Icons.person),
-              title: Text('Account'),
+              title: Text('账 户'),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => WebOLoginPage()
-                  )
-                );
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => WebOLoginPage()
+                ));
               },
             ),
             ListTile(
               leading: Icon(Icons.settings),
-              title: Text('Settings'),
+              title: Text('设 置'),
             ),
           ],
         ),
