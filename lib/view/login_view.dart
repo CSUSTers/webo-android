@@ -142,7 +142,8 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
             ]).then((xs) => xs.reduce((x, y) => x && y));
             if (success)
               Fluttertoast.showToast(msg: "登录成功");
-
+            else
+              Fluttertoast.showToast(msg: '用户信息写入失败');
           } else if (resp.data['code'] == 9) {
             Fluttertoast.showToast(
                 msg: "Error: " + resp.data['data']['exceptionMessage']);
