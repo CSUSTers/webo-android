@@ -2,7 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:webo/webo_url.dart';
+import 'package:webo/contants/http_code.dart';
+import 'package:webo/contants/webo_url.dart';
 
 class WebOLoginPage extends StatefulWidget {
 
@@ -134,16 +135,16 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
         });
         print(resp.data.toString());
         if (resp.statusCode == 200) {
-          if (resp.data['code'] == 0) {
+          if (resp.data['code'] == WebOHttpCode.SUCCESS) {
             dynamic data = resp.data['data'];
-            var prefs = await SharedPreferences.getInstance()
+            await SharedPreferences.getInstance()
               ..setString("token", data['token'])
               ..setString("refreshToken", data['refreshToken'])
               ..setInt("userId", data['userId'])
               ..setString("username", data['username'])
               ..setString("nickname", data['nickname']);
             Fluttertoast.showToast(msg: "登录成功");
-          } else if (resp.data['code'] == 9) {
+          } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {
             Fluttertoast.showToast(msg: "Error: " + resp.data['data']['exceptionMessage']);
           }
         } else {
