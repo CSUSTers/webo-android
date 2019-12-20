@@ -2,7 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:webo/webo_url.dart';
+import 'package:webo/contants/http_code.dart';
+import 'package:webo/contants/webo_url.dart';
 
 import '../res/values.dart';
 
@@ -130,7 +131,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
             data: {"username": username, "password": pass});
         print(resp.data.toString());
         if (resp.statusCode == 200) {
-          if (resp.data['code'] == 0) {
+          if (resp.data['code'] == WebOHttpCode.SUCCESS) {
             var data = resp.data['data'];
             var p = await SharedPreferences.getInstance();
             var success = await Future.wait([
@@ -144,9 +145,8 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
               Fluttertoast.showToast(msg: "登录成功");
             else
               Fluttertoast.showToast(msg: '用户信息写入失败');
-          } else if (resp.data['code'] == 9) {
-            Fluttertoast.showToast(
-                msg: "Error: " + resp.data['data']['exceptionMessage']);
+          } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {
+            Fluttertoast.showToast(msg: "Error: " + resp.data['data']['exceptionMessage']);
           }
         } else {
           Fluttertoast.showToast(msg: "Error: " + resp.statusCode.toString());
