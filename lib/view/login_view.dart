@@ -131,14 +131,18 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
         print(resp.data.toString());
         if (resp.statusCode == 200) {
           if (resp.data['code'] == 0) {
-            dynamic data = resp.data['data'];
-            var prefs = await SharedPreferences.getInstance()
-              ..setString("token", data['token'])
-              ..setString("refreshToken", data['refreshToken'])
-              ..setInt("userId", data['userId'])
-              ..setString("username", data['username'])
-              ..setString("nickname", data['nickname']);
-            Fluttertoast.showToast(msg: "登录成功");
+            var data = resp.data['data'];
+            var p = await SharedPreferences.getInstance();
+            var success = await Future.wait([
+              p.setString("token", data['token']),
+              p.setString("refreshToken", data['refreshToken']),
+              p.setInt("userId", data['userId']),
+              p.setString("username", data['username']),
+              p.setString("nickname", data['nickname'])
+            ]).then((xs) => xs.reduce((x, y) => x && y));
+            if (success)
+              Fluttertoast.showToast(msg: "登录成功");
+
           } else if (resp.data['code'] == 9) {
             Fluttertoast.showToast(
                 msg: "Error: " + resp.data['data']['exceptionMessage']);
