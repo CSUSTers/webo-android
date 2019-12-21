@@ -17,105 +17,166 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
 
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nicknameController = TextEditingController();
+  final TextEditingController _password2Controller = TextEditingController();
 
   final buttonWidth = 108.0, buttonHeight = 42.0;
 
   bool isLoading = false;
 
+  static const LOGIN_MODE = 1;
+  static const REGISTER_MODE = 0;
+  int mode = LOGIN_MODE;
+
   @override
   Widget build(BuildContext context) {
+    Row loginButtonArea = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        ButtonTheme(
+          minWidth: buttonWidth,
+          height: buttonHeight,
+          child: RaisedButton(
+            child: Text(Strings.register),
+            color: Colors.white,
+            textColor: Colors.lightBlue,
+            onPressed: () => setState(() => mode = REGISTER_MODE),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
+        ),
+        ButtonTheme(
+            minWidth: buttonWidth,
+            height: buttonHeight,
+            child: RaisedButton(
+              child: Text(Strings.login),
+              color: Colors.lightBlue,
+              textColor: Colors.white,
+              onPressed: () => _login(),
+            ))
+      ],
+    );
+
+    Center regButtonArea = Center(
+        child: ButtonTheme(
+            minWidth: buttonWidth,
+            height: buttonHeight,
+            child: RaisedButton(
+              child: Text(Strings.register),
+              color: Colors.lightBlue,
+              textColor: Colors.white,
+              onPressed: () => _register(),
+            )));
+
+    Container buttonArea = Container(
+      alignment: Alignment.center,
+      margin: const EdgeInsets.only(top: 64.0),
+      child: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : mode == LOGIN_MODE ? loginButtonArea : regButtonArea,
+    );
+
+    Form form = Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Image.asset("images/logo.PNG"),
+            const Padding(
+              padding: const EdgeInsets.only(top: 32.0),
+            ),
+            TextFormField(
+              keyboardType: TextInputType.text,
+              maxLength: 12,
+              controller: _usernameController,
+              decoration: const InputDecoration(
+                  labelText: Strings.userName, prefixIcon: Icon(Icons.person)),
+              validator: (value) {
+                if (value.isEmpty) {
+                  return '用户名不能为空';
+                }
+                return null;
+              },
+            ),
+            mode == REGISTER_MODE
+                ? TextFormField(
+                    keyboardType: TextInputType.text,
+                    maxLength: 16,
+                    controller: _nicknameController,
+                    decoration: const InputDecoration(
+                        labelText: Strings.nickname,
+                        prefixIcon: Icon(Icons.lightbulb_outline)),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return '请填写昵称';
+                      }
+                      return null;
+                    },
+                  )
+                : const Padding(
+                    padding: const EdgeInsets.all(0),
+                  ),
+            TextFormField(
+              keyboardType: TextInputType.text,
+              maxLength: 32,
+              controller: _passwordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                  labelText: Strings.password, prefixIcon: Icon(Icons.lock)),
+              validator: (value) {
+                if (value.isEmpty) {
+                  return '密码不能为空';
+                }
+                return null;
+              },
+            ),
+            mode == REGISTER_MODE
+                ? TextFormField(
+                    keyboardType: TextInputType.text,
+                    maxLength: 32,
+                    controller: _password2Controller,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                        labelText: Strings.ack_password,
+                        prefixIcon: Icon(Icons.lock)),
+                    validator: (value) {
+                      if (value.isEmpty) return '请再次输入密码';
+                      if (value == _passwordController.text)
+                        return '两次输入的密码不一致';
+                      return null;
+                    },
+                  )
+                : const Padding(
+                    padding: const EdgeInsets.all(0),
+                  ),
+            buttonArea
+          ],
+        ));
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.lightBlue,
           leading: IconButton(
-            icon: const Icon(Icons.close, color: Colors.white),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: Text(Strings.login),
+              icon: Icon(mode == LOGIN_MODE ? Icons.close : Icons.arrow_back,
+                  color: Colors.white),
+              onPressed: () {
+                if (mode == LOGIN_MODE)
+                  Navigator.pop(context);
+                else
+                  setState(() => mode = LOGIN_MODE);
+              }),
+          title: Text(mode == LOGIN_MODE ? Strings.login : Strings.register),
         ),
         body: SingleChildScrollView(
           child: Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(32.0),
-              margin: const EdgeInsets.only(bottom: 52),
-              child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Image.asset("images/logo.PNG"),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 32.0),
-                      ),
-                      TextFormField(
-                        keyboardType: TextInputType.text,
-                        maxLength: 12,
-                        controller: _usernameController,
-                        decoration: const InputDecoration(
-                            labelText: Strings.userName,
-                            prefixIcon: Icon(Icons.person)),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return '用户名不能为空';
-                          }
-                          return null;
-                        },
-                      ),
-                      TextFormField(
-                        keyboardType: TextInputType.visiblePassword,
-                        maxLength: 32,
-                        controller: _passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                            labelText: Strings.password,
-                            prefixIcon: Icon(Icons.lock)),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return '密码不能为空';
-                          }
-                          return null;
-                        },
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        margin: const EdgeInsets.only(top: 64.0),
-                        child: isLoading
-                            ? Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  ButtonTheme(
-                                    minWidth: buttonWidth,
-                                    height: buttonHeight,
-                                    child: RaisedButton(
-                                      child: Text(Strings.registered),
-                                      color: Colors.white,
-                                      textColor: Colors.lightBlue,
-                                      onPressed: () {
-                                        //TODO: turn to register page
-                                      },
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 20.0),
-                                  ),
-                                  ButtonTheme(
-                                      minWidth: buttonWidth,
-                                      height: buttonHeight,
-                                      child: RaisedButton(
-                                        child: Text(Strings.login),
-                                        color: Colors.lightBlue,
-                                        textColor: Colors.white,
-                                        onPressed: () => _login(),
-                                      ))
-                                ],
-                              ),
-                      )
-                    ],
-                  ))),
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(32.0),
+            margin: const EdgeInsets.only(bottom: 52),
+            child: form,
+          ),
         ));
   }
 
@@ -144,7 +205,8 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
             else
               Fluttertoast.showToast(msg: '用户信息写入失败');
           } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {
-            Fluttertoast.showToast(msg: "Error: " + resp.data['data']['exceptionMessage']);
+            Fluttertoast.showToast(
+                msg: "Error: " + resp.data['data']['exceptionMessage']);
           }
         } else {
           Fluttertoast.showToast(msg: "Error: " + resp.statusCode.toString());
@@ -157,4 +219,6 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
       }
     }
   }
+
+  void _register() async {}
 }
