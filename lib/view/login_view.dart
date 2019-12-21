@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webo/contants/http_code.dart';
 import 'package:webo/contants/webo_url.dart';
 
-import '../res/values.dart';
+import '../contants/values.dart';
 
 class WebOLoginPage extends StatefulWidget {
   @override
@@ -123,9 +123,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
     if (_formKey.currentState.validate()) {
       final String username = _usernameController.text;
       final String pass = _passwordController.text;
-      setState(() {
-        isLoading = true;
-      });
+      setState(() => isLoading = true);
       try {
         Response resp = await Dio().post(WebOURL.login,
             data: {"username": username, "password": pass});
@@ -149,9 +147,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
       } on Exception catch (e) {
         print(e);
       } finally {
-        setState(() {
-          isLoading = false;
-        });
+        setState(() => isLoading = false);
         Navigator.pop(context);
       }
     }

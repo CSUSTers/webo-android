@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webo/contants/values.dart';
 import 'package:webo/view/login_view.dart';
 import 'package:webo/view/webo_list_view.dart';
 import 'package:webo/widget/circle_image.dart';
@@ -62,7 +63,7 @@ class _WebOHomePageState extends State<WebOHomePage> {
             ),
             ListTile(
               leading: Icon(Icons.person),
-              title: Text('账 户'),
+              title: Text(Strings.account),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => WebOLoginPage()
@@ -71,7 +72,7 @@ class _WebOHomePageState extends State<WebOHomePage> {
             ),
             ListTile(
               leading: Icon(Icons.settings),
-              title: Text('设 置'),
+              title: Text(Strings.settings),
             ),
           ],
         ),
