@@ -11,5 +11,6 @@ class Strings {
   static const password = '密码';
   static const nickname = '昵称';
   static const ack_password = '确认密码';
+  static const email = '邮箱';
 
 }

@@ -19,6 +19,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _password2Controller = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   final buttonWidth = 108.0, buttonHeight = 42.0;
 
@@ -90,7 +91,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
             ),
             TextFormField(
               keyboardType: TextInputType.text,
-              maxLength: 12,
+              maxLength: 16,
               controller: _usernameController,
               decoration: const InputDecoration(
                   labelText: Strings.userName, prefixIcon: Icon(Icons.person)),
@@ -104,24 +105,36 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
             mode == REGISTER_MODE
                 ? TextFormField(
                     keyboardType: TextInputType.text,
-                    maxLength: 16,
+                    maxLength: 32,
                     controller: _nicknameController,
                     decoration: const InputDecoration(
                         labelText: Strings.nickname,
                         prefixIcon: Icon(Icons.lightbulb_outline)),
                     validator: (value) {
-                      if (value.isEmpty) {
-                        return '请填写昵称';
-                      }
                       return null;
                     },
                   )
                 : const Padding(
                     padding: const EdgeInsets.all(0),
                   ),
+            mode == REGISTER_MODE
+                ? TextFormField(
+              keyboardType: TextInputType.emailAddress,
+              maxLength: 128,
+              controller: _emailController,
+              decoration: const InputDecoration(
+                  labelText: Strings.email,
+                  prefixIcon: Icon(Icons.email)),
+              validator: (value) {
+                return null;
+              },
+            )
+                : const Padding(
+              padding: const EdgeInsets.all(0),
+            ),
             TextFormField(
               keyboardType: TextInputType.text,
-              maxLength: 32,
+              maxLength: 64,
               controller: _passwordController,
               obscureText: true,
               decoration: const InputDecoration(
@@ -136,7 +149,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
             mode == REGISTER_MODE
                 ? TextFormField(
                     keyboardType: TextInputType.text,
-                    maxLength: 32,
+                    maxLength: 64,
                     controller: _password2Controller,
                     obscureText: true,
                     decoration: const InputDecoration(
@@ -144,7 +157,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
                         prefixIcon: Icon(Icons.lock)),
                     validator: (value) {
                       if (value.isEmpty) return '请再次输入密码';
-                      if (value == _passwordController.text)
+                      if (value != _passwordController.text)
                         return '两次输入的密码不一致';
                       return null;
                     },
@@ -196,14 +209,16 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
             var success = await Future.wait([
               p.setString("token", data['token']),
               p.setString("refreshToken", data['refreshToken']),
-              p.setInt("userId", data['userId']),
+              p.setString("userId", data['userId']),
               p.setString("username", data['username']),
-              p.setString("nickname", data['nickname'])
+              p.setString("nickname", data['nickname']),
+              p.setString("email", data['email']),
             ]).then((xs) => xs.reduce((x, y) => x && y));
-            if (success)
+            if (success) {
               Fluttertoast.showToast(msg: "登录成功");
-            else
-              Fluttertoast.showToast(msg: '用户信息写入失败');
+              Navigator.pop(context);
+            } else
+              Fluttertoast.showToast(msg: '用户信息保存失败');
           } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {
             Fluttertoast.showToast(
                 msg: "Error: " + resp.data['data']['exceptionMessage']);
@@ -215,10 +230,56 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
         print(e);
       } finally {
         setState(() => isLoading = false);
-        Navigator.pop(context);
       }
     }
   }
 
-  void _register() async {}
+  void _register() async {
+    if (_formKey.currentState.validate()) {
+      final String username = _usernameController.text;
+      final String pass = _passwordController.text;
+      final String nickname = _nicknameController.text;
+      final String email = _emailController.text;
+      setState(() => isLoading = true);
+      try {
+        Response resp = await Dio().post(WebOURL.register,
+            data: {
+              "username": username,
+              "password": pass,
+              "nickname": nickname,
+              "email": email
+            }
+        );
+        print(resp.data.toString());
+        if (resp.statusCode == 200) {
+          if (resp.data['code'] == WebOHttpCode.SUCCESS) {
+            var data = resp.data['data'];
+            var p = await SharedPreferences.getInstance();
+            var success = await Future.wait([
+              p.setString("token", data['token']),
+              p.setString("refreshToken", data['refreshToken']),
+              p.setString("userId", data['userId']),
+              p.setString("username", data['username']),
+              p.setString("nickname", data['nickname']),
+              p.setString("email", data['email']),
+            ]).then((xs) => xs.reduce((x, y) => x && y));
+            if (success) {
+              Fluttertoast.showToast(msg: "注册成功");
+              Navigator.pop(context);
+            } else
+              Fluttertoast.showToast(msg: '用户信息保存失败');
+          } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {
+            Fluttertoast.showToast(
+                msg: "Error: " + resp.data['data']['exceptionMessage']);
+          }
+        } else {
+          Fluttertoast.showToast(msg: "Error: " + resp.statusCode.toString());
+        }
+      } on Exception catch (e) {
+        print(e);
+      } finally {
+        setState(() => isLoading = false);
+      }
+    }
+  }
 }
