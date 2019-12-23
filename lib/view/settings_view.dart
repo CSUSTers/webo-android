@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webo/contants/values.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -17,15 +18,20 @@ class SettingsPage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          MaterialButton(
-            minWidth: double.infinity,
-            height: 40.0,
-            color: Colors.redAccent,
-            textColor: Colors.white,
-            child: Text(Strings.logout),
-            onPressed: () {
-              //TODO logout
-            },
+          Container(
+            margin: const EdgeInsets.all(4.0),
+            child: MaterialButton(
+              minWidth: double.infinity,
+              height: 40.0,
+              color: Colors.redAccent,
+              textColor: Colors.white,
+              child: Text(Strings.logout),
+              onPressed: () async {
+                SharedPreferences refs = await SharedPreferences.getInstance();
+                refs.clear();
+                Navigator.pop(context);
+              },
+            )
           ),
         ],
       )

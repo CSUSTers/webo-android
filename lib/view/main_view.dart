@@ -98,7 +98,7 @@ class _WebOHomePageState extends State<WebOHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: WebOListView(data: <String>['Hugefiver', 'MinGW', 'Hoo', '']),
+        child: WebOListView(),
       ),
       floatingActionButton: Container(
         width: 64.0,

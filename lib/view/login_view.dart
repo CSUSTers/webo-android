@@ -43,7 +43,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
           onPressed: () => setState(() => mode = REGISTER_MODE),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
         ),
         MaterialButton(
           minWidth: buttonWidth,
@@ -61,7 +61,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
             minWidth: buttonWidth,
             height: buttonHeight,
             child: RaisedButton(
-              child: Text(Strings.register),
+              child: const Text(Strings.register),
               color: Colors.lightBlue,
               textColor: Colors.white,
               onPressed: () => _register(),
@@ -71,8 +71,8 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
       alignment: Alignment.center,
       margin: const EdgeInsets.only(top: 64.0),
       child: isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
+          ? const Center(
+              child: const CircularProgressIndicator(),
             )
           : mode == LOGIN_MODE ? loginButtonArea : regButtonArea,
     );
@@ -187,7 +187,8 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
             margin: const EdgeInsets.only(bottom: 52),
             child: form,
           ),
-        ));
+        )
+    );
   }
 
   void _login() async {
