@@ -34,28 +34,25 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
     Row loginButtonArea = Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        ButtonTheme(
+        MaterialButton(
           minWidth: buttonWidth,
           height: buttonHeight,
-          child: RaisedButton(
-            child: Text(Strings.register),
-            color: Colors.white,
-            textColor: Colors.lightBlue,
-            onPressed: () => setState(() => mode = REGISTER_MODE),
-          ),
+          child: const Text(Strings.register),
+          color: Colors.white,
+          textColor: Colors.lightBlue,
+          onPressed: () => setState(() => mode = REGISTER_MODE),
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.0),
         ),
-        ButtonTheme(
-            minWidth: buttonWidth,
-            height: buttonHeight,
-            child: RaisedButton(
-              child: Text(Strings.login),
-              color: Colors.lightBlue,
-              textColor: Colors.white,
-              onPressed: () => _login(),
-            ))
+        MaterialButton(
+          minWidth: buttonWidth,
+          height: buttonHeight,
+          child: const Text(Strings.login),
+          color: Colors.lightBlue,
+          textColor: Colors.white,
+          onPressed: () => _login(),
+        )
       ],
     );
 

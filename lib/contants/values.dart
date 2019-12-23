@@ -13,4 +13,7 @@ class Strings {
   static const ack_password = '确认密码';
   static const email = '邮箱';
 
+  //Setting page
+  static const logout = '退出登录';
+
 }

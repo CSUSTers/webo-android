@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/view/login_view.dart';
+import 'package:webo/view/settings_view.dart';
 import 'package:webo/view/webo_list_view.dart';
 import 'package:webo/widget/circle_image.dart';
 
@@ -32,51 +33,67 @@ class WebOHomePage extends StatefulWidget {
 class _WebOHomePageState extends State<WebOHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: Drawer(
+
+    Container drawerHeader = Container(
+      height: 256.0,
+      child: DrawerHeader(
+        decoration: BoxDecoration(
+            color: Colors.blue
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CircleImageWidget.fromImage(
+                radius: 128.0,
+                image: AssetImage("images/avatar.jpeg")
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+            ),
+            Text(
+              "Hugefiver",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+              ),
+            ),
+          ],
+        ),
+      )
+    );
+
+    SizedBox drawer = SizedBox(
+      width: MediaQuery.of(context).size.width * 0.75,
+      child: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  CircleImageWidget.fromImage(
-                      radius: 96.0,
-                      image: AssetImage("images/avatar.jpeg")
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                  ),
-                  Text(
-                    "Hugefiver",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            drawerHeader,
             ListTile(
               leading: Icon(Icons.person),
               title: Text(Strings.account),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => WebOLoginPage()
+                    builder: (context) => WebOLoginPage()
                 ));
               },
             ),
             ListTile(
               leading: Icon(Icons.settings),
               title: Text(Strings.settings),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SettingsPage()
+                ));
+              },
             ),
           ],
         ),
       ),
+    );
+
+    return Scaffold(
+      drawer: drawer,
       appBar: AppBar(
         title: Text(widget.title),
       ),
