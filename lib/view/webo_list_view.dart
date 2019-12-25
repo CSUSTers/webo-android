@@ -72,7 +72,7 @@ class _WebOListViewState extends State<WebOListView> {
           var data = resp.data['data'];
           nextForm = data['nextForm'];
           for (var webo in data['webos']) {
-            print(webo);
+            debugPrint(webo);
             forms.add(webo);
           }
         } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {

@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webo/contants/http_code.dart';
 import 'package:webo/contants/webo_url.dart';
+import 'package:webo/widget/nothing.dart';
 
 import '../contants/values.dart';
 
@@ -37,7 +38,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
         MaterialButton(
           minWidth: buttonWidth,
           height: buttonHeight,
-          child: const Text(Strings.register),
+          child: const Text(Strings.registerSplit),
           color: Colors.white,
           textColor: Colors.lightBlue,
           onPressed: () => setState(() => mode = REGISTER_MODE),
@@ -48,7 +49,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
         MaterialButton(
           minWidth: buttonWidth,
           height: buttonHeight,
-          child: const Text(Strings.login),
+          child: const Text(Strings.loginSplit),
           color: Colors.lightBlue,
           textColor: Colors.white,
           onPressed: () => _login(),
@@ -57,15 +58,13 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
     );
 
     Center regButtonArea = Center(
-        child: ButtonTheme(
+        child: MaterialButton(
             minWidth: buttonWidth,
             height: buttonHeight,
-            child: RaisedButton(
-              child: const Text(Strings.register),
-              color: Colors.lightBlue,
-              textColor: Colors.white,
-              onPressed: () => _register(),
-            )));
+            child: const Text(Strings.registerSplit),
+            color: Colors.lightBlue,
+            textColor: Colors.white,
+            onPressed: () => _register()));
 
     Container buttonArea = Container(
       alignment: Alignment.center,
@@ -111,24 +110,20 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
                       return null;
                     },
                   )
-                : const Padding(
-                    padding: const EdgeInsets.all(0),
-                  ),
+                : const Nothing(),
             mode == REGISTER_MODE
                 ? TextFormField(
-              keyboardType: TextInputType.emailAddress,
-              maxLength: 128,
-              controller: _emailController,
-              decoration: const InputDecoration(
-                  labelText: Strings.email,
-                  prefixIcon: Icon(Icons.email)),
-              validator: (value) {
-                return null;
-              },
-            )
-                : const Padding(
-              padding: const EdgeInsets.all(0),
-            ),
+                    keyboardType: TextInputType.emailAddress,
+                    maxLength: 128,
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                        labelText: Strings.email,
+                        prefixIcon: Icon(Icons.email)),
+                    validator: (value) {
+                      return null;
+                    },
+                  )
+                : const Nothing(),
             TextFormField(
               keyboardType: TextInputType.text,
               maxLength: 64,
@@ -150,7 +145,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
                     controller: _password2Controller,
                     obscureText: true,
                     decoration: const InputDecoration(
-                        labelText: Strings.ack_password,
+                        labelText: Strings.ackPassword,
                         prefixIcon: Icon(Icons.lock)),
                     validator: (value) {
                       if (value.isEmpty) return '请再次输入密码';
@@ -159,9 +154,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
                       return null;
                     },
                   )
-                : const Padding(
-                    padding: const EdgeInsets.all(0),
-                  ),
+                : const Nothing(),
             buttonArea
           ],
         ));
@@ -187,8 +180,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
             margin: const EdgeInsets.only(bottom: 52),
             child: form,
           ),
-        )
-    );
+        ));
   }
 
   void _login() async {
@@ -240,14 +232,12 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
       final String email = _emailController.text;
       setState(() => isLoading = true);
       try {
-        Response resp = await Dio().post(WebOURL.register,
-            data: {
-              "username": username,
-              "password": pass,
-              "nickname": nickname,
-              "email": email
-            }
-        );
+        Response resp = await Dio().post(WebOURL.register, data: {
+          "username": username,
+          "password": pass,
+          "nickname": nickname,
+          "email": email
+        });
         print(resp.data.toString());
         if (resp.statusCode == 200) {
           if (resp.data['code'] == WebOHttpCode.SUCCESS) {

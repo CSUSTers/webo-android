@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webo/contants/values.dart';
+import 'package:webo/view/create_webo_view.dart';
 import 'package:webo/view/login_view.dart';
 import 'package:webo/view/settings_view.dart';
 import 'package:webo/view/webo_list_view.dart';
@@ -71,7 +72,7 @@ class _WebOHomePageState extends State<WebOHomePage> {
             drawerHeader,
             ListTile(
               leading: Icon(Icons.person),
-              title: Text(Strings.account),
+              title: Text(Strings.accountSplit),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => WebOLoginPage()
@@ -80,7 +81,7 @@ class _WebOHomePageState extends State<WebOHomePage> {
             ),
             ListTile(
               leading: Icon(Icons.settings),
-              title: Text(Strings.settings),
+              title: Text(Strings.settingsSplit),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => SettingsPage()
@@ -108,8 +109,9 @@ class _WebOHomePageState extends State<WebOHomePage> {
             child: const Icon(Icons.create),
             backgroundColor: Colors.lightBlue,
             onPressed: () {
-              //TODO turn to create WebO page
-
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => WebOCreatePage())
+              );
             },
           ),
         ),
