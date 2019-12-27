@@ -60,7 +60,7 @@ class _WebOListViewState extends State<WebOListView> {
       "before": nextForm,
     };
     if (mode == FOLLOW_ONLY) {
-      dio = DioWithToken();
+      dio = DioWithToken.getInstance();
       SharedPreferences refs = await SharedPreferences.getInstance();
       int userId = refs.getInt('userId');
       params["userId"] = userId.toString();
@@ -72,7 +72,7 @@ class _WebOListViewState extends State<WebOListView> {
           var data = resp.data['data'];
           nextForm = data['nextForm'];
           for (var webo in data['webos']) {
-            debugPrint(webo);
+            print(webo);
             forms.add(webo);
           }
         } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {

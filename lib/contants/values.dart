@@ -1,5 +1,10 @@
 abstract class Strings {
 
+  //App
+  static const appName = 'WebO';
+  static const defaultAvatarPath = 'WebO';
+
+
   //Drawer
   static const accountSplit = '账 户';
   static const settingsSplit = '设 置';
