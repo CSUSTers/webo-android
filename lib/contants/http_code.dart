@@ -1,4 +1,3 @@
-
 abstract class WebOHttpCode {
 
   static const SUCCESS = 0;

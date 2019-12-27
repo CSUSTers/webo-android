@@ -18,4 +18,7 @@ abstract class DioWithToken extends Dio {
     return _dio;
   }
 
+  static DioWithToken get client {
+    return getInstance();
+  }
 }
