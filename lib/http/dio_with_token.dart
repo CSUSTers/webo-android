@@ -4,18 +4,15 @@ import 'package:webo/http/token_interceptor.dart';
 //Dio factory
 abstract class DioWithToken {
 
-  static Dio _dio;
+  static final _dio = Dio()
+    ..interceptors.add(LogInterceptor())
+    ..interceptors.add(TokenInterceptor());
 
   static Dio getInstance() {
-    if (_dio == null) {
-      _dio = Dio();
-      _dio.interceptors.add(LogInterceptor());
-      _dio.interceptors.add(TokenInterceptor());
-    }
     return _dio;
   }
 
   static Dio get client {
-    return getInstance();
+    return _dio;
   }
 }
