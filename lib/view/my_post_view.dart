@@ -10,7 +10,7 @@ class MyPostPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
-        title: Text(Strings.mineSplit),
+        title: Text(Strings.mine),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),

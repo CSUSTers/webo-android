@@ -30,6 +30,9 @@ abstract class Strings {
   static const followers = '关注我的';
   static const followings = '我关注的';
 
+  //Mine page
+  static const mine = '我的帖子';
+
 
   //Setting page
   static const settings = '设置';

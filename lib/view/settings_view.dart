@@ -24,12 +24,31 @@ class SettingsPage extends StatelessWidget {
               height: 40.0,
               color: Colors.redAccent,
               textColor: Colors.white,
-              child: Text(Strings.logout),
-              onPressed: () async {
-                SharedPreferences refs = await SharedPreferences.getInstance();
-                refs.clear();
-                Navigator.pop(context);
-              },
+              child: const Text(Strings.logout),
+              onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('确认退出登录吗'),
+                    content: const Text('此操作将清除本地保存的用户信息'),
+                    actions: <Widget>[
+                      MaterialButton(
+                        color: Colors.red,
+                        child: Text('退出'),
+                        onPressed: () async {
+                          SharedPreferences refs = await SharedPreferences.getInstance();
+                          refs.clear();
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        }
+                      ),
+                      MaterialButton(
+                          color: Colors.white,
+                          child: Text('不了不了'),
+                          onPressed: () => Navigator.pop(context)
+                      )
+                    ],
+                  )
+              ),
             )
           ),
         ],
