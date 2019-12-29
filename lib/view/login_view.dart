@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webo/contants/http_code.dart';
 import 'package:webo/contants/webo_url.dart';
+import 'package:webo/util/encry.dart';
 import 'package:webo/widget/nothing.dart';
 
 import '../contants/values.dart';
@@ -186,7 +187,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
   void _login() async {
     if (_formKey.currentState.validate()) {
       final String username = _usernameController.text;
-      final String pass = _passwordController.text;
+      final String pass = MD5.md5(_passwordController.text);
       setState(() => isLoading = true);
       try {
         Response resp = await Dio().post(WebOURL.login,
@@ -227,7 +228,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
   void _register() async {
     if (_formKey.currentState.validate()) {
       final String username = _usernameController.text;
-      final String pass = _passwordController.text;
+      final String pass = MD5.md5(_passwordController.text);
       final String nickname = _nicknameController.text;
       final String email = _emailController.text;
       setState(() => isLoading = true);

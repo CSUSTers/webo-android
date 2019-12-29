@@ -16,6 +16,7 @@ class WebOCreatePage extends StatefulWidget {
 class _WebOCreatePageState extends State<WebOCreatePage> {
 
   final TextEditingController _weboTextController = TextEditingController();
+  final _weboMaxLength = 320;
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +39,12 @@ class _WebOCreatePageState extends State<WebOCreatePage> {
         body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 1.0, vertical: 2.0),
           child: TextField(
-            maxLength: 320,
+            maxLength: _weboMaxLength,
             keyboardType: TextInputType.multiline,
             minLines: 8,
-            maxLines: 320,
+            maxLines: _weboMaxLength,
             maxLengthEnforced: false,
+            controller: _weboTextController,
             decoration: InputDecoration(
               hintText: '写点什么吧',
               border: OutlineInputBorder()
@@ -56,17 +58,23 @@ class _WebOCreatePageState extends State<WebOCreatePage> {
 
   void _post() async {
       final String text = _weboTextController.text;
+      if(text.length == 0) {
+        Fluttertoast.showToast(msg: "球您还是写点什么吧");
+        return;
+      }
+      if(text.length > _weboMaxLength) {
+        Fluttertoast.showToast(msg: "字数超出限制");
+        return;
+      }
       try {
         Response resp = await DioWithToken.getInstance().post(WebOURL.createPost,
             data: {"text": text});
         print(resp.data.toString());
         if (resp.statusCode == 200) {
-          if (resp.data['code'] == WebOHttpCode.SUCCESS) {
+          int code = resp.data['code'];
+          if (code == WebOHttpCode.SUCCESS) {
               Fluttertoast.showToast(msg: "发布成功");
               Navigator.pop(context);
-          } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {
-            Fluttertoast.showToast(
-                msg: "Error: " + resp.data['data']['exceptionMessage']);
           }
         } else {
           Fluttertoast.showToast(msg: "Error: " + resp.statusCode.toString());

@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/rom/global_data.dart';
 import 'package:webo/view/create_webo_view.dart';
+import 'package:webo/view/follow_view.dart';
 import 'package:webo/view/login_view.dart';
+import 'package:webo/view/my_post_view.dart';
 import 'package:webo/view/settings_view.dart';
 import 'package:webo/view/webo_list_view.dart';
 import 'package:webo/widget/circle_image.dart';
 
 class WebOApp extends StatelessWidget {
 
+  static dynamic ctx;
+
   @override
   Widget build(BuildContext context) {
+    ctx = context;
     return GlobalDataWidget(
       data: GlobalData.undefined(),
       child: MaterialApp(
@@ -70,16 +75,32 @@ class _WebOHomePageState extends State<WebOHomePage> {
           children: <Widget>[
             drawerHeader,
             ListTile(
-              leading: Icon(Icons.person),
-              title: Text(Strings.accountSplit),
+              leading: const Icon(Icons.person),
+              title: const Text(Strings.accountSplit),
               onTap: () {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => WebOLoginPage()));
               },
+            ),ListTile(
+              leading: const Icon(Icons.create),
+              title: const Text(Strings.mineSplit),
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => MyPostPage()));
+              },
+            ),
+
+            ListTile(
+              leading: const Icon(Icons.favorite),
+              title: const Text(Strings.followSplit),
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => FollowPage()));
+              },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text(Strings.settingsSplit),
+              leading: const Icon(Icons.settings),
+              title: const Text(Strings.settingsSplit),
               onTap: () {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => SettingsPage()));
