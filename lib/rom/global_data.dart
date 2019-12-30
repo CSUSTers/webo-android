@@ -8,6 +8,8 @@ class GlobalDataWidget extends InheritedWidget {
 
   @override
   bool updateShouldNotify(GlobalDataWidget oldWidget) {
+    print('asdnfjhenrsajdiefijrnerj');
+    if (oldWidget?.data == null || data == null) return true;
     return oldWidget.data != this.data;
   }
 
@@ -17,9 +19,23 @@ class GlobalDataWidget extends InheritedWidget {
 }
 
 class GlobalData {
-  final String userName;
-  final String nickName;
-  final ImageProvider image;
+  String userName;
+  String nickName;
+  ImageProvider image;
+
+  @override
+  bool operator==(dynamic other) {
+    if (other.runtimeType == this.runtimeType) {
+      return userName == other.userName &&
+        nickName == other.nickName &&
+        this.image == other.image;
+    }
+
+    return false;
+  }
+
+  @override
+  int get hashCode => super.hashCode;
 
   GlobalData(this.userName, this.nickName, this.image);
 

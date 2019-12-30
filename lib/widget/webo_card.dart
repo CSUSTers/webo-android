@@ -10,7 +10,6 @@ class WebOCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Row(
-
       ),
     );
   }
