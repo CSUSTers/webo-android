@@ -29,6 +29,7 @@ abstract class Strings {
   //Follow page
   static const followers = '关注我的';
   static const followings = '我关注的';
+  static const cancelFollow = '取消关注';
 
   //Mine page
   static const mine = '我的帖子';
