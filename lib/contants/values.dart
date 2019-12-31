@@ -1,17 +1,20 @@
 abstract class Strings {
 
-  //App
+  // App
   static const appName = 'WebO';
   static const defaultAvatarPath = 'images/avatar.jpeg';
 
-
-  //Drawer
+  // Drawer
   static const accountSplit = '账 户';
   static const settingsSplit = '设 置';
   static const followSplit = '关 注 列 表';
   static const mineSplit = '我 的 帖 子';
 
-  //Login page
+  // User
+  static const notLoginUser = '未登录';
+  static const notLoginEmail = 'abc@example.com';
+
+  // Login page
   static const loginSplit = '登 录';
   static const login = '登录';
   static const registerSplit = '注 册';
@@ -22,21 +25,31 @@ abstract class Strings {
   static const ackPassword = '确认密码';
   static const email = '邮箱';
 
-  //Create page
+  // Create page
   static const createForm = '新建动态';
   static const post = '发布';
 
-  //Follow page
+  // Follow page
   static const followers = '关注我的';
   static const followings = '我关注的';
   static const cancelFollow = '取消关注';
 
-  //Mine page
+  // Mine page
   static const mine = '我的帖子';
 
+  //Account Page
+  static const account = '账户';
 
-  //Setting page
+  // Setting page
   static const settings = '设置';
   static const logout = '退出登录';
 
+  // Actions
+  static const like = '点赞';
+  static const reply = '评论';
+  static const forward = '转发';
+
+  // User Status
+  static const follow = '关注';
+  static const followed = '已关注';
 }
