@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:webo/contants/user.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/rom/user_provider.dart';
+import 'package:webo/util/gravatar_config.dart';
 import 'package:webo/util/prefs.dart';
 import 'package:webo/view/login_view.dart';
 import 'package:webo/view/router.dart';
@@ -90,8 +91,7 @@ class _WebOHomePageState extends State<WebOHomePage>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              CircleImageWidget.fromImage(
-                  radius: 128.0, image: AssetImage(_userProvider.user.avatar)),
+              getImageForUser(_userProvider.user, size: 256),
               Padding(
                 padding: const EdgeInsets.all(4.0),
               ),
