@@ -226,7 +226,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
 
   void _register() async {
     if (_formKey.currentState.validate()) {
-      final String username = _usernameController.text;
+      final String username = _usernameController.text.trim();
       final String pass = MD5.md5(_passwordController.text);
       final String nickname = _nicknameController.text;
       final String email = _emailController.text;
@@ -276,7 +276,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
     var success = await Future.wait([
       p.setString("token", data['token']),
       p.setString("refreshToken", data['refreshToken']),
-      p.setInt("userId", user.id),
+      p.setInt("id", user.id),
       p.setString("username", user.username),
       p.setString("nickname", user.nickname),
       p.setString("email", user.email),
