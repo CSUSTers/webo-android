@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:webo/contants/values.dart';
+import 'package:webo/rom/global_data.dart';
 import 'package:webo/rom/user_provider.dart';
 import 'package:webo/view/create_webo_view.dart';
 import 'package:webo/view/follow_view.dart';
@@ -42,7 +43,7 @@ class WebOHomePage extends StatefulWidget {
 }
 
 class _WebOHomePageState extends State<WebOHomePage> {
-  @override
+  /*@override
   void initState() {
     super.initState();
     SharedPreferences.getInstance().then((pref) {
@@ -60,7 +61,7 @@ class _WebOHomePageState extends State<WebOHomePage> {
         GlobalDataWidget.of(context).user = user;
       });
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
