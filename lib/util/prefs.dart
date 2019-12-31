@@ -20,7 +20,7 @@ abstract class Prefs {
       id: _prefs.getInt('userId') ?? -1,
       username: _prefs.getString('username') ?? Strings.notLoginUser,
       nickname: _prefs.getString('nickname') ?? Strings.notLoginUser,
-      email: _prefs.getString('email') ?? 'abc@example.com'
+      email: _prefs.getString('email') ?? Strings.notLoginEmail
     );
   }
 
