@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webo/contants/user.dart';
 import 'package:webo/contants/values.dart';
 
 class GlobalDataWidget extends InheritedWidget {
@@ -49,4 +50,6 @@ class UserData {
 
   UserData.withDefaultPic({this.userName, this.nickName}) :
         this.image = AssetImage(Strings.defaultAvatarPath);
+
+  static UserData notLogin() => UserData.undefined();
 }

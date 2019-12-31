@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webo/contants/http_code.dart';
 import 'package:webo/contants/webo_url.dart';
+import 'package:webo/rom/global_data.dart';
 import 'package:webo/util/encry.dart';
 import 'package:webo/widget/nothing.dart';
 
@@ -196,6 +197,10 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
         if (resp.statusCode == 200) {
           if (resp.data['code'] == WebOHttpCode.SUCCESS) {
             var data = resp.data['data'];
+            GlobalDataWidget.of(context).user = UserData.withDefaultPic(
+              userName: data['username'],
+              nickName: data['nickname']
+            );
             var p = await SharedPreferences.getInstance();
             var success = await Future.wait([
               p.setString("token", data['token']),

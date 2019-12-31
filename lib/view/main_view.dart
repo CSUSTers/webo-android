@@ -12,19 +12,12 @@ import 'package:webo/widget/circle_image.dart';
 
 class WebOApp extends StatelessWidget {
 
-  static dynamic ctx;
+  static BuildContext ctx;
 
   @override
   Widget build(BuildContext context) {
     ctx = context;
-    return MaterialApp(
-        title: Strings.appName,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: _InheritedWidget(),
-        debugShowCheckedModeBanner: false,
-      );
+    return _InheritedWidget();
   }
 }
 
@@ -33,8 +26,15 @@ class _InheritedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GlobalDataWidget(
-        userData: UserData.undefined(),
-        child: WebOHomePage(title: Strings.appName)
+        userData: UserData.notLogin(),
+        child: MaterialApp(
+          title: Strings.appName,
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: WebOHomePage(title: Strings.appName),
+          debugShowCheckedModeBanner: false,
+        )
     );
   }
 }
@@ -53,8 +53,8 @@ class _WebOHomePageState extends State<WebOHomePage> {
   void initState() {
     super.initState();
     SharedPreferences.getInstance().then((pref) {
-      var user = UserData.withDefaultPic(userName: pref.getString('username'),
-          nickName: pref.getString('nickname'));
+      var user = UserData.withDefaultPic(userName: pref.getString('username') ?? '',
+          nickName: pref.getString('nickname') ?? '');
       setState(() {
         GlobalDataWidget.of(context).user = user;
       });
@@ -63,7 +63,7 @@ class _WebOHomePageState extends State<WebOHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    UserData user = GlobalDataWidget.of(context).user ?? UserData.undefined();
+    UserData user = GlobalDataWidget.of(context).user ?? UserData.notLogin();
 
     Container drawerHeader = Container(
         height: 256.0,
