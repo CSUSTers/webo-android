@@ -230,6 +230,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
       final String pass = MD5.md5(_passwordController.text);
       final String nickname = _nicknameController.text;
       final String email = _emailController.text;
+      print(pass);
       setState(() => isLoading = true);
       try {
         Response resp = await Dio().post(WebOURL.register, data: {
@@ -266,7 +267,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
 
   Future<bool> _save(dynamic data) async {
     var user = User(
-        id: data['userId'],
+        id: data['id'],
         username: data['username'],
         nickname: data['nickname'],
         email: data['email']
@@ -276,7 +277,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
     var success = await Future.wait([
       p.setString("token", data['token']),
       p.setString("refreshToken", data['refreshToken']),
-      p.setInt("userId", user.id),
+      p.setInt("id", user.id),
       p.setString("username", user.username),
       p.setString("nickname", user.nickname),
       p.setString("email", user.email),
