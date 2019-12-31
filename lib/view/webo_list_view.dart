@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webo/contants/http_code.dart';
 import 'package:webo/contants/webo_url.dart';
 import 'package:webo/http/dio_with_token.dart';
+import 'package:webo/util/prefs.dart';
 
 class WebOListView extends StatefulWidget {
   @override
@@ -62,8 +63,7 @@ class _WebOListViewState extends State<WebOListView> {
 
     if (mode == FOLLOW_ONLY) {
       dio = DioWithToken.getInstance();
-      SharedPreferences refs = await SharedPreferences.getInstance();
-      int id = refs.getInt('id');
+      int id = Prefs.instance.getInt('id');
       params["id"] = id.toString();
     }
     try {

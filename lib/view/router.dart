@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:webo/contants/values.dart';
+import 'package:webo/util/prefs.dart';
 import 'package:webo/view/accout_view.dart';
 import 'package:webo/view/create_webo_view.dart';
 import 'package:webo/view/follow_view.dart';
@@ -23,6 +24,13 @@ class Router {
   static const settingPage = "/settings";
 
 
+  static List<String> needLoginRoute = [
+    userPage,
+    createPage,
+    myPostPage,
+    followPage,
+    settingPage
+  ];
 
   static Map<String, WidgetBuilder> routeTable = {
     home: (context) => WebOHomePage(title: Strings.appName),

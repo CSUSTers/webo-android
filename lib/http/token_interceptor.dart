@@ -4,13 +4,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webo/contants/http_code.dart';
 import 'package:webo/contants/webo_url.dart';
 import 'package:webo/http/dio_with_token.dart';
+import 'package:webo/util/prefs.dart';
 
 class TokenInterceptor extends InterceptorsWrapper {
   @override
   Future onRequest(RequestOptions options) async {
     //auto load token in request
     if (!options.headers.containsKey('Authorization')) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
+      SharedPreferences prefs = Prefs.instance;
       if (prefs.containsKey('token')) {
         options.headers['Authorization'] = prefs.getString('token');
       }
@@ -49,7 +50,7 @@ class TokenInterceptor extends InterceptorsWrapper {
 
   Future<String> _refreshToken() async {
     Dio dio = Dio();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = Prefs.instance;
     if (prefs.containsKey('refreshToken')) {
       dio.options.headers['Authorization'] = prefs.getString('refreshToken');
     }
@@ -57,7 +58,7 @@ class TokenInterceptor extends InterceptorsWrapper {
     if (resp.statusCode == 200) {
       if (resp.data['code'] == WebOHttpCode.SUCCESS) {
         dynamic data = resp.data['data'];
-        await SharedPreferences.getInstance()
+        Prefs.instance
           ..setString("token", data['token'])
           ..setString("refreshToken", data['refreshToken']);
       }

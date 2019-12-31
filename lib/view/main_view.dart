@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:webo/contants/user.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/rom/user_provider.dart';
+import 'package:webo/util/prefs.dart';
+import 'package:webo/view/login_view.dart';
 import 'package:webo/view/router.dart';
 import 'package:webo/view/webo_list_view.dart';
 import 'package:webo/widget/circle_image.dart';
@@ -19,7 +22,17 @@ class WebOApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         initialRoute: Router.home,
-        routes: Router.routeTable,
+//        routes: Router.routeTable,
+        onGenerateRoute: (RouteSettings settings) {
+          final routeName = settings.name;
+          var builder = Router.routeTable[routeName];
+          if(Prefs.user.id == -1 && Router.needLoginRoute.contains(routeName)) {
+            builder = Router.routeTable[Router.loginPage];
+            Fluttertoast.showToast(msg: "请先登录");
+          }
+          var router = MaterialPageRoute(builder: builder, settings: settings);
+          return router;
+        },
 //        home: WebOHomePage(title: Strings.appName),
         debugShowCheckedModeBanner: false,
       ),

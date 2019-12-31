@@ -8,6 +8,7 @@ import 'package:webo/contants/user.dart';
 import 'package:webo/contants/webo_url.dart';
 import 'package:webo/rom/user_provider.dart';
 import 'package:webo/util/encry.dart';
+import 'package:webo/util/prefs.dart';
 import 'package:webo/widget/nothing.dart';
 
 import '../contants/values.dart';
@@ -272,7 +273,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
         email: data['email']
     );
 
-    var p = await SharedPreferences.getInstance();
+    var p = Prefs.instance;
     var success = await Future.wait([
       p.setString("token", data['token']),
       p.setString("refreshToken", data['refreshToken']),
