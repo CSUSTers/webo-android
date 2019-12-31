@@ -266,7 +266,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
 
   Future<bool> _save(dynamic data) async {
     var user = User(
-        id: data['userId'],
+        id: data['id'],
         username: data['username'],
         nickname: data['nickname'],
         email: data['email']

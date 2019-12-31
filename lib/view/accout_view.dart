@@ -58,12 +58,12 @@ class _ListItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(title,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16.0
             ),
           ),
           Text(content,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.grey
             ),
           )
