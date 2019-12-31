@@ -14,6 +14,8 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void clear() => setUser(User());
+
 
 
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/rom/global_data.dart';
+import 'package:webo/rom/user_provider.dart';
+import 'package:webo/util/prefs.dart';
 
 class SettingsPage extends StatelessWidget {
 
@@ -36,9 +39,10 @@ class SettingsPage extends StatelessWidget {
                         color: Colors.red,
                         child: Text('退出'),
                         onPressed: () async {
-                          GlobalDataWidget.of(context).user = UserData.notLogin();
-                          SharedPreferences refs = await SharedPreferences.getInstance();
-                          refs.clear();
+//                          GlobalDataWidget.of(context).user = UserData.notLogin();
+                          var provider = Provider.of<UserProvider>(context, listen: false);
+                          provider.clear();
+                          Prefs.instance.clear();
                           Navigator.pop(context);
                           Navigator.pop(context);
                         }
