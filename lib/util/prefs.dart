@@ -17,7 +17,7 @@ abstract class Prefs {
 
   static User get user {
     return User(
-      id: _prefs.getInt('userId') ?? -1,
+      id: _prefs.getInt('id') ?? -1,
       username: _prefs.getString('username') ?? Strings.notLoginUser,
       nickname: _prefs.getString('nickname') ?? Strings.notLoginUser,
       email: _prefs.getString('email') ?? Strings.notLoginEmail

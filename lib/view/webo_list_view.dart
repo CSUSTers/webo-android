@@ -59,11 +59,12 @@ class _WebOListViewState extends State<WebOListView> {
     var params = {
       "before": nextForm,
     };
+
     if (mode == FOLLOW_ONLY) {
       dio = DioWithToken.getInstance();
       SharedPreferences refs = await SharedPreferences.getInstance();
-      int userId = refs.getInt('userId');
-      params["userId"] = userId.toString();
+      int id = refs.getInt('id');
+      params["id"] = id.toString();
     }
     try {
       Response resp = await dio.get(WebOURL.allPosts, queryParameters: params);
