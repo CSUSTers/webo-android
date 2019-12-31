@@ -1,6 +1,7 @@
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webo/contants/user.dart';
+import 'package:webo/contants/values.dart';
 
 abstract class Prefs {
 
@@ -16,10 +17,10 @@ abstract class Prefs {
 
   static User get user {
     return User(
-      id: _prefs.getInt('userId'),
-      username: _prefs.getString('username'),
-      nickname: _prefs.getString('nickname'),
-      email: _prefs.getString('email')
+      id: _prefs.getInt('userId') ?? -1,
+      username: _prefs.getString('username') ?? Strings.notLogin,
+      nickname: _prefs.getString('nickname') ?? Strings.notLogin,
+      email: _prefs.getString('email') ?? 'abc@example.com'
     );
   }
 
