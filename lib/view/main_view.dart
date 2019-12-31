@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:webo/contants/user.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/rom/user_provider.dart';
-import 'package:webo/view/accout_view.dart';
 import 'package:webo/view/create_webo_view.dart';
 import 'package:webo/view/follow_view.dart';
 import 'package:webo/view/login_view.dart';
@@ -72,12 +71,12 @@ class _WebOHomePageState extends State<WebOHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               CircleImageWidget.fromImage(
-                  radius: 128.0, image: AssetImage(_userProvider.value.avatar)),
+                  radius: 128.0, image: AssetImage(_userProvider.user.avatar)),
               Padding(
                 padding: const EdgeInsets.all(4.0),
               ),
               Text(
-                _userProvider.value.nickname,
+                _userProvider.user.nickname,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20.0,
@@ -105,10 +104,7 @@ class _WebOHomePageState extends State<WebOHomePage> {
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text(Strings.accountSplit),
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => AccountView(user: _userProvider.value)));
-              },
+              onTap: () => User.openUserPage(context, _userProvider.user),
             ),
             ListTile(
               leading: const Icon(Icons.create),

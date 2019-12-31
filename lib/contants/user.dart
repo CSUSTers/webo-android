@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:webo/contants/http_code.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/contants/webo_url.dart';
 import 'package:webo/http/dio_with_token.dart';
+import 'package:webo/view/accout_view.dart';
 
 class User {
   final int id;
@@ -40,4 +43,10 @@ class User {
       bio: data['bio']
     );
   }
+
+  static openUserPage(BuildContext context, User user) {
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => AccountView(user: user)));
+  }
+
 }

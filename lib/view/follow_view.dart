@@ -105,7 +105,7 @@ class _FollowPageState extends State<FollowPage> {
     });
     Dio dio = DioWithToken.client;
     var params = {
-      "id": _provider.value.id,
+      "id": _provider.user.id,
     };
     try {
       Response resp = await dio.get(_mode == _FOLLOWERS

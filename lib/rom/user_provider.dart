@@ -6,7 +6,6 @@ import 'package:webo/util/prefs.dart';
 class UserProvider with ChangeNotifier {
 
   User _user = Prefs.user;
-  User get value => _user;
 
   User get user => _user;
   set user(User user) => this.setUser(user);
