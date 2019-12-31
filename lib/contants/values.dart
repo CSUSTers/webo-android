@@ -4,12 +4,12 @@ abstract class Strings {
   static const appName = 'WebO';
   static const defaultAvatarPath = 'images/avatar.jpeg';
 
-
   //Drawer
   static const accountSplit = '账 户';
   static const settingsSplit = '设 置';
   static const followSplit = '关 注 列 表';
   static const mineSplit = '我 的 帖 子';
+  static const notLogin = '未登录';
 
   //Login page
   static const loginSplit = '登 录';

@@ -53,8 +53,16 @@ class _WebOHomePageState extends State<WebOHomePage> {
   void initState() {
     super.initState();
     SharedPreferences.getInstance().then((pref) {
-      var user = UserData.withDefaultPic(userName: pref.getString('username') ?? '',
-          nickName: pref.getString('nickname') ?? '');
+      var userName = pref.getString('username');
+      var nickName = pref.getString('nickname');
+      UserData user;
+      if (userName == null || nickName == null)
+        user = UserData.notLogin();
+      else
+        user = UserData.withDefaultPic(
+          userName: userName,
+          nickName: nickName
+        );
       setState(() {
         GlobalDataWidget.of(context).user = user;
       });

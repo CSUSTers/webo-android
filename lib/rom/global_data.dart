@@ -51,5 +51,8 @@ class UserData {
   UserData.withDefaultPic({this.userName, this.nickName}) :
         this.image = AssetImage(Strings.defaultAvatarPath);
 
-  static UserData notLogin() => UserData.undefined();
+  static UserData notLogin() => UserData.withDefaultPic(
+    userName: Strings.notLogin,
+    nickName: Strings.notLogin
+  );
 }
