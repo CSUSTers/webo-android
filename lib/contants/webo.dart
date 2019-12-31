@@ -1,14 +1,16 @@
 import 'package:webo/contants/user.dart';
 
 class WebO {
-  final String id;
-  final User user;
-  final DateTime time;
-  final String message;
-  final int likes;
-  final int forwards;
-  final int comments;
-  final bool isLike;
+  final String id; // ID
+  final User user; // 发帖用户
+  final DateTime time; // 发帖时间
+  final String message; // 主体文本
+  final int likes; // 点赞数
+  final int forwards; // 转发数
+  final int comments; // 评论数
+  final bool isLike; // 已点赞
+
+  final String forward;
 
   WebO({this.id,
       this.user,
@@ -17,7 +19,12 @@ class WebO {
       this.likes,
       this.forwards,
       this.comments,
-      this.isLike});
+      this.isLike,
+      this.forward: ''
+  });
+
+  bool get isForward => this.forward != ''
+      && this.forward != null;
 
   @override
   bool operator ==(Object other) =>
@@ -28,7 +35,4 @@ class WebO {
 
   @override
   int get hashCode => id.hashCode;
-
-
-
 }
