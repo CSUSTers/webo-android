@@ -10,7 +10,7 @@ class WebO {
   final int comments; // 评论数
   final bool isLike; // 已点赞
 
-  final String forward;
+  final WebO forward;
 
   WebO({this.id,
       this.user,
@@ -20,11 +20,21 @@ class WebO {
       this.forwards,
       this.comments,
       this.isLike,
-      this.forward: ''
+      this.forward
   });
 
-  bool get isForward => this.forward != ''
-      && this.forward != null;
+  WebO.fromMap(Map<String, dynamic> dy) : this(
+    id: dy['id'],
+    user: User.fromMap(dy['publishedBy']),
+    time: DateTime.parse(dy['publishTime']),
+    message: dy['message'],
+    forwards: dy['forwards'],
+    comments: dy['comments'],
+    isLike: dy['myselfIsLike'],
+    forward: dy['forward'] == null ? null : WebO.fromMap(dy['forward'])
+  );
+
+  bool get isForward => this.forward != null;
 
   @override
   bool operator ==(Object other) =>

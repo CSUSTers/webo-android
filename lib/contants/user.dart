@@ -6,7 +6,6 @@ import 'package:webo/contants/http_code.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/contants/webo_url.dart';
 import 'package:webo/http/dio_with_token.dart';
-import 'package:webo/view/accout_view.dart';
 import 'package:webo/view/router.dart';
 
 class User {
@@ -36,14 +35,17 @@ class User {
     }
 
     final data = resp.data['data']['personal'];
-    return User(
-      id: id,
+    return User.fromMap(data);
+  }
+
+  User.fromMap(Map<String, dynamic> data) :
+    this(
+      id: data['id'],
       username: data['username'],
       nickname: data['nickname'],
       email: data['email'],
       bio: data['bio']
     );
-  }
 
   static openUserPage(BuildContext context, User user) {
     Navigator.pushNamed(context, Router.userPage, arguments: user);

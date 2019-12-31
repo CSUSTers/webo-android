@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webo/contants/http_code.dart';
+import 'package:webo/contants/webo.dart';
 import 'package:webo/contants/webo_url.dart';
 import 'package:webo/http/dio_with_token.dart';
-import 'package:webo/util/prefs.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:webo/widget/webo_card.dart';
 
 class WebOListView extends StatefulWidget {
   @override
@@ -17,64 +19,84 @@ class _WebOListViewState extends State<WebOListView> {
   static const FOLLOW_ONLY = 1;
   int mode = ALL;
 
-  List<dynamic> forms = List<dynamic>();
+  final forms = List<WebO>();
   String nextForm;
 
-  bool isLoading = true;
+  final _controller = RefreshController(initialRefresh: true);
+
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      _refresh();
+    return SmartRefresher(
+          controller: _controller,
+          onRefresh: _refresh,
+          onLoading: _load,
+          enablePullUp: true,
+          enablePullDown: true,
+          header: ClassicHeader(),
+          footer: ClassicFooter(),
+          child: ListView.separated(
+              padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
+              itemCount: forms.length,
+              itemBuilder: (BuildContext context, int index) {
+                return WebOCard(forms[index]);
+              },
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider()),
+        );
+  }
+
+
+
+  get _dio => mode == FOLLOW_ONLY ? Dio() : DioWithToken.getInstance();
+
+  get modeParams async {
+    var params = {};
+    if (mode == FOLLOW_ONLY) {
+      SharedPreferences refs = await SharedPreferences.getInstance();
+      int id = refs.getInt('id');
+      params["id"] = id.toString();
     }
-    return isLoading
-        ? const Center(child: const CircularProgressIndicator())
-        : ListView.separated(
-            padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
-            itemCount: forms.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Card(
-                  child: InkWell(
-                      splashColor: Colors.grey.withAlpha(30),
-                      onTap: () {
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                          content:
-                              Text(forms[index]['publishedBy']['nickname']),
-                          duration: Duration(milliseconds: 1000),
-                        ));
-                      },
-                      child: Container(
-                        height: 196,
-                        child: Text(
-                          forms[index]['message'],
-                          style: TextStyle(fontSize: 18.0),
-                        ),
-                      )));
-            },
-            separatorBuilder: (BuildContext context, int index) =>
-                const Divider());
+    return params;
+  }
+
+  get _firstFetchParam async {
+    var params = await modeParams;
+    return params;
+  }
+
+  get _loadMoreParam async {
+    var params = await modeParams;
+    params["before"] = nextForm;
+    return params;
+  }
+
+  void _load() async {
+    Dio dio = _dio;
+    var params = await _loadMoreParam;
+    await addWebos(dio, params, (webo) => forms.add(webo));
+    setState(() {});
+    _controller.loadComplete();
   }
 
   void _refresh() async {
-    Dio dio = Dio();
-    var params = {
-      "before": nextForm,
-    };
+    forms.clear();
+    Dio dio = _dio;
+    var params = await _firstFetchParam;
+    await addWebos(dio, params, (webo) => forms.add(webo));
+    setState(() {});
+    _controller.refreshCompleted(resetFooterState: true);
+  }
 
-    if (mode == FOLLOW_ONLY) {
-      dio = DioWithToken.getInstance();
-      int id = Prefs.instance.getInt('id');
-      params["id"] = id.toString();
-    }
-    try {
-      Response resp = await dio.get(WebOURL.allPosts, queryParameters: params);
+  Future addWebos(Dio dio, params, handler) async {
+      Response resp = await dio.get(WebOURL.allPosts, queryParameters: Map.castFrom(params));
       if (resp.statusCode == 200) {
         if (resp.data['code'] == WebOHttpCode.SUCCESS) {
           var data = resp.data['data'];
           nextForm = data['nextForm'];
           for (var webo in data['webos']) {
             print(webo);
-            forms.add(webo);
+            handler(WebO.fromMap(webo));
           }
         } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {
           Fluttertoast.showToast(
@@ -83,10 +105,5 @@ class _WebOListViewState extends State<WebOListView> {
       } else {
         Fluttertoast.showToast(msg: "Error: " + resp.statusCode.toString());
       }
-    } catch (e) {
-      print(e);
-    } finally {
-      setState(() => isLoading = false);
-    }
   }
 }

@@ -24,6 +24,8 @@ dependencies:
 
   dio: ^3.0.7
 
+  pull_to_refresh: ^1.5.7
+
   shared_preferences: ^0.5.6
 
   fluttertoast: ^3.1.3
