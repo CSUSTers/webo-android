@@ -33,7 +33,6 @@ class TokenInterceptor extends InterceptorsWrapper {
       } else if (code == WebOHttpCode.AUTH_FAILED ||
           code == WebOHttpCode.NOT_AUTH) {
         Fluttertoast.showToast(msg: "身份无效，请先登录");
-//        Navigator.of(WebOApp.ctx).push(MaterialPageRoute(builder: (context) => WebOLoginPage()));
       } else if (code == WebOHttpCode.SERVER_ERROR) {
         Fluttertoast.showToast(
             msg: "Error: " + response.data['data']['exceptionMessage']);

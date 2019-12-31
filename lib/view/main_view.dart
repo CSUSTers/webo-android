@@ -3,11 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:webo/contants/user.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/rom/user_provider.dart';
-import 'package:webo/view/create_webo_view.dart';
-import 'package:webo/view/follow_view.dart';
-import 'package:webo/view/login_view.dart';
-import 'package:webo/view/my_post_view.dart';
-import 'package:webo/view/settings_view.dart';
+import 'package:webo/view/router.dart';
 import 'package:webo/view/webo_list_view.dart';
 import 'package:webo/widget/circle_image.dart';
 
@@ -22,7 +18,9 @@ class WebOApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: WebOHomePage(title: Strings.appName),
+        initialRoute: Router.home,
+        routes: Router.routeTable,
+//        home: WebOHomePage(title: Strings.appName),
         debugShowCheckedModeBanner: false,
       ),
     );
@@ -96,10 +94,7 @@ class _WebOHomePageState extends State<WebOHomePage> {
             ListTile(
               leading: const Icon(Icons.vpn_key),
               title: const Text(Strings.login),
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => WebOLoginPage()));
-              },
+              onTap: () => Navigator.pushNamed(context, Router.loginPage),
             ),
             ListTile(
               leading: const Icon(Icons.person),
@@ -109,26 +104,17 @@ class _WebOHomePageState extends State<WebOHomePage> {
             ListTile(
               leading: const Icon(Icons.create),
               title: const Text(Strings.mineSplit),
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => MyPostPage()));
-              },
+              onTap: () => Navigator.pushNamed(context, Router.myPostPage),
             ),
             ListTile(
               leading: const Icon(Icons.favorite),
               title: const Text(Strings.followSplit),
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => FollowPage()));
-              },
+              onTap: () => Navigator.pushNamed(context, Router.followPage),
             ),
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text(Strings.settingsSplit),
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => SettingsPage()));
-              },
+              onTap: () => Navigator.pushNamed(context, Router.settingPage),
             ),
           ],
         ),
@@ -150,10 +136,7 @@ class _WebOHomePageState extends State<WebOHomePage> {
             child: FloatingActionButton(
               child: const Icon(Icons.create),
               backgroundColor: Colors.lightBlue,
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => WebOCreatePage()));
-              },
+              onPressed: () => Navigator.pushNamed(context, Router.createPage),
             ),
           ),
         ));

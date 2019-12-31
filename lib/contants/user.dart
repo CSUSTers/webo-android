@@ -7,6 +7,7 @@ import 'package:webo/contants/values.dart';
 import 'package:webo/contants/webo_url.dart';
 import 'package:webo/http/dio_with_token.dart';
 import 'package:webo/view/accout_view.dart';
+import 'package:webo/view/router.dart';
 
 class User {
   final int id;
@@ -45,8 +46,7 @@ class User {
   }
 
   static openUserPage(BuildContext context, User user) {
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => AccountView(user: user)));
+    Navigator.pushNamed(context, Router.userPage, arguments: user);
   }
 
 }
