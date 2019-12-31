@@ -18,6 +18,8 @@ class WebOURL {
 
   // User
   static final String user = base + '/user';
+  static final String userUpdate = base + '/user/modify';
+  static final String userChangePassword = base + '/user/change-password';
   static final String follow = base + '/user/follow';
   static final String followings = base + '/user/follow/all';
   static final String followers = base + '/user/follow/all-by';
