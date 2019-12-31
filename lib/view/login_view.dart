@@ -1,10 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webo/contants/http_code.dart';
+import 'package:webo/contants/user.dart';
 import 'package:webo/contants/webo_url.dart';
+import 'package:webo/rom/user_provider.dart';
 import 'package:webo/util/encry.dart';
+import 'package:webo/view/main_view.dart';
 import 'package:webo/widget/nothing.dart';
 
 import '../contants/values.dart';
@@ -31,8 +35,11 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
   static const REGISTER_MODE = 0;
   int mode = LOGIN_MODE;
 
+  BuildContext _buildContext;
+
   @override
   Widget build(BuildContext context) {
+    _buildContext = context;
     Row loginButtonArea = Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -196,15 +203,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
         if (resp.statusCode == 200) {
           if (resp.data['code'] == WebOHttpCode.SUCCESS) {
             var data = resp.data['data'];
-            var p = await SharedPreferences.getInstance();
-            var success = await Future.wait([
-              p.setString("token", data['token']),
-              p.setString("refreshToken", data['refreshToken']),
-              p.setString("userId", data['userId']),
-              p.setString("username", data['username']),
-              p.setString("nickname", data['nickname']),
-              p.setString("email", data['email']),
-            ]).then((xs) => xs.reduce((x, y) => x && y));
+            var success = await _save(data);
             if (success) {
               Fluttertoast.showToast(msg: "登录成功");
               Navigator.pop(context);
@@ -243,15 +242,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
         if (resp.statusCode == 200) {
           if (resp.data['code'] == WebOHttpCode.SUCCESS) {
             var data = resp.data['data'];
-            var p = await SharedPreferences.getInstance();
-            var success = await Future.wait([
-              p.setString("token", data['token']),
-              p.setString("refreshToken", data['refreshToken']),
-              p.setString("userId", data['userId']),
-              p.setString("username", data['username']),
-              p.setString("nickname", data['nickname']),
-              p.setString("email", data['email']),
-            ]).then((xs) => xs.reduce((x, y) => x && y));
+            var success = await _save(data);
             if (success) {
               Fluttertoast.showToast(msg: "注册成功");
               Navigator.pop(context);
@@ -271,4 +262,29 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
       }
     }
   }
+
+
+  Future<bool> _save(dynamic data) async {
+    var user = User(
+        id: data['userId'],
+        username: data['username'],
+        nickname: data['nickname'],
+        email: data['email']
+    );
+
+    var p = await SharedPreferences.getInstance();
+    var success = await Future.wait([
+      p.setString("token", data['token']),
+      p.setString("refreshToken", data['refreshToken']),
+      p.setInt("userId", user.id),
+      p.setString("username", user.username),
+      p.setString("nickname", user.nickname),
+      p.setString("email", user.email),
+    ]).then((xs) => xs.reduce((x, y) => x && y));
+
+    final userProvider = Provider.of<UserProvider>(_buildContext, listen: false);
+    userProvider.setUser(user);
+    return success;
+  }
+
 }
