@@ -36,6 +36,8 @@ abstract class Strings {
   // Mine page
   static const mine = '我的帖子';
 
+  //Account Page
+  static const account = '账户';
 
   // Setting page
   static const settings = '设置';

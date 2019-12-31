@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:webo/contants/values.dart';
-import 'package:webo/rom/global_data.dart';
 import 'package:webo/rom/user_provider.dart';
+import 'package:webo/view/accout_view.dart';
 import 'package:webo/view/create_webo_view.dart';
 import 'package:webo/view/follow_view.dart';
 import 'package:webo/view/login_view.dart';
@@ -98,13 +98,22 @@ class _WebOHomePageState extends State<WebOHomePage> {
           children: <Widget>[
             drawerHeader,
             ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text(Strings.accountSplit),
+              leading: const Icon(Icons.vpn_key),
+              title: const Text(Strings.login),
               onTap: () {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => WebOLoginPage()));
               },
-            ),ListTile(
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text(Strings.accountSplit),
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => AccountView()));
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.create),
               title: const Text(Strings.mineSplit),
               onTap: () {
@@ -112,7 +121,6 @@ class _WebOHomePageState extends State<WebOHomePage> {
                     MaterialPageRoute(builder: (context) => MyPostPage()));
               },
             ),
-
             ListTile(
               leading: const Icon(Icons.favorite),
               title: const Text(Strings.followSplit),
