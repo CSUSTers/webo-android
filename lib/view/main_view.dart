@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import 'package:webo/contants/values.dart';
-import 'package:webo/rom/global_data.dart';
+import 'package:webo/rom/user_provider.dart';
 import 'package:webo/view/create_webo_view.dart';
 import 'package:webo/view/follow_view.dart';
 import 'package:webo/view/login_view.dart';
@@ -17,16 +17,9 @@ class WebOApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ctx = context;
-    return _InheritedWidget();
-  }
-}
-
-class _InheritedWidget extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return GlobalDataWidget(
-        userData: UserData.notLogin(),
+    UserProvider _userProvider = UserProvider();
+    return ChangeNotifierProvider.value(
+        value: _userProvider,
         child: MaterialApp(
           title: Strings.appName,
           theme: ThemeData(
@@ -34,7 +27,7 @@ class _InheritedWidget extends StatelessWidget {
           ),
           home: WebOHomePage(title: Strings.appName),
           debugShowCheckedModeBanner: false,
-        )
+        ),
     );
   }
 }
@@ -71,7 +64,7 @@ class _WebOHomePageState extends State<WebOHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    UserData user = GlobalDataWidget.of(context).user ?? UserData.notLogin();
+    final _userProvider = Provider.of<UserProvider>(context);
 
     Container drawerHeader = Container(
         height: 256.0,
@@ -81,12 +74,12 @@ class _WebOHomePageState extends State<WebOHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 CircleImageWidget.fromImage(
-                    radius: 128.0, image: user.image),
+                    radius: 128.0, image: AssetImage(_userProvider.value.avatar)),
                 Padding(
                   padding: const EdgeInsets.all(4.0),
                 ),
                 Text(
-                  user.nickName,
+                  _userProvider.value.nickname,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0,
