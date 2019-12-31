@@ -25,7 +25,7 @@ class _FollowPageState extends State<FollowPage> {
   static const _FOLLOWERS = 1;
   int mode = _FOLLOWINGS;
 
-  bool isLoading = false;
+  bool isLoading = true;
 
   UserProvider _provider;
 
@@ -35,6 +35,50 @@ class _FollowPageState extends State<FollowPage> {
   @override
   Widget build(BuildContext context) {
     _provider = Provider.of<UserProvider>(context);
+    if (isLoading) _getFollowList(mode);
+    Widget widget = isLoading ? const Center(child: const CircularProgressIndicator()) : ListView.separated(
+      padding: EdgeInsets.symmetric(vertical: 8.0),
+      itemCount: mode == _FOLLOWERS ? _followerList.length : _followingList.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            children: <Widget>[
+              CircleImageWidget.fromImage(radius: 48.0,
+                  image: AssetImage(Strings.defaultAvatarPath)),
+              Padding(padding: EdgeInsets.symmetric(horizontal: 4.0),),
+              Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        mode == _FOLLOWERS ? _followerList[index].nickname
+                            : _followingList[index].nickname,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      Text(
+                        mode == _FOLLOWERS ? _followerList[index].bio
+                            : _followingList[index].bio,
+                      )
+                    ],
+                  )
+              ),
+              MaterialButton(
+                minWidth: 72,
+                height: 36,
+                child: const Text(Strings.cancelFollow),
+                color: Colors.white,
+                textColor: Colors.lightBlue,
+                onPressed: () {},
+              )
+            ],
+          ),
+        );
+      }, separatorBuilder: (BuildContext context, int index) => Divider(),
+    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
@@ -46,75 +90,37 @@ class _FollowPageState extends State<FollowPage> {
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.swap_horiz),
-            onPressed: (){
-              setState(() => mode = mode == _FOLLOWINGS ? _FOLLOWERS : _FOLLOWINGS);
-              _getFollowList(mode);
-
-            }
+            onPressed: () => setState(() => mode = mode == _FOLLOWINGS ? _FOLLOWERS : _FOLLOWINGS)
           )
         ],
       ),
-      body: ListView.separated(
-        padding: EdgeInsets.symmetric(vertical: 8.0),
-          itemCount: mode == 1 ? _followerList.length : _followingList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: Row(
-                children: <Widget>[
-                  CircleImageWidget.fromImage(radius: 48.0,
-                      image: AssetImage(Strings.defaultAvatarPath)),
-                  Padding(padding: EdgeInsets.symmetric(horizontal: 4.0),),
-                  Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            mode == 1 ? _followerList[index].nickname
-                                : _followingList[index].nickname,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold
-                            ),
-                          ),
-                          Text("orz")
-                        ],
-                      )
-                  ),
-                  MaterialButton(
-                    minWidth: 72,
-                    height: 36,
-                    child: const Text(Strings.cancelFollow),
-                    color: Colors.white,
-                    textColor: Colors.lightBlue,
-                    onPressed: () {},
-                  )
-                ],
-              ),
-            );
-          }, separatorBuilder: (BuildContext context, int index) => Divider(),
-      ),
+      body: widget,
     );
 
   }
 
-  void _getFollowList(int _mode) async {
+  Future<void> _getFollowList(int _mode) async {
+    setState(() {
+      isLoading = true;
+    });
     Dio dio = DioWithToken.client;
     var params = {
       "id": _provider.value.id,
     };
     try {
-      Response resp = await dio.get(_mode == 1
+      Response resp = await dio.get(_mode == _FOLLOWERS
           ? WebOURL.followers
           : WebOURL.followings,
           queryParameters: params);
       if (resp.statusCode == 200) {
         if (resp.data['code'] == WebOHttpCode.SUCCESS) {
           var data = resp.data['data'];
+          _mode == _FOLLOWERS ? _followerList.clear() : _followingList.clear();
           for (var webo in data) {
             print(webo);
             User user = User(id: webo['id'], username: webo['username'],
-                nickname: webo['nickname'], email: webo['email'], bio: webo['bio']);
-            _mode == 1 ? _followerList.add(user) : _followingList.add(user);
+                nickname: webo['nickname'], email: webo['email'], bio: webo['bio']??'');
+            _mode == _FOLLOWERS ? _followerList.add(user) : _followingList.add(user);
           }
         } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {
           Fluttertoast.showToast(
@@ -126,7 +132,9 @@ class _FollowPageState extends State<FollowPage> {
     } catch (e) {
       print(e);
     } finally {
-
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 }
