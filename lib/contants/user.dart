@@ -14,8 +14,8 @@ class User {
   final String bio;
 
   User({this.id,
-      this.username: 'undefined',
-      this.nickname: 'undefined',
+      this.username: Strings.notLogin,
+      this.nickname: Strings.notLogin,
       this.avatar: Strings.defaultAvatarPath,
       this.email: '',
       this.bio: ''});
