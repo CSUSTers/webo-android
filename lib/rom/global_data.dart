@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:webo/contants/user.dart';
 import 'package:webo/contants/values.dart';
 
 class GlobalDataWidget extends InheritedWidget {
-  final GlobalData data;
+  final Data<UserData> _userData;
 
-  GlobalDataWidget({this.data, Widget child}) : super(child: child);
+  GlobalDataWidget({UserData userData, Widget child}) :
+        this._userData = Data(userData),
+        super(child: child);
+
+  UserData get user => _userData.data;
+
+  set user(UserData data) => _userData.data = data;
 
   @override
   bool updateShouldNotify(GlobalDataWidget oldWidget) {
-    return oldWidget.data != this.data;
+    return oldWidget._userData != this._userData;
   }
 
   static GlobalDataWidget of(BuildContext context) {
@@ -16,31 +23,36 @@ class GlobalDataWidget extends InheritedWidget {
   }
 }
 
-class GlobalData {
+class Data<T> {
+  T _data;
+
+  Data(this._data);
+
+  T get data => this._data;
+
+  set data(T data) => this._data = data;
+
+  void replace(T data) => this._data = data;
+}
+
+class UserData {
   final String userName;
   final String nickName;
   final ImageProvider image;
 
-  GlobalData(this.userName, this.nickName, this.image);
-
-  //can't work
-//  static GlobalData init() {
-//    GlobalData data;
-//    SharedPreferences.getInstance().then((prefs) {
-//      if (prefs.containsKey('username')) {
-//        String username = prefs.getString('username');
-//        String nickname = prefs.getString('nickname');
-//        data = GlobalData(
-//            username, nickname, AssetImage(Strings.defaultAvatarPath));
-//      } else
-//        data = GlobalData.undefined();
-//    });
-//    return data;
-//  }
+  UserData(this.userName, this.nickName, this.image);
 
 
-  GlobalData.undefined() :
+  UserData.undefined() :
         this.userName = 'undefined',
         this.nickName = 'undefined',
         this.image = AssetImage(Strings.defaultAvatarPath);
+
+  UserData.withDefaultPic({this.userName, this.nickName}) :
+        this.image = AssetImage(Strings.defaultAvatarPath);
+
+  static UserData notLogin() => UserData.withDefaultPic(
+    userName: Strings.notLogin,
+    nickName: Strings.notLogin
+  );
 }

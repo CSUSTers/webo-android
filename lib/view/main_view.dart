@@ -12,7 +12,7 @@ import 'package:webo/widget/circle_image.dart';
 
 class WebOApp extends StatelessWidget {
 
-  static dynamic ctx;
+  static BuildContext ctx;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +42,25 @@ class WebOHomePage extends StatefulWidget {
 }
 
 class _WebOHomePageState extends State<WebOHomePage> {
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((pref) {
+      var userName = pref.getString('username');
+      var nickName = pref.getString('nickname');
+      UserData user;
+      if (userName == null || nickName == null)
+        user = UserData.notLogin();
+      else
+        user = UserData.withDefaultPic(
+          userName: userName,
+          nickName: nickName
+        );
+      setState(() {
+        GlobalDataWidget.of(context).user = user;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
