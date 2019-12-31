@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:webo/contants/user.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/rom/user_provider.dart';
 import 'package:webo/view/accout_view.dart';
@@ -106,7 +107,7 @@ class _WebOHomePageState extends State<WebOHomePage> {
               title: const Text(Strings.accountSplit),
               onTap: () {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => AccountView()));
+                    MaterialPageRoute(builder: (context) => AccountView(user: _userProvider.value)));
               },
             ),
             ListTile(

@@ -1,13 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:webo/contants/user.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/rom/user_provider.dart';
 
 class AccountView extends StatelessWidget {
+  AccountView({Key key, @required this.user}):super(key: key);
+
+  final User user;
+
   @override
   Widget build(BuildContext context) {
-    final _userProvider = Provider.of<UserProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
@@ -21,16 +26,16 @@ class AccountView extends StatelessWidget {
         children: <Widget>[
           Image(
             height: 300.0,
-            image: AssetImage(_userProvider.value.avatar),
+            image: AssetImage(user.avatar),
             fit: BoxFit.fill,
           ),
-          _ListItem(title: '用户名', content: _userProvider.value.username),
+          _ListItem(title: '用户名', content: user.username),
           const Divider(),
-          _ListItem(title: '昵称', content: _userProvider.value.nickname),
+          _ListItem(title: '昵称', content: user.nickname),
           const Divider(),
-          _ListItem(title: '邮箱', content: _userProvider.value.email),
+          _ListItem(title: '邮箱', content: user.email),
           const Divider(),
-          _ListItem(title: '签名', content: _userProvider.value.bio),
+          _ListItem(title: '签名', content: user.bio),
           const Divider(),
         ],
       ),
@@ -57,7 +62,7 @@ class _ListItem extends StatelessWidget {
             style: const TextStyle(fontSize: 16.0),
           ),
           Text(
-            content,
+            content??'',
             style: const TextStyle(color: Colors.grey),
           )
         ],
