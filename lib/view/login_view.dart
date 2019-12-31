@@ -193,7 +193,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
 
   void _login() async {
     if (_formKey.currentState.validate()) {
-      final String username = _usernameController.text;
+      final String username = _usernameController.text.trim();
       final String pass = MD5.md5(_passwordController.text);
       setState(() => isLoading = true);
       try {

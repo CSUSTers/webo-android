@@ -52,7 +52,7 @@ class UserData {
         this.image = AssetImage(Strings.defaultAvatarPath);
 
   static UserData notLogin() => UserData.withDefaultPic(
-    userName: Strings.notLogin,
-    nickName: Strings.notLogin
+    userName: Strings.notLoginUser,
+    nickName: Strings.notLoginUser
   );
 }
