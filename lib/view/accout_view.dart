@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +5,6 @@ import 'package:webo/contants/values.dart';
 import 'package:webo/rom/user_provider.dart';
 
 class AccountView extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     final _userProvider = Provider.of<UserProvider>(context);
@@ -39,12 +36,10 @@ class AccountView extends StatelessWidget {
       ),
     );
   }
-
 }
 
-
 class _ListItem extends StatelessWidget {
-  _ListItem({Key key, @required this.title, this.content}):super(key:key);
+  _ListItem({Key key, @required this.title, this.content}) : super(key: key);
 
   final String title;
   final String content;
@@ -57,19 +52,16 @@ class _ListItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(title,
-            style: const TextStyle(
-              fontSize: 16.0
-            ),
+          Text(
+            title,
+            style: const TextStyle(fontSize: 16.0),
           ),
-          Text(content,
-            style: const TextStyle(
-              color: Colors.grey
-            ),
+          Text(
+            content,
+            style: const TextStyle(color: Colors.grey),
           )
         ],
       ),
     );
   }
-
 }

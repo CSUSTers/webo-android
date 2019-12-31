@@ -12,23 +12,19 @@ import 'package:webo/view/webo_list_view.dart';
 import 'package:webo/widget/circle_image.dart';
 
 class WebOApp extends StatelessWidget {
-
-  static BuildContext ctx;
-
   @override
   Widget build(BuildContext context) {
-    ctx = context;
     UserProvider _userProvider = UserProvider();
     return ChangeNotifierProvider.value(
-        value: _userProvider,
-        child: MaterialApp(
-          title: Strings.appName,
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          home: WebOHomePage(title: Strings.appName),
-          debugShowCheckedModeBanner: false,
+      value: _userProvider,
+      child: MaterialApp(
+        title: Strings.appName,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
         ),
+        home: WebOHomePage(title: Strings.appName),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
@@ -71,23 +67,23 @@ class _WebOHomePageState extends State<WebOHomePage> {
         height: 256.0,
         child: DrawerHeader(
           decoration: BoxDecoration(color: Colors.blue),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                CircleImageWidget.fromImage(
-                    radius: 128.0, image: AssetImage(_userProvider.value.avatar)),
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CircleImageWidget.fromImage(
+                  radius: 128.0, image: AssetImage(_userProvider.value.avatar)),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+              ),
+              Text(
+                _userProvider.value.nickname,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
                 ),
-                Text(
-                  _userProvider.value.nickname,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
+          ),
         ));
 
     SizedBox drawer = SizedBox(
