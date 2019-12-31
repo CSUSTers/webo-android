@@ -14,15 +14,15 @@ const userNameFont = TextStyle(
 
 const smallUserNameFont = TextStyle(
   fontSize: 16.0,
-  color: Colors.lightBlueAccent,
+  color: Colors.grey,
 );
 
 const mainTextFont = TextStyle(
-  fontSize: 16.0,
+  fontSize: 18.0,
   color: Colors.black,
 );
 
 const menuFont = TextStyle(
-  fontSize: 16.0,
+  fontSize: 18.0,
   color: Colors.black,
 );
