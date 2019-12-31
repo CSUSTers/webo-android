@@ -41,4 +41,12 @@ abstract class Strings {
   static const settings = '设置';
   static const logout = '退出登录';
 
+  // Actions
+  static const like = '点赞';
+  static const reply = '评论';
+  static const forward = '转发';
+
+  // User Status
+  static const follow = '关注';
+  static const followed = '已关注';
 }
