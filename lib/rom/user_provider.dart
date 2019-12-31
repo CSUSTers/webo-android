@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:webo/contants/user.dart';
 import 'package:webo/util/prefs.dart';
@@ -13,7 +11,4 @@ class UserProvider with ChangeNotifier {
     this._user = user;
     notifyListeners();
   }
-
-
-
 }

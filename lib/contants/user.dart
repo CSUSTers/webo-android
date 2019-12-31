@@ -14,10 +14,10 @@ class User {
   final String bio;
 
   User({this.id,
-      this.username: Strings.notLogin,
-      this.nickname: Strings.notLogin,
+      this.username: Strings.notLoginUser,
+      this.nickname: Strings.notLoginUser,
       this.avatar: Strings.defaultAvatarPath,
-      this.email: '',
+      this.email: Strings.notLoginEmail,
       this.bio: ''});
 
   static Future<User> fromHttp(int id) async {
