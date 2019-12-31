@@ -49,7 +49,16 @@ class WebOHomePage extends StatefulWidget {
   _WebOHomePageState createState() => _WebOHomePageState();
 }
 
-class _WebOHomePageState extends State<WebOHomePage> {
+class _WebOHomePageState extends State<WebOHomePage>
+    with SingleTickerProviderStateMixin{
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    this._tabController = TabController(length: 2, vsync: this);
+  }
+
   /*@override
   void initState() {
     super.initState();
@@ -138,9 +147,17 @@ class _WebOHomePageState extends State<WebOHomePage> {
         drawer: drawer,
         appBar: AppBar(
           title: Text(widget.title),
+          bottom: TabBar(
+            controller: _tabController,
+            tabs: <Widget>[Tab(text: "发现",), Tab(text: "关注",)],
+          ),
         ),
-        body: Center(
-          child: WebOListView(),
+        body: TabBarView(
+          controller: _tabController,
+          children:<Widget>[
+            WebOListView(mode: WebOListView.ALL),
+            WebOListView(mode: WebOListView.FOLLOW_ONLY)
+          ],
         ),
         floatingActionButton: Container(
           width: 64.0,

@@ -10,14 +10,18 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:webo/widget/webo_card.dart';
 
 class WebOListView extends StatefulWidget {
+  static const ALL = 0;
+  static const FOLLOW_ONLY = 1;
+  static const MINE = 2;
+  final mode;
+  WebOListView({this.mode: WebOListView.ALL});
   @override
-  _WebOListViewState createState() => _WebOListViewState();
+  _WebOListViewState createState() => _WebOListViewState(mode: mode);
 }
 
 class _WebOListViewState extends State<WebOListView> {
-  static const ALL = 0;
-  static const FOLLOW_ONLY = 1;
-  int mode = ALL;
+  final mode;
+  _WebOListViewState({this.mode});
 
   final forms = List<WebO>();
   String nextForm;
@@ -33,7 +37,7 @@ class _WebOListViewState extends State<WebOListView> {
           onLoading: _load,
           enablePullUp: true,
           enablePullDown: true,
-          header: ClassicHeader(),
+          header: MaterialClassicHeader(),
           footer: ClassicFooter(),
           child: ListView.separated(
               padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
@@ -48,13 +52,14 @@ class _WebOListViewState extends State<WebOListView> {
 
 
 
-  get _dio => mode == FOLLOW_ONLY ? Dio() : DioWithToken.getInstance();
+  get _dio => mode == WebOListView.FOLLOW_ONLY ? Dio() : DioWithToken.getInstance();
 
   get modeParams async {
     var params = {};
-    if (mode == FOLLOW_ONLY) {
+    if (mode == WebOListView.FOLLOW_ONLY || mode == WebOListView.MINE) {
       SharedPreferences refs = await SharedPreferences.getInstance();
       int id = refs.getInt('id');
+      print("MODEPARAMES: $id");
       params["id"] = id.toString();
     }
     return params;
@@ -74,36 +79,51 @@ class _WebOListViewState extends State<WebOListView> {
   void _load() async {
     Dio dio = _dio;
     var params = await _loadMoreParam;
-    await addWebos(dio, params, (webo) => forms.add(webo));
+    final loaded = await addWebos(dio, params, (webo) => forms.add(webo));
     setState(() {});
-    _controller.loadComplete();
+    if (loaded > 0) {
+      _controller.loadComplete();
+    } else {
+      _controller.loadNoData();
+      Fluttertoast.showToast(msg: "没有 WebO 了🏁");
+    }
   }
 
   void _refresh() async {
     forms.clear();
     Dio dio = _dio;
     var params = await _firstFetchParam;
-    await addWebos(dio, params, (webo) => forms.add(webo));
+    final loaded = await addWebos(dio, params, (webo) => forms.add(webo));
     setState(() {});
+    if (loaded == 0) Fluttertoast.showToast(msg: "似乎没有什么东西🤔");
     _controller.refreshCompleted(resetFooterState: true);
   }
+  
+  get _target => {
+    WebOListView.ALL: WebOURL.allPosts,
+    WebOListView.FOLLOW_ONLY: WebOURL.followingPosts,
+    WebOListView.MINE: WebOURL.myPosts,
+  }[this.mode];
 
-  Future addWebos(Dio dio, params, handler) async {
-      Response resp = await dio.get(WebOURL.allPosts, queryParameters: Map.castFrom(params));
-      if (resp.statusCode == 200) {
-        if (resp.data['code'] == WebOHttpCode.SUCCESS) {
-          var data = resp.data['data'];
-          nextForm = data['nextForm'];
-          for (var webo in data['webos']) {
-            print(webo);
-            handler(WebO.fromMap(webo));
-          }
-        } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {
-          Fluttertoast.showToast(
-              msg: "Error: " + resp.data['data']['exceptionMessage']);
+  Future<int> addWebos(Dio dio, params, handler) async {
+    int loaded = 0;
+    Response resp = await dio.get(_target, queryParameters: Map.castFrom(params));
+    if (resp.statusCode == 200) {
+      if (resp.data['code'] == WebOHttpCode.SUCCESS) {
+        var data = resp.data['data'];
+        nextForm = data['nextForm'];
+        for (var webo in data['webos']) {
+          print(webo);
+          loaded += 1;
+          handler(WebO.fromMap(webo));
         }
-      } else {
-        Fluttertoast.showToast(msg: "Error: " + resp.statusCode.toString());
+      } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {
+        Fluttertoast.showToast(
+            msg: "Error: " + resp.data['data']['exceptionMessage']);
       }
+    } else {
+      Fluttertoast.showToast(msg: "Error: " + resp.statusCode.toString());
+    }
+    return loaded;
   }
 }
