@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/rom/global_data.dart';
 import 'package:webo/view/create_webo_view.dart';
@@ -16,16 +17,24 @@ class WebOApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ctx = context;
-    return GlobalDataWidget(
-      data: GlobalData.undefined(),
-      child: MaterialApp(
+    return MaterialApp(
         title: Strings.appName,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: WebOHomePage(title: Strings.appName),
+        home: _InheritedWidget(),
         debugShowCheckedModeBanner: false,
-      ),
+      );
+  }
+}
+
+class _InheritedWidget extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return GlobalDataWidget(
+        userData: UserData.undefined(),
+        child: WebOHomePage(title: Strings.appName)
     );
   }
 }
@@ -40,10 +49,22 @@ class WebOHomePage extends StatefulWidget {
 }
 
 class _WebOHomePageState extends State<WebOHomePage> {
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((pref) {
+      var user = UserData.withDefaultPic(userName: pref.getString('username'),
+          nickName: pref.getString('nickname'));
+      setState(() {
+        GlobalDataWidget.of(context).user = user;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    GlobalData globalData = GlobalDataWidget.of(context).data;
+    UserData user = GlobalDataWidget.of(context).user ?? UserData.undefined();
+
     Container drawerHeader = Container(
         height: 256.0,
         child: DrawerHeader(
@@ -52,12 +73,12 @@ class _WebOHomePageState extends State<WebOHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 CircleImageWidget.fromImage(
-                    radius: 128.0, image: globalData.image),
+                    radius: 128.0, image: user.image),
                 Padding(
                   padding: const EdgeInsets.all(4.0),
                 ),
                 Text(
-                  globalData.nickName,
+                  user.nickName,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0,
