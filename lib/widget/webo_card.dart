@@ -9,9 +9,11 @@ class WebOCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Row(
+      child: Column(
+        children: <Widget>[
 
-      ),
+        ],
+      )
     );
   }
 }
