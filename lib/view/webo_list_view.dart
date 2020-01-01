@@ -2,14 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:webo/contants/http_code.dart';
+import 'package:webo/contants/style.dart';
 import 'package:webo/contants/webo.dart';
 import 'package:webo/contants/webo_url.dart';
 import 'package:webo/http/dio_with_token.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:webo/rom/user_provider.dart';
-import 'package:webo/util/prefs.dart';
 import 'package:webo/widget/webo_card.dart';
 
 class WebOListView extends StatefulWidget {
@@ -29,43 +28,76 @@ class _WebOListViewState extends State<WebOListView> {
   final forms = List<WebO>();
   String nextForm;
 
-  final _controller = RefreshController(initialRefresh: true);
+  var _controller;
 
 
   @override
+  void initState() {
+    super.initState();
+    _controller = RefreshController(initialRefresh: !_couldNotLoad);
+  }
+
+  get _mainList =>
+      RefreshConfiguration(
+        child: SmartRefresher(
+          controller: _controller,
+          onRefresh: _refresh,
+          onLoading: _load,
+          enablePullUp: true,
+          enablePullDown: true,
+          header: MaterialClassicHeader(),
+          footer: ClassicFooter(),
+          child: ListView.separated(
+              padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
+              itemCount: forms.length,
+              itemBuilder: (BuildContext context, int index) {
+                return WebOCard(forms[index]);
+              },
+              separatorBuilder: (BuildContext context, int index) =>
+              const Divider()),
+        ),
+      );
+
+  @override
   Widget build(BuildContext context) {
-    return RefreshConfiguration(
-      child: SmartRefresher(
-        controller: _controller,
-        onRefresh: _refresh,
-        onLoading: _load,
-        enablePullUp: true,
-        enablePullDown: true,
-        header: MaterialClassicHeader(),
-        footer: ClassicFooter(),
-        child: ListView.separated(
-            padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
-            itemCount: forms.length,
-            itemBuilder: (BuildContext context, int index) {
-              return WebOCard(forms[index]);
-            },
-            separatorBuilder: (BuildContext context, int index) =>
-            const Divider()),
-      ),
+    if (_couldNotLoad) {
+      return _notValid;
+    }
+    return _mainList;
+  }
+
+  get _couldNotLoad =>
+      [WebOListView.MINE, WebOListView.FOLLOW_ONLY].any((it) => it == mode)
+          && !_currentIsLogin;
+
+  get _currentIsLogin => _currentUserId != null && _currentUserId > 0;
+
+  get _notValid {
+    final color = Colors.blue.withOpacity(0.88);
+    return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(Icons.sms_failed, size: 64.0, color: color),
+            Text("求求您登陆一下吧……", style: mainTextFont.apply(color: color))
+          ],
+        )
     );
   }
 
-
-
   get _dio => mode == WebOListView.FOLLOW_ONLY ? Dio() : DioWithToken.getInstance();
+
+  get _currentUserId {
+    UserProvider provider = Provider.of<UserProvider>(context, listen: false);
+    int id = provider?.user?.id;
+    return id;
+  }
 
   get modeParams {
     var params = {};
     if (mode == WebOListView.FOLLOW_ONLY || mode == WebOListView.MINE) {
-      UserProvider provider = Provider.of<UserProvider>(context, listen: false);
-      int id = provider.user.id;
-      print("MODEPARAMES: $id");
-      params["id"] = id;
+      params["id"] = _currentUserId;
     }
     return params;
   }
