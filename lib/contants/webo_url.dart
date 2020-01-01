@@ -17,6 +17,7 @@ class WebOURL {
   static const postDelete = base + '/post';
   static const getComment = base + '/comment/all';
   static const newComment = base + '/comment/new';
+  static const deleteComment = base + '/comment';
 
   // User
   static const user = base + '/user';

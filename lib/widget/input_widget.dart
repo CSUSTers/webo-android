@@ -40,7 +40,6 @@ class _BottomInputDialogState extends State<BottomInputDialog> {
                 Expanded(
                   child: TextField(
                     autofocus: true,
-                    onSubmitted: ,
                     onChanged: (v) => text = v,
                     maxLength: 220,
                     keyboardType: TextInputType.multiline,

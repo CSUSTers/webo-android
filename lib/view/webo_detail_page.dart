@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:webo/actions/page_action.dart';
+import 'package:webo/contants/http_code.dart';
 import 'package:webo/contants/style.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/contants/webo.dart';
+import 'package:webo/contants/webo_url.dart';
+import 'package:webo/http/dio_with_token.dart';
+import 'package:webo/rom/user_provider.dart';
 import 'package:webo/util/timeline.dart';
 import 'package:webo/widget/touchable_widget.dart';
 import 'package:webo/widget/webo_card.dart';
@@ -160,6 +165,8 @@ class CommentArea extends StatelessWidget {
                           locDateTime: DateTime.now(),
                         ),
                       ),
+                      // Menu
+                      //CommentMenuIcon(comment),
                     ],
                   ),
                   margin: EdgeInsets.only(left: 5.0),
@@ -180,6 +187,66 @@ class CommentArea extends StatelessWidget {
         ],
         crossAxisAlignment: CrossAxisAlignment.start,
       ),
+    );
+  }
+}
+
+class CommentMenuIcon extends StatefulWidget {
+  final Comment data;
+
+  CommentMenuIcon(this.data);
+
+  @override
+  State createState() => _CommentMenuState();
+}
+
+class _CommentMenuState extends State<CommentMenuIcon> {
+  @override
+  Widget build(BuildContext context) {
+    final comment = widget.data;
+    var list = <PopupMenuItem>[];
+
+    // 删除
+    if (comment.user.id == UserProvider.of(context).user?.id)
+      list.add(PopupMenuItem(
+        value: 'delete',
+        child: Text(Strings.delete),
+      ));
+    else
+      list.add(PopupMenuItem(
+        enabled: false,
+        child: Text('Nothing'),
+      ));
+
+    return PopupMenuButton(
+      padding: EdgeInsets.all(0.0),
+      itemBuilder: (context) => list,
+      icon: Icon(
+        Icons.keyboard_arrow_down,
+        size: 18.0,
+      ),
+      onSelected: (value) {
+        switch (value) {
+          case 'delete':
+            setState(
+                  () {
+                DioWithToken.client.delete(
+                  WebOURL.deleteComment,
+                  queryParameters: {
+                    'id': comment.id,
+                  },
+                ).then((v) {
+                  if (v.statusCode == 200 &&
+                      v.data['code'] == WebOHttpCode.SUCCESS) {
+                    Fluttertoast.showToast(msg: '删除成功');
+                  } else {
+                    Fluttertoast.showToast(msg: '删除失败');
+                  }
+                });
+              },
+            );
+        }
+      },
     );
   }
 }
