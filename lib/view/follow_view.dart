@@ -133,6 +133,7 @@ class _FollowPageState extends State<FollowPage> {
   Future<int> _getFollowList() async {
     int count = 0;
     Dio dio = DioWithToken.client;
+
     var params = {"id": _provider.user.id, "page": page, "size": _pageSize};
     Response resp = await dio.get(
         _mode == _FOLLOWERS ? WebOURL.followers : WebOURL.followings,
