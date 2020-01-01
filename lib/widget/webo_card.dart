@@ -108,21 +108,26 @@ class IconButtonWithMsg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TapWidget(
-        onTap,
-        Container(
-            child: Row(
-              children: <Widget>[
-                icon,
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 2.0),
-                ),
-                msg
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+      onTap,
+      Container(
+        child: Row(
+          children: <Widget>[
+            icon,
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 2.0),
             ),
-            margin: EdgeInsets.symmetric(vertical: 8.0),
-            color: selected ? Colors.lightBlue : Colors.white));
+            msg
+          ],
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+        ),
+        padding: EdgeInsets.symmetric(vertical: 8.0),
+        decoration: BoxDecoration(
+          color: selected ? Colors.lightBlue : Colors.transparent,
+          borderRadius: BorderRadius.all(Radius.circular(3.5)),
+        ),
+      ),
+    );
   }
 }
 

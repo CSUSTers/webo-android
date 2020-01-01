@@ -16,7 +16,7 @@ class WebOURL {
   static final String followingPosts = base + '/post/following';
   static const postDelete = base + '/post';
   static const getComment = base + '/comment/all';
-  static const newComment = base + 'comment/new';
+  static const newComment = base + '/comment/new';
 
   // User
   static final String user = base + '/user';
