@@ -24,17 +24,17 @@ class WebODetailPage extends StatelessWidget {
         title: Text(Strings.detail),
       ),
       body: Container(
-          child: ListView(
-            children: <Widget>[
-              WebOCard(data),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 3.5),
-              ),
-              CommentsCard(data),
-            ],
-          ),
-          margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
+        child: ListView(
+          children: <Widget>[
+            WebOCard(data),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 3.5),
+            ),
+            CommentsCard(data),
+          ],
         ),
+        margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
+      ),
     );
   }
 }
@@ -55,9 +55,7 @@ class _CommentsCardState extends State<CommentsCard> {
     super.initState();
 
     var webo = widget.data;
-    setState(() {
-      Comment.fromWebO(webo).then((v) => comments = v);
-    });
+    Comment.fromWebO(webo).then((v) => setState(() => comments = v));
   }
 
   @override
@@ -172,7 +170,6 @@ class CommentArea extends StatelessWidget {
               comment.text,
               style: mainTextFont,
             ),
-
             padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 8.0),
           ),
         ],
