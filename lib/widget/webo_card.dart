@@ -22,78 +22,77 @@ class WebOCard extends StatelessWidget {
     final nickname = data.user.nickname;
     final username = '@${data.user.username}';
 
-    return TapWidget(
-      () => openDetailPage(context, data),
-      Card(
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              // 第一行
-              Container(
-                // 昵称、用户名
-                child: Row(
-                  children: <Widget>[
-                    TapWidget(
-                      () => openUserPage(context, data.user),
+    return Card(
+      child: TapWidget(
+          () => openDetailPage(context, data),
+          Container(
+            child: Column(
+              children: <Widget>[
+                // 第一行
+                Container(
+                  // 昵称、用户名
+                  child: Row(
+                    children: <Widget>[
+                      TapWidget(
+                        () => openUserPage(context, data.user),
+                        Container(
+                          child: Row(
+                            children: <Widget>[
+                              // 昵称
+                              Text(
+                                nickname,
+                                style: bigUserNameFont,
+                                softWrap: true,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 2.0),
+                              ),
+                              // 用户名
+                              Column(
+                                children: <Widget>[
+                                  Text(
+                                    username,
+                                    style: smallUserNameFont,
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                  )
+                                ],
+                                mainAxisAlignment: MainAxisAlignment.end,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                       Container(
                         child: Row(
                           children: <Widget>[
-                            // 昵称
+                            // 时间
                             Text(
-                              nickname,
-                              style: bigUserNameFont,
-                              softWrap: true,
-                              overflow: TextOverflow.ellipsis,
+                              TimelineUtil.formatByDateTime(
+                                data.time,
+                                locDateTime: DateTime.now(),
+                              ),
                             ),
-                            Container(
-                              margin: EdgeInsets.symmetric(horizontal: 2.0),
-                            ),
-                            // 用户名
-                            Column(
-                              children: <Widget>[
-                                Text(
-                                  username,
-                                  style: smallUserNameFont,
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                )
-                              ],
-                              mainAxisAlignment: MainAxisAlignment.end,
-                            )
+                            WebOMenuIcon(data),
                           ],
                         ),
-                      ),
-                    ),
-                    Container(
-                      child: Row(
-                        children: <Widget>[
-                          // 时间
-                          Text(
-                            TimelineUtil.formatByDateTime(
-                              data.time,
-                              locDateTime: DateTime.now(),
-                            ),
-                          ),
-                          WebOMenuIcon(data),
-                        ],
-                      ),
-                      margin: EdgeInsets.only(left: 5.0),
-                      padding: EdgeInsets.all(0.0),
-                    )
-                  ],
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        margin: EdgeInsets.only(left: 5.0),
+                        padding: EdgeInsets.all(0.0),
+                      )
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
                 ),
-              ),
-              // 第二行: 主体
-              WebOText(data),
-              // 第三行: 按钮
-              ActionButtons(data),
-            ],
-            crossAxisAlignment: CrossAxisAlignment.start,
-          ),
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
-        ),
-      ),
+                // 第二行: 主体
+                WebOText(data),
+                // 第三行: 按钮
+                ActionButtons(data),
+              ],
+              crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+          )),
     );
   }
 }
