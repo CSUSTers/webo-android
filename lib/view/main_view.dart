@@ -122,7 +122,10 @@ class _WebOHomePageState extends State<WebOHomePage>
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text(Strings.accountSplit),
-              onTap: () => User.openUserPage(context, _userProvider.user),
+              onTap: () async {
+                User user = await User.fromHttp(_userProvider.user.id);
+                User.openUserPage(context, user);
+              }
             ),
             ListTile(
               leading: const Icon(Icons.create),

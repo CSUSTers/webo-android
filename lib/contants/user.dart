@@ -16,21 +16,30 @@ class User {
   final String email;
   final String bio;
 
-  User({this.id,
-      this.username: Strings.notLoginUser,
-      this.nickname: Strings.notLoginUser,
-      this.avatar: Strings.defaultAvatarPath,
-      this.email: Strings.notLoginEmail,
-      this.bio: ''});
+  //想了想加不进去的字段
+//  final int followingCount;
+//  final int followedByCount;
+//  final int weboCount;
+//  final int commentCount;
+
+  User({
+    this.id,
+    this.username: Strings.notLoginUser,
+    this.nickname: Strings.notLoginUser,
+    this.avatar: Strings.defaultAvatarPath,
+    this.email: Strings.notLoginEmail,
+    this.bio: '',
+//    this.followingCount,
+//    this.followedByCount,
+//    this.weboCount,
+//    this.commentCount,
+  });
 
   static Future<User> fromHttp(int id) async {
     final http = DioWithToken.client;
-    final resp = await http.get(WebOURL.user, queryParameters: {
-      'id': id
-    });
+    final resp = await http.get(WebOURL.user, queryParameters: {'id': id});
 
-    if (resp.statusCode != 200 ||
-        resp.data['code'] != WebOHttpCode.SUCCESS) {
+    if (resp.statusCode != 200 || resp.data['code'] != WebOHttpCode.SUCCESS) {
       throw HttpException('网络请求错误');
     }
 
@@ -38,17 +47,15 @@ class User {
     return User.fromMap(data);
   }
 
-  User.fromMap(Map<String, dynamic> data) :
-    this(
-      id: data['id'],
-      username: data['username'],
-      nickname: data['nickname'],
-      email: data['email'],
-      bio: data['bio']
-    );
+  User.fromMap(Map<String, dynamic> data)
+      : this(
+            id: data['id'],
+            username: data['username'],
+            nickname: data['nickname'],
+            email: data['email'],
+            bio: data['bio']);
 
   static openUserPage(BuildContext context, User user) {
     Navigator.pushNamed(context, Router.userPage, arguments: user);
   }
-
 }
