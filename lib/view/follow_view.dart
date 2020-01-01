@@ -29,8 +29,7 @@ class _FollowPageState extends State<FollowPage> {
 
   UserProvider _provider;
 
-  List<User> _followerList = [];
-  List<User> _followingList = [];
+  List<User> _list = [];
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +37,7 @@ class _FollowPageState extends State<FollowPage> {
     if (isLoading) _getFollowList(mode);
     Widget widget = isLoading ? const Center(child: const CircularProgressIndicator()) : ListView.separated(
       padding: EdgeInsets.symmetric(vertical: 8.0),
-      itemCount: mode == _FOLLOWERS ? _followerList.length : _followingList.length,
+      itemCount: _list.length,
       itemBuilder: (BuildContext context, int index) {
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -52,16 +51,12 @@ class _FollowPageState extends State<FollowPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        mode == _FOLLOWERS ? _followerList[index].nickname
-                            : _followingList[index].nickname,
+                        _list[index].nickname,
                         style: TextStyle(
                             fontWeight: FontWeight.bold
                         ),
                       ),
-                      Text(
-                        mode == _FOLLOWERS ? _followerList[index].bio
-                            : _followingList[index].bio,
-                      )
+                      Text(_list[index].bio)
                     ],
                   )
               ),
@@ -115,12 +110,12 @@ class _FollowPageState extends State<FollowPage> {
       if (resp.statusCode == 200) {
         if (resp.data['code'] == WebOHttpCode.SUCCESS) {
           var data = resp.data['data'];
-          _mode == _FOLLOWERS ? _followerList.clear() : _followingList.clear();
+          _list.clear();
           for (var webo in data) {
             print(webo);
             User user = User(id: webo['id'], username: webo['username'],
                 nickname: webo['nickname'], email: webo['email'], bio: webo['bio']??'');
-            _mode == _FOLLOWERS ? _followerList.add(user) : _followingList.add(user);
+            _list.add(user);
           }
         } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {
           Fluttertoast.showToast(
