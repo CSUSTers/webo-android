@@ -223,11 +223,11 @@ class _ActionButtonsState extends State<ActionButtons> {
             child: IconButtonWithMsg(
               icon: Icon(
                 Icons.thumb_up,
-                color: webo.isLike ? Colors.white : Colors.black87,
+                color: isLike ? Colors.white : Colors.black87,
                 size: size,
               ),
               msg: Text('${Strings.like} $likes', style: TextStyle(
-                  color: webo.isLike ? Colors.white : Colors.black87),),
+                  color: isLike ? Colors.white : Colors.black87),),
               selected: isLike,
               onTap: () {
                 DioWithToken.client
