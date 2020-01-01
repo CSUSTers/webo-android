@@ -31,30 +31,28 @@ class _WebOListViewState extends State<WebOListView> {
 
   var _controller;
 
-
   @override
   void initState() {
     super.initState();
     _controller = RefreshController(initialRefresh: !_couldNotLoad);
   }
 
-  get _mainList =>
-      SmartRefresher(
-          controller: _controller,
-          onRefresh: _refresh,
-          onLoading: _load,
-          enablePullUp: true,
-          enablePullDown: true,
-          header: WaterDropMaterialHeader(),
-          footer: ClassicFooter(),
-          child: ListView.separated(
-              padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
-              itemCount: forms.length,
-              itemBuilder: (BuildContext context, int index) {
-                return WebOCard(forms[index]);
-              },
-              separatorBuilder: (BuildContext context, int index) =>
-              const RealDivider()),
+  get _mainList => SmartRefresher(
+        controller: _controller,
+        onRefresh: _refresh,
+        onLoading: _load,
+        enablePullUp: true,
+        enablePullDown: true,
+        header: WaterDropMaterialHeader(),
+        footer: ClassicFooter(),
+        child: ListView.separated(
+            padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
+            itemCount: forms.length,
+            itemBuilder: (BuildContext context, int index) {
+              return WebOCard(forms[index]);
+            },
+            separatorBuilder: (BuildContext context, int index) =>
+                const RealDivider()),
       );
 
   @override
@@ -66,8 +64,8 @@ class _WebOListViewState extends State<WebOListView> {
   }
 
   get _couldNotLoad =>
-      [WebOListView.MINE, WebOListView.FOLLOW_ONLY].any((it) => it == mode)
-          && !_currentIsLogin;
+      [WebOListView.MINE, WebOListView.FOLLOW_ONLY].any((it) => it == mode) &&
+      !_currentIsLogin;
 
   get _currentIsLogin => _currentUserId != null && _currentUserId > 0;
 
@@ -75,17 +73,17 @@ class _WebOListViewState extends State<WebOListView> {
     final color = Colors.blue.withOpacity(0.88);
     return Center(
         child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(Icons.warning, size: 64.0, color: color),
-            Text("求求您登陆一下吧……", style: mainTextFont.apply(color: color))
-          ],
-        )
-    );
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Icon(Icons.warning, size: 64.0, color: color),
+        Text("求求您登陆一下吧……", style: mainTextFont.apply(color: color))
+      ],
+    ));
   }
 
-  get _dio => mode == WebOListView.FOLLOW_ONLY ? Dio() : DioWithToken.getInstance();
+  get _dio =>
+      mode == WebOListView.FOLLOW_ONLY ? Dio() : DioWithToken.getInstance();
 
   get _currentUserId {
     UserProvider provider = Provider.of<UserProvider>(context, listen: false);
@@ -135,16 +133,17 @@ class _WebOListViewState extends State<WebOListView> {
     if (loaded == 0) Fluttertoast.showToast(msg: "似乎没有什么东西🤔");
     _controller.refreshCompleted(resetFooterState: true);
   }
-  
+
   get _target => {
-    WebOListView.ALL: WebOURL.allPosts,
-    WebOListView.FOLLOW_ONLY: WebOURL.followingPosts,
-    WebOListView.MINE: WebOURL.myPosts,
-  }[this.mode];
+        WebOListView.ALL: WebOURL.allPosts,
+        WebOListView.FOLLOW_ONLY: WebOURL.followingPosts,
+        WebOListView.MINE: WebOURL.myPosts,
+      }[this.mode];
 
   Future<int> addWebOs(Dio dio, params, handler) async {
     int loaded = 0;
-    Response resp = await dio.get(_target, queryParameters: Map.castFrom(params));
+    Response resp =
+        await dio.get(_target, queryParameters: Map.castFrom(params));
     if (resp.statusCode == 200) {
       if (resp.data['code'] == WebOHttpCode.SUCCESS) {
         var data = resp.data['data'];

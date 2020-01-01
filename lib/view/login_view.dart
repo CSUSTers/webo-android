@@ -224,10 +224,9 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
   void _register() async {
     if (_formKey.currentState.validate()) {
       final nullToEmpty = (String s) {
-        if (s
-            ?.trim()
-            ?.length == 0)
-          return null; else
+        if (s?.trim()?.length == 0)
+          return null;
+        else
           return s;
       };
       final String username = _usernameController.text.trim();

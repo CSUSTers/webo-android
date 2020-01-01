@@ -27,11 +27,13 @@ class WebOApp extends StatelessWidget {
           onGenerateRoute: (RouteSettings settings) {
             final routeName = settings.name;
             var builder = Router.routeTable[routeName];
-            if(Prefs.user.id == -1 && Router.needLoginRoute.contains(routeName)) {
+            if (Prefs.user.id == -1 &&
+                Router.needLoginRoute.contains(routeName)) {
               builder = Router.routeTable[Router.loginPage];
               Fluttertoast.showToast(msg: "请先登录");
             }
-            var router = MaterialPageRoute(builder: builder, settings: settings);
+            var router =
+                MaterialPageRoute(builder: builder, settings: settings);
             return router;
           },
 //        home: WebOHomePage(title: Strings.appName),
@@ -52,7 +54,7 @@ class WebOHomePage extends StatefulWidget {
 }
 
 class _WebOHomePageState extends State<WebOHomePage>
-    with SingleTickerProviderStateMixin{
+    with SingleTickerProviderStateMixin {
   TabController _tabController;
 
   @override
@@ -150,12 +152,19 @@ class _WebOHomePageState extends State<WebOHomePage>
           title: Text(widget.title),
           bottom: TabBar(
             controller: _tabController,
-            tabs: <Widget>[Tab(text: "发现",), Tab(text: "关注",)],
+            tabs: <Widget>[
+              Tab(
+                text: "发现",
+              ),
+              Tab(
+                text: "关注",
+              )
+            ],
           ),
         ),
         body: TabBarView(
           controller: _tabController,
-          children:<Widget>[
+          children: <Widget>[
             WebOListView(mode: WebOListView.ALL),
             WebOListView(mode: WebOListView.FOLLOW_ONLY)
           ],

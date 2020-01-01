@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/view/accout_view.dart';
@@ -13,8 +10,6 @@ import 'package:webo/view/my_post_view.dart';
 import 'package:webo/view/settings_view.dart';
 
 class Router {
-
-
   static const home = "/";
   static const loginPage = "/login";
   static const userPage = "/user";
@@ -23,7 +18,6 @@ class Router {
   static const myPostPage = "/my-post";
   static const followPage = "/follow";
   static const settingPage = "/settings";
-
 
   static List<String> needLoginRoute = [
     userPage,
@@ -37,13 +31,12 @@ class Router {
   static Map<String, WidgetBuilder> routeTable = {
     home: (context) => WebOHomePage(title: Strings.appName),
     loginPage: (context) => WebOLoginPage(),
-    userPage: (context) => AccountView(user: ModalRoute.of(context).settings.arguments),
+    userPage: (context) =>
+        AccountView(user: ModalRoute.of(context).settings.arguments),
     passChangePage: (context) => ChangePassPage(),
     createPage: (context) => WebOCreatePage(),
     myPostPage: (context) => MyPostPage(),
     followPage: (context) => FollowPage(),
     settingPage: (context) => SettingsPage(),
   };
-
-
 }

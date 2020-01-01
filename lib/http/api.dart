@@ -1,7 +1,3 @@
 abstract class Api {
-
-  Future<dynamic> call() async {
-
-  }
-
+  Future<dynamic> call() async {}
 }

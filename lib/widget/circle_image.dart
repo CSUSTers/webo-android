@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-
 class CircleImageWidget extends StatelessWidget {
-
   final ImageProvider image;
   final double radius;
 
@@ -15,11 +13,7 @@ class CircleImageWidget extends StatelessWidget {
       height: this.radius,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
-          image: DecorationImage(
-              fit: BoxFit.fill,
-              image: image
-          )
-      ),
+          image: DecorationImage(fit: BoxFit.fill, image: image)),
     );
   }
 }

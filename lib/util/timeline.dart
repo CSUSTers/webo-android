@@ -175,7 +175,7 @@ class TimelineUtil {
   static String formatByDateTime(DateTime dateTime,
       {DateTime locDateTime, String locale, DayFormat dayFormat}) {
     int _locDateTime =
-    (locDateTime == null ? null : locDateTime.millisecondsSinceEpoch);
+        (locDateTime == null ? null : locDateTime.millisecondsSinceEpoch);
     return format(dateTime.millisecondsSinceEpoch,
         locTimeMillis: _locDateTime, locale: locale, dayFormat: dayFormat);
   }
@@ -246,8 +246,8 @@ class TimelineUtil {
     return info.customYesterday() +
         (dayFormat == DayFormat.Full
             ? (" " +
-            DateUtil.getDateStrByMs(timeMillis,
-                format: DateFormat.HOUR_MINUTE))
+                DateUtil.getDateStrByMs(timeMillis,
+                    format: DateFormat.HOUR_MINUTE))
             : "");
   }
 
