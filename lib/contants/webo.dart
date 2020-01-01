@@ -36,7 +36,7 @@ class WebO {
             likes: dy['likes'],
             isLike: dy['myselfIsLike'],
             forward:
-                dy['forward'] == null ? null : WebO.fromMap(dy['forward']));
+            dy['forwarding'] == null ? null : WebO.fromMap(dy['forwarding']));
 
   bool get isForward => this.forward != null;
 

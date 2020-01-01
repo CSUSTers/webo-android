@@ -272,31 +272,32 @@ class WebOText extends StatelessWidget {
     if (data.isForward) {
       var f = data.forward;
       inner.add(Container(
+        padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Container(
-              child: Expanded(
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      f.user.nickname,
-                      style: userNameFont,
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 1.5),
-                    ),
-                    Text(
-                      '@${f.user.username}',
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    f.user.nickname,
+                    style: userNameFont,
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 1.5),
+                  ),
+                  Text(
+                    '@${f.user.username}',
+                    style: TextStyle(color: Colors.white),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
             ),
             Container(
               child: Text(
                 f.message,
-                style: mainTextFont,
+                style: mainTextFont.apply(color: Colors.white),
               ),
             )
           ],
