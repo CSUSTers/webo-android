@@ -79,6 +79,7 @@ class WebOCard extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 // 第一行
                 header,
@@ -87,7 +88,6 @@ class WebOCard extends StatelessWidget {
                 // 第三行: 按钮
                 ActionButtons(data),
               ],
-              crossAxisAlignment: CrossAxisAlignment.start,
             ),
           )),
     );
@@ -175,16 +175,16 @@ class _ActionButtonsState extends State<ActionButtons> {
                 style: style,
               ),
               onTap: () {
-                DioWithToken.client.post(WebOURL.forwardPost,
-                    data: {'id': webo.id,
-                      'message': '@${webo.user.nickname}: ${webo.message}'})
-                    .then((v) {
-                  if (v.statusCode == 200 &&
-                      v.data['code'] == WebOHttpCode.SUCCESS) {
-                    setState(() {
-                      forwards += 1;
-                    });
-                  }
+                inputText(context, onSubmit: (t) {
+                  DioWithToken.client.post(WebOURL.forwardPost,
+                      data: {'id': webo.id, 'message': t}).then((v) {
+                    if (v.statusCode == 200 &&
+                        v.data['code'] == WebOHttpCode.SUCCESS) {
+                      setState(() {
+                        forwards += 1;
+                      });
+                    }
+                  });
                 });
               },
             ),
@@ -201,24 +201,20 @@ class _ActionButtonsState extends State<ActionButtons> {
                 style: style,
               ),
               onTap: () {
-                inputText(
-                  context,
-                  onSubmit: (t) {
-                    DioWithToken.client.post(WebOURL.newComment,
-                        data: {'id': webo.id, 'text': t}).then((v) {
-                      if (v.statusCode == 200 &&
-                          v.data['code'] == WebOHttpCode.SUCCESS) {
-                        setState(() {
-                          Fluttertoast.showToast(msg: '发送成功');
-                          comments += 1;
-                        });
-                      } else {
-                        Fluttertoast.showToast(msg: '发送失败');
-                      }
-                    });
-                  }
-                );
-
+                inputText(context, onSubmit: (t) {
+                  DioWithToken.client.post(WebOURL.newComment,
+                      data: {'id': webo.id, 'text': t}).then((v) {
+                    if (v.statusCode == 200 &&
+                        v.data['code'] == WebOHttpCode.SUCCESS) {
+                      setState(() {
+                        Fluttertoast.showToast(msg: '发送成功');
+                        comments += 1;
+                      });
+                    } else {
+                      Fluttertoast.showToast(msg: '发送失败');
+                    }
+                  });
+                });
               },
             ),
             flex: 4,
@@ -255,7 +251,6 @@ class _ActionButtonsState extends State<ActionButtons> {
 class WebOText extends StatelessWidget {
   final WebO data;
   final shouldShowForwarding;
-
 
   WebOText(this.data, {this.shouldShowForwarding: false});
 
@@ -306,7 +301,8 @@ class WebOText extends StatelessWidget {
     }
 
     return Container(
-      child: Column(children: inner),
+      child: Column(
+        children: inner, crossAxisAlignment: CrossAxisAlignment.start,),
       margin: EdgeInsets.only(top: 5.0, bottom: 10.0, left: 8.0, right: 8.0),
     );
   }
