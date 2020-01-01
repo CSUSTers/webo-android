@@ -109,25 +109,21 @@ class IconButtonWithMsg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TapWidget(
-      onTap,
-      Container(
-        child: Row(
-          children: <Widget>[
-            icon,
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 2.0),
+        onTap,
+        Container(
+            child: Row(
+              children: <Widget>[
+                icon,
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 2.0),
+                ),
+                msg
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
             ),
-            msg
-          ],
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-        ),
-        margin: EdgeInsets.symmetric(vertical: 8.0),
-        color: selected ?
-            Colors.lightBlue :
-            Colors.white
-      )
-    );
+            margin: EdgeInsets.symmetric(vertical: 8.0),
+            color: selected ? Colors.lightBlue : Colors.white));
   }
 }
 
@@ -161,16 +157,14 @@ class _ActionButtonsState extends State<ActionButtons> {
   @override
   Widget build(BuildContext context) {
     const size = 16.0;
-    const style = TextStyle(
-      fontSize: size
-    );
+    const style = TextStyle(fontSize: size);
     final webo = widget.data;
 
     return Container(
       child: Row(
         children: <Widget>[
           Expanded(
-            child:  IconButtonWithMsg(
+            child: IconButtonWithMsg(
               icon: Icon(
                 Icons.reply,
                 size: size,
@@ -180,7 +174,18 @@ class _ActionButtonsState extends State<ActionButtons> {
                 style: style,
               ),
               onTap: () {
-
+                DioWithToken.client
+                    .post(WebOURL.newComment, data: {
+                      'id': webo.id,
+                      'message': '❤❤❤'
+                    }).then((v) {
+                  if (v.statusCode == 200 &&
+                      v.data['code'] == WebOHttpCode.SUCCESS) {
+                    setState(() {
+                      forwards += 1;
+                    });
+                  }
+                });
               },
             ),
             flex: 4,
@@ -196,27 +201,30 @@ class _ActionButtonsState extends State<ActionButtons> {
                 style: style,
               ),
               onTap: () {
-
+                DioWithToken.client
+                    .post(WebOURL.newComment, data: {'id': webo.id, 'text': 'comment'}).then((v) {
+                  if (v.statusCode == 200 &&
+                      v.data['code'] == WebOHttpCode.SUCCESS) {
+                    setState(() {
+                      comments += 1;
+                    });
+                  }
+                });
               },
             ),
             flex: 4,
           ),
           Expanded(
-            child:  IconButtonWithMsg(
+            child: IconButtonWithMsg(
               icon: Icon(
-                isLike ?
-                    Icons.favorite_border :
-                    Icons.favorite,
+                isLike ? Icons.favorite_border : Icons.favorite,
                 size: size,
               ),
-              msg: Text(
-                '${Strings.like} $likes'
-              ),
+              msg: Text('${Strings.like} $likes'),
               selected: isLike,
               onTap: () {
-                DioWithToken.client.post(WebOURL.likePost, data: {
-                  'id': webo.id
-                }).then((v) {
+                DioWithToken.client
+                    .post(WebOURL.likePost, data: {'id': webo.id}).then((v) {
                   if (v.statusCode == 200 &&
                       v.data['code'] == WebOHttpCode.SUCCESS) {
                     setState(() {
@@ -224,19 +232,15 @@ class _ActionButtonsState extends State<ActionButtons> {
                       isLike ^= true;
                     });
                   }
-                }
-                );
+                });
               },
             ),
             flex: 4,
           ),
         ],
       ),
-
     );
   }
-
-
 }
 
 class WebOText extends StatelessWidget {
@@ -252,57 +256,49 @@ class WebOText extends StatelessWidget {
         style: bigMainTextFont,
       ),
     ];
-    
+
     if (data.isForward) {
       var f = data.forward;
-      inner.add(
-        Container(
-          child: Column(
-            children: <Widget>[
-              Container(
-                child: Expanded(
-                  child: Row(
-                    children: <Widget>[
-                      Text(
-                        f.user.nickname,
-                        style: userNameFont,
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 1.5),
-                      ),
-                      Text(
-                        '@${f.user.username}',
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
+      inner.add(Container(
+        child: Column(
+          children: <Widget>[
+            Container(
+              child: Expanded(
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      f.user.nickname,
+                      style: userNameFont,
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 1.5),
+                    ),
+                    Text(
+                      '@${f.user.username}',
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
                 ),
               ),
-              Container(
-                child: Text(
-                  f.message,
-                  style: mainTextFont,
-                ),
-              )
-            ],
-            crossAxisAlignment: CrossAxisAlignment.start,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.blueGrey
-          ),
-        )
-      );
+            ),
+            Container(
+              child: Text(
+                f.message,
+                style: mainTextFont,
+              ),
+            )
+          ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+        decoration: BoxDecoration(color: Colors.blueGrey),
+      ));
     }
-    
+
     return Container(
-      child: Column(
-        children: inner
-      ),
+      child: Column(children: inner),
       margin: EdgeInsets.only(top: 5.0, bottom: 10.0, left: 8.0, right: 8.0),
     );
   }
-
-
 }
 
 class WebOMenuIcon extends StatefulWidget {
@@ -349,8 +345,8 @@ class _WebOMenuState extends State<WebOMenuIcon> {
                     'id': webo.id,
                   },
                 ).then((v) {
-                  if (v.statusCode == 200
-                      && v.data['code'] == WebOHttpCode.SUCCESS) {
+                  if (v.statusCode == 200 &&
+                      v.data['code'] == WebOHttpCode.SUCCESS) {
                     Fluttertoast.showToast(msg: '删除成功');
                   } else {
                     Fluttertoast.showToast(msg: '删除失败');
