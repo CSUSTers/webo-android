@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 import 'package:webo/actions/page_action.dart';
 import 'package:webo/contants/http_code.dart';
 import 'package:webo/contants/style.dart';
@@ -178,8 +177,8 @@ class _ActionButtonsState extends State<ActionButtons> {
                 style: style,
               ),
               onTap: () {
-                DioWithToken.client.post(WebOURL.newComment,
-                    data: {'id': webo.id, 'message': '❤❤❤'}).then((v) {
+                DioWithToken.client.post(WebOURL.forwardPost,
+                    data: {'id': webo.id, 'message': webo.message}).then((v) {
                   if (v.statusCode == 200 &&
                       v.data['code'] == WebOHttpCode.SUCCESS) {
                     setState(() {
@@ -203,7 +202,7 @@ class _ActionButtonsState extends State<ActionButtons> {
               ),
               onTap: () {
                 DioWithToken.client.post(WebOURL.newComment,
-                    data: {'id': webo.id, 'text': 'comment'}).then((v) {
+                    data: {'id': webo.id, 'text': '❤❤❤'}).then((v) {
                   if (v.statusCode == 200 &&
                       v.data['code'] == WebOHttpCode.SUCCESS) {
                     setState(() {
