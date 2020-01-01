@@ -9,6 +9,7 @@ import 'package:webo/contants/webo.dart';
 import 'package:webo/contants/webo_url.dart';
 import 'package:webo/http/dio_with_token.dart';
 import 'package:webo/rom/user_provider.dart';
+import 'package:webo/widget/real_divider.dart';
 import 'package:webo/widget/webo_card.dart';
 
 class WebOListView extends StatefulWidget {
@@ -44,7 +45,7 @@ class _WebOListViewState extends State<WebOListView> {
           onLoading: _load,
           enablePullUp: true,
           enablePullDown: true,
-          header: MaterialClassicHeader(),
+          header: WaterDropMaterialHeader(),
           footer: ClassicFooter(),
           child: ListView.separated(
               padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
@@ -53,7 +54,7 @@ class _WebOListViewState extends State<WebOListView> {
                 return WebOCard(forms[index]);
               },
               separatorBuilder: (BuildContext context, int index) =>
-              const Divider()),
+              const RealDivider()),
       );
 
   @override

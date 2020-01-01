@@ -13,6 +13,7 @@ import 'package:webo/http/dio_with_token.dart';
 import 'package:webo/rom/user_provider.dart';
 import 'package:webo/util/gravatar_config.dart';
 import 'package:webo/widget/circle_image.dart';
+import 'package:webo/widget/real_divider.dart';
 
 class FollowPage extends StatefulWidget {
 
@@ -81,7 +82,7 @@ class _FollowPageState extends State<FollowPage> {
               ],
             ),
           );
-        }, separatorBuilder: (BuildContext context, int index) => Divider(),
+        }, separatorBuilder: (BuildContext context, int index) => RealDivider(),
       ),
     );
 

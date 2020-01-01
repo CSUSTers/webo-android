@@ -39,6 +39,8 @@ abstract class Strings {
 
   //Account Page
   static const account = '账户';
+  static const personInfo = '个人信息';
+
 
   // Setting page
   static const settings = '设置';

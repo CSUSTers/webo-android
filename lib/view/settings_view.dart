@@ -22,7 +22,7 @@ class SettingsPage extends StatelessWidget {
           InkWell(
             onTap: () => Navigator.pushNamed(context, Router.passChangePage),
             child: Container(
-              height: 46.0,
+              height: 52.0,
               padding: const EdgeInsets.symmetric(horizontal: 6.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -33,7 +33,7 @@ class SettingsPage extends StatelessWidget {
               ),
             )
           ),
-          Divider(),
+          Divider(height: 0.0),
           Container(
             margin: const EdgeInsets.all(4.0),
             child: MaterialButton(
