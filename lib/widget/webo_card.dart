@@ -226,7 +226,7 @@ class _ActionButtonsState extends State<ActionButtons> {
                 color: isLike ? Colors.white : Colors.black87,
                 size: size,
               ),
-              msg: Text('${Strings.like} $likes', style: TextStyle(
+              msg: Text('${Strings.like} $likes', style: style.apply(
                   color: isLike ? Colors.white : Colors.black87),),
               selected: isLike,
               onTap: () {
