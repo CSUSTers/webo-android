@@ -93,9 +93,12 @@ class _WebOListViewState extends State<WebOListView> {
 
   get modeParams {
     var params = {};
-    if (mode == WebOListView.FOLLOW_ONLY || mode == WebOListView.MINE) {
-      params["id"] = _currentUserId;
+    if (_currentIsLogin) {
+      if (mode == WebOListView.ALL) params["userId"] = _currentUserId;
+      if ([WebOListView.FOLLOW_ONLY, WebOListView.MINE].any((it) => it == mode))
+        params["id"] = _currentUserId;
     }
+
     return params;
   }
 
@@ -158,6 +161,7 @@ class _WebOListViewState extends State<WebOListView> {
         nextFrom = data['nextFrom'];
         for (var webo in data['webos']) {
           loaded += 1;
+          print(webo);
           handler(WebO.fromMap(webo));
         }
       } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {
