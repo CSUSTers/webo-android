@@ -11,7 +11,6 @@ import 'package:webo/contants/webo_url.dart';
 import 'package:webo/http/dio_with_token.dart';
 import 'package:webo/rom/user_provider.dart';
 import 'package:webo/util/gravatar_config.dart';
-import 'package:webo/widget/circle_image.dart';
 import 'package:webo/widget/real_divider.dart';
 
 class FollowPage extends StatefulWidget {
@@ -53,7 +52,10 @@ class _FollowPageState extends State<FollowPage> {
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
               children: <Widget>[
-                getCircleImageForUser(list[index], size: 96),
+                GestureDetector(
+                  onTap: () => User.openUserPage(context, _provider.user),
+                  child: getCircleImageForUser(list[index], size: 96),
+                ),
                 Padding(padding: EdgeInsets.symmetric(horizontal: 4.0)),
                 Expanded(
                     child: Column(
