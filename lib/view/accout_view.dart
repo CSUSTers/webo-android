@@ -9,18 +9,15 @@ import 'package:webo/widget/nothing.dart';
 import 'package:webo/widget/real_divider.dart';
 
 class AccountView extends StatefulWidget {
-  AccountView({Key key, @required this.user}):super(key: key);
+  AccountView({Key key, @required this.user}) : super(key: key);
 
   final User user;
 
   @override
   _AccountViewState createState() => _AccountViewState();
-
 }
 
-
 class _AccountViewState extends State<AccountView> {
-
   @override
   Widget build(BuildContext context) {
     final user = widget.user;
@@ -31,12 +28,12 @@ class _AccountViewState extends State<AccountView> {
         title: const Text(Strings.personInfo),
         leading: const BackButton(),
         actions: <Widget>[
-          editable ? GestureDetector(
-            onTap: () {
-
-            },
-            child: Text('编辑'),
-          ): Nothing()
+          editable
+              ? GestureDetector(
+                  onTap: () {},
+                  child: Text('编辑'),
+                )
+              : Nothing()
         ],
       ),
       body: ListView(
@@ -59,14 +56,11 @@ class _AccountViewState extends State<AccountView> {
     );
   }
 
-
   bool get editable {
     var provider = Provider.of<UserProvider>(context, listen: false);
     return widget.user.id == provider.user.id;
   }
-
 }
-
 
 class _ListItem extends StatelessWidget {
   _ListItem({Key key, @required this.title, this.content}) : super(key: key);
@@ -77,9 +71,7 @@ class _ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-
-      },
+      onTap: () {},
       child: Container(
         height: 56.0,
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -91,7 +83,7 @@ class _ListItem extends StatelessWidget {
               style: const TextStyle(fontSize: 16.0),
             ),
             Text(
-              content??'',
+              content ?? '',
               style: const TextStyle(color: Colors.grey),
             )
           ],

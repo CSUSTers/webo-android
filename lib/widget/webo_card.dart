@@ -174,11 +174,8 @@ class _ActionButtonsState extends State<ActionButtons> {
                 style: style,
               ),
               onTap: () {
-                DioWithToken.client
-                    .post(WebOURL.newComment, data: {
-                      'id': webo.id,
-                      'message': '❤❤❤'
-                    }).then((v) {
+                DioWithToken.client.post(WebOURL.newComment,
+                    data: {'id': webo.id, 'message': '❤❤❤'}).then((v) {
                   if (v.statusCode == 200 &&
                       v.data['code'] == WebOHttpCode.SUCCESS) {
                     setState(() {
@@ -201,8 +198,8 @@ class _ActionButtonsState extends State<ActionButtons> {
                 style: style,
               ),
               onTap: () {
-                DioWithToken.client
-                    .post(WebOURL.newComment, data: {'id': webo.id, 'text': 'comment'}).then((v) {
+                DioWithToken.client.post(WebOURL.newComment,
+                    data: {'id': webo.id, 'text': 'comment'}).then((v) {
                   if (v.statusCode == 200 &&
                       v.data['code'] == WebOHttpCode.SUCCESS) {
                     setState(() {
@@ -217,9 +214,7 @@ class _ActionButtonsState extends State<ActionButtons> {
           Expanded(
             child: IconButtonWithMsg(
               icon: Icon(
-                isLike ?
-                  Icons.favorite :
-                  Icons.favorite_border,
+                isLike ? Icons.favorite : Icons.favorite_border,
                 size: size,
               ),
               msg: Text('${Strings.like} $likes'),

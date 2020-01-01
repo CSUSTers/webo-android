@@ -8,7 +8,6 @@ void openUserPage(BuildContext context, User user) {
 }
 
 void openDetailPage(BuildContext context, WebO webo) {
-  Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => WebODetailPage(webo)
-  ));
+  Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => WebODetailPage(webo)));
 }

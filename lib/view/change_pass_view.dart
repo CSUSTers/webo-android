@@ -1,5 +1,3 @@
-
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,14 +12,12 @@ import 'package:webo/util/prefs.dart';
 class ChangePassPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
-
   final TextEditingController _originController = TextEditingController();
   final TextEditingController _newController = TextEditingController();
   final TextEditingController _new2Controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-
     Form form = Form(
       key: _formKey,
       child: Column(
@@ -32,11 +28,9 @@ class ChangePassPage extends StatelessWidget {
             maxLength: 64,
             controller: _originController,
             obscureText: true,
-            decoration: InputDecoration(
-                labelText: Strings.originPass
-            ),
+            decoration: InputDecoration(labelText: Strings.originPass),
             validator: (value) {
-              if(value.length == 0) return '原密码不能为空';
+              if (value.length == 0) return '原密码不能为空';
               return null;
             },
           ),
@@ -45,11 +39,9 @@ class ChangePassPage extends StatelessWidget {
             maxLength: 64,
             controller: _newController,
             obscureText: true,
-            decoration: InputDecoration(
-                labelText: Strings.newPass
-            ),
+            decoration: InputDecoration(labelText: Strings.newPass),
             validator: (value) {
-              if(value.length == 0) return '请填写新密码';
+              if (value.length == 0) return '请填写新密码';
               return null;
             },
           ),
@@ -58,12 +50,10 @@ class ChangePassPage extends StatelessWidget {
             maxLength: 64,
             controller: _new2Controller,
             obscureText: true,
-            decoration: InputDecoration(
-                labelText: Strings.ackNewPass
-            ),
+            decoration: InputDecoration(labelText: Strings.ackNewPass),
             validator: (value) {
-              if(value.length == 0) return '请确认新密码';
-              if(value != _newController.text) return '两次输入的密码不一致';
+              if (value.length == 0) return '请确认新密码';
+              if (value != _newController.text) return '两次输入的密码不一致';
               return null;
             },
           ),
@@ -80,31 +70,27 @@ class ChangePassPage extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.lightBlue,
-        title: const Text(Strings.changePass),
-        leading: BackButton(),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(32.0),
-//          margin: const EdgeInsets.only(bottom: 32.0),
-          child: form,
+        appBar: AppBar(
+          backgroundColor: Colors.lightBlue,
+          title: const Text(Strings.changePass),
+          leading: BackButton(),
         ),
-      )
-    );
+        body: SingleChildScrollView(
+          child: Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(32.0),
+//          margin: const EdgeInsets.only(bottom: 32.0),
+            child: form,
+          ),
+        ));
   }
 
-
   void _changePass(BuildContext context) async {
-    if(_formKey.currentState.validate()) {
+    if (_formKey.currentState.validate()) {
       final String origin = MD5.md5(_originController.text);
       final String newPass = MD5.md5(_newController.text);
-      Response resp = await DioWithToken.client.post(WebOURL.userChangePassword, data: {
-        "origin": origin,
-        "changed": newPass
-      });
+      Response resp = await DioWithToken.client.post(WebOURL.userChangePassword,
+          data: {"origin": origin, "changed": newPass});
       if (resp.statusCode == 200) {
         print(resp.data);
         if (resp.data['code'] == WebOHttpCode.SUCCESS) {
@@ -133,5 +119,4 @@ class ChangePassPage extends StatelessWidget {
     ]).then((xs) => xs.reduce((x, y) => x && y));
     return success;
   }
-
 }

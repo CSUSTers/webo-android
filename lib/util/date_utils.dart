@@ -107,12 +107,12 @@ class DateUtil {
   /// dateSeparate    date separate.
   /// timeSeparate    time separate.
   static String getDateStrByTimeStr(
-      String dateStr, {
-        DateFormat format = DateFormat.NORMAL,
-        String dateSeparate,
-        String timeSeparate,
-        bool isUtc,
-      }) {
+    String dateStr, {
+    DateFormat format = DateFormat.NORMAL,
+    String dateSeparate,
+    String timeSeparate,
+    bool isUtc,
+  }) {
     return getDateStrByDateTime(getDateTime(dateStr, isUtc: isUtc),
         format: format, dateSeparate: dateSeparate, timeSeparate: timeSeparate);
   }
@@ -124,9 +124,9 @@ class DateUtil {
   /// timeSeparate    time separate.
   static String getDateStrByMs(int milliseconds,
       {DateFormat format = DateFormat.NORMAL,
-        String dateSeparate,
-        String timeSeparate,
-        bool isUtc = false}) {
+      String dateSeparate,
+      String timeSeparate,
+      bool isUtc = false}) {
     DateTime dateTime = getDateTimeByMs(milliseconds, isUtc: isUtc);
     return getDateStrByDateTime(dateTime,
         format: format, dateSeparate: dateSeparate, timeSeparate: timeSeparate);
@@ -139,8 +139,8 @@ class DateUtil {
   /// timeSeparate    time separate.
   static String getDateStrByDateTime(DateTime dateTime,
       {DateFormat format = DateFormat.NORMAL,
-        String dateSeparate,
-        String timeSeparate}) {
+      String dateSeparate,
+      String timeSeparate}) {
     if (dateTime == null) return null;
     String dateStr = dateTime.toString();
     if (isZHFormat(format)) {
@@ -489,7 +489,7 @@ class DateUtil {
   static bool isToday(int milliseconds, {bool isUtc = false}) {
     if (milliseconds == null || milliseconds == 0) return false;
     DateTime old =
-    DateTime.fromMillisecondsSinceEpoch(milliseconds, isUtc: isUtc);
+        DateTime.fromMillisecondsSinceEpoch(milliseconds, isUtc: isUtc);
     DateTime now = isUtc ? DateTime.now().toUtc() : DateTime.now().toLocal();
     return old.year == now.year && old.month == now.month && old.day == now.day;
   }
@@ -501,12 +501,12 @@ class DateUtil {
       return false;
     }
     DateTime _old =
-    DateTime.fromMillisecondsSinceEpoch(milliseconds, isUtc: isUtc);
+        DateTime.fromMillisecondsSinceEpoch(milliseconds, isUtc: isUtc);
     DateTime _now = isUtc ? DateTime.now().toUtc() : DateTime.now().toLocal();
     DateTime old =
-    _now.millisecondsSinceEpoch > _old.millisecondsSinceEpoch ? _old : _now;
+        _now.millisecondsSinceEpoch > _old.millisecondsSinceEpoch ? _old : _now;
     DateTime now =
-    _now.millisecondsSinceEpoch > _old.millisecondsSinceEpoch ? _now : _old;
+        _now.millisecondsSinceEpoch > _old.millisecondsSinceEpoch ? _now : _old;
     return (now.weekday >= old.weekday) &&
         (now.millisecondsSinceEpoch - old.millisecondsSinceEpoch <=
             7 * 24 * 60 * 60 * 1000);

@@ -16,24 +16,13 @@ class User {
   final String email;
   final String bio;
 
-  //想了想加不进去的字段
-//  final int followingCount;
-//  final int followedByCount;
-//  final int weboCount;
-//  final int commentCount;
-
-  User({
-    this.id,
-    this.username: Strings.notLoginUser,
-    this.nickname: Strings.notLoginUser,
-    this.avatar: Strings.defaultAvatarPath,
-    this.email: Strings.notLoginEmail,
-    this.bio: '',
-//    this.followingCount,
-//    this.followedByCount,
-//    this.weboCount,
-//    this.commentCount,
-  });
+  User(
+      {this.id,
+      this.username: Strings.notLoginUser,
+      this.nickname: Strings.notLoginUser,
+      this.avatar: Strings.defaultAvatarPath,
+      this.email: Strings.notLoginEmail,
+      this.bio: ''});
 
   static Future<User> fromHttp(int id) async {
     final http = DioWithToken.client;

@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +15,11 @@ import 'package:webo/widget/circle_image.dart';
 import 'package:webo/widget/real_divider.dart';
 
 class FollowPage extends StatefulWidget {
-
   @override
-  _FollowPageState createState() =>_FollowPageState();
-
+  _FollowPageState createState() => _FollowPageState();
 }
 
 class _FollowPageState extends State<FollowPage> {
-
   static const _FOLLOWINGS = 0;
   static const _FOLLOWERS = 1;
   int _mode = _FOLLOWINGS;
@@ -35,7 +31,6 @@ class _FollowPageState extends State<FollowPage> {
   int _followerPage = 0;
   int _followingPage = 0;
   final _pageSize = 20;
-
 
   var _controller = RefreshController(initialRefresh: true);
 
@@ -62,15 +57,15 @@ class _FollowPageState extends State<FollowPage> {
                 Padding(padding: EdgeInsets.symmetric(horizontal: 4.0)),
                 Expanded(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(list[index].nickname,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(list[index].bio)
-                      ],
-                    )
-                ),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      list[index].nickname,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(list[index].bio)
+                  ],
+                )),
                 MaterialButton(
                   minWidth: 72,
                   height: 36,
@@ -82,34 +77,37 @@ class _FollowPageState extends State<FollowPage> {
               ],
             ),
           );
-        }, separatorBuilder: (BuildContext context, int index) => RealDivider(),
+        },
+        separatorBuilder: (BuildContext context, int index) => RealDivider(),
       ),
     );
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
-        title: Text(_mode==_FOLLOWINGS ? Strings.followings : Strings.followers),
+        title:
+            Text(_mode == _FOLLOWINGS ? Strings.followings : Strings.followers),
         leading: const BackButton(),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.swap_horiz),
-            onPressed: () => setState(() => _mode = _mode == _FOLLOWINGS ? _FOLLOWERS : _FOLLOWINGS)
-          )
+              icon: const Icon(Icons.swap_horiz),
+              onPressed: () => setState(() =>
+                  _mode = _mode == _FOLLOWINGS ? _FOLLOWERS : _FOLLOWINGS))
         ],
       ),
       body: widget,
     );
-
   }
 
   List<User> get list => _mode == _FOLLOWINGS ? _followingList : _followerList;
 
   int get page => _mode == _FOLLOWINGS ? _followingPage : _followerPage;
 
-  set page (value) {
-    if(_mode == _FOLLOWINGS) _followingPage = 0;
-    else _followerPage = 0;
+  set page(value) {
+    if (_mode == _FOLLOWINGS)
+      _followingPage = 0;
+    else
+      _followerPage = 0;
   }
 
   void _load() async {
@@ -135,33 +133,31 @@ class _FollowPageState extends State<FollowPage> {
   Future<int> _getFollowList() async {
     int count = 0;
     Dio dio = DioWithToken.client;
-    var params = {
-      "id": _provider.user.id,
-      "page": page,
-      "size": _pageSize
-    };
-      Response resp = await dio.get(_mode == _FOLLOWERS
-          ? WebOURL.followers
-          : WebOURL.followings,
-          queryParameters: params);
-      if (resp.statusCode == 200) {
-        if (resp.data['code'] == WebOHttpCode.SUCCESS) {
-          var data = resp.data['data'];
-          for (var u in data) {
-            print(u);
-            User user = User(id: u['id'], username: u['username'],
-                nickname: u['nickname'], email: u['email'], bio: u['bio']??'');
-            list.add(user);
-            count += 1;
-          }
-        } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {
-          Fluttertoast.showToast(
-              msg: "Error: " + resp.data['data']['exceptionMessage']);
+    var params = {"id": _provider.user.id, "page": page, "size": _pageSize};
+    Response resp = await dio.get(
+        _mode == _FOLLOWERS ? WebOURL.followers : WebOURL.followings,
+        queryParameters: params);
+    if (resp.statusCode == 200) {
+      if (resp.data['code'] == WebOHttpCode.SUCCESS) {
+        var data = resp.data['data'];
+        for (var u in data) {
+          print(u);
+          User user = User(
+              id: u['id'],
+              username: u['username'],
+              nickname: u['nickname'],
+              email: u['email'],
+              bio: u['bio'] ?? '');
+          list.add(user);
+          count += 1;
         }
-      } else {
-        Fluttertoast.showToast(msg: "Error: " + resp.statusCode.toString());
+      } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {
+        Fluttertoast.showToast(
+            msg: "Error: " + resp.data['data']['exceptionMessage']);
       }
+    } else {
+      Fluttertoast.showToast(msg: "Error: " + resp.statusCode.toString());
+    }
     return count;
   }
 }
-

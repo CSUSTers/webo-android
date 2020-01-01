@@ -50,7 +50,6 @@ class CommentsCard extends StatefulWidget {
 }
 
 class _CommentsCardState extends State<CommentsCard> {
-
   List<Comment> comments = <Comment>[];
 
   @override
@@ -73,22 +72,21 @@ class _CommentsCardState extends State<CommentsCard> {
           style: mainTextFont,
         )
       ];
-    }
-    else {
+    } else {
       var first = CommentArea(comments[0]);
       if (comments.length == 1) {
-        list = <Widget>[
-          first
-        ];
+        list = <Widget>[first];
       }
-      list = comments.map((m) => CommentArea(m))
+      list = comments
+          .map((m) => CommentArea(m))
           .skip(1)
           .map((m) => <Widget>[
-            Divider(),
-            m,
-          ])
+                Divider(),
+                m,
+              ])
           .expand((i) => i)
-          .toList()..insert(0, first);
+          .toList()
+            ..insert(0, first);
     }
     return Card(
       child: Column(
@@ -118,7 +116,7 @@ class CommentArea extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 TapWidget(
-                      () => openUserPage(context, comment.user),
+                  () => openUserPage(context, comment.user),
                   Container(
                     child: Row(
                       children: <Widget>[

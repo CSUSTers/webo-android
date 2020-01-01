@@ -23,11 +23,9 @@ NetworkImage getImageOfEmail(String email, {int size: 128}) {
 
 CircleImageWidget getCircleImageForUser(User user, {int size: 128}) =>
     CircleImageWidget.fromImage(
-      image: getImageOfEmail(user.email??'', size: size),
+      image: getImageOfEmail(user.email ?? '', size: size),
       radius: size.toDouble() / 2.0,
     );
 
-
 NetworkImage getImageForUser(User user, {int size: 128}) =>
-    getImageOfEmail(user.email??'', size: size);
-
+    getImageOfEmail(user.email ?? '', size: size);
