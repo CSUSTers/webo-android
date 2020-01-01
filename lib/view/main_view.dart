@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:webo/contants/user.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/rom/user_provider.dart';
-import 'package:webo/view/accout_view.dart';
-import 'package:webo/view/create_webo_view.dart';
-import 'package:webo/view/follow_view.dart';
-import 'package:webo/view/login_view.dart';
-import 'package:webo/view/my_post_view.dart';
-import 'package:webo/view/settings_view.dart';
+import 'package:webo/util/gravatar_config.dart';
+import 'package:webo/util/prefs.dart';
+import 'package:webo/view/router.dart';
 import 'package:webo/view/webo_list_view.dart';
-import 'package:webo/widget/circle_image.dart';
 
 class WebOApp extends StatelessWidget {
   @override
@@ -17,13 +16,29 @@ class WebOApp extends StatelessWidget {
     UserProvider _userProvider = UserProvider();
     return ChangeNotifierProvider.value(
       value: _userProvider,
-      child: MaterialApp(
-        title: Strings.appName,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+      child: RefreshConfiguration(
+        child: MaterialApp(
+          title: Strings.appName,
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          initialRoute: Router.home,
+//        routes: Router.routeTable,
+          onGenerateRoute: (RouteSettings settings) {
+            final routeName = settings.name;
+            var builder = Router.routeTable[routeName];
+            if (Prefs.user.id == -1 &&
+                Router.needLoginRoute.contains(routeName)) {
+              builder = Router.routeTable[Router.loginPage];
+              Fluttertoast.showToast(msg: "请先登录");
+            }
+            var router =
+                MaterialPageRoute(builder: builder, settings: settings);
+            return router;
+          },
+//        home: WebOHomePage(title: Strings.appName),
+          debugShowCheckedModeBanner: false,
         ),
-        home: WebOHomePage(title: Strings.appName),
-        debugShowCheckedModeBanner: false,
       ),
     );
   }
@@ -38,7 +53,16 @@ class WebOHomePage extends StatefulWidget {
   _WebOHomePageState createState() => _WebOHomePageState();
 }
 
-class _WebOHomePageState extends State<WebOHomePage> {
+class _WebOHomePageState extends State<WebOHomePage>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    this._tabController = TabController(length: 2, vsync: this);
+  }
+
   /*@override
   void initState() {
     super.initState();
@@ -70,13 +94,12 @@ class _WebOHomePageState extends State<WebOHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              CircleImageWidget.fromImage(
-                  radius: 128.0, image: AssetImage(_userProvider.value.avatar)),
+              getCircleImageForUser(_userProvider.user, size: 256),
               Padding(
                 padding: const EdgeInsets.all(4.0),
               ),
               Text(
-                _userProvider.value.nickname,
+                _userProvider.user.nickname,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20.0,
@@ -96,42 +119,27 @@ class _WebOHomePageState extends State<WebOHomePage> {
             ListTile(
               leading: const Icon(Icons.vpn_key),
               title: const Text(Strings.login),
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => WebOLoginPage()));
-              },
+              onTap: () => Navigator.pushNamed(context, Router.loginPage),
             ),
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text(Strings.accountSplit),
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => AccountView()));
-              },
+              onTap: () => User.openUserPage(context, _userProvider.user),
             ),
             ListTile(
               leading: const Icon(Icons.create),
               title: const Text(Strings.mineSplit),
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => MyPostPage()));
-              },
+              onTap: () => Navigator.pushNamed(context, Router.myPostPage),
             ),
             ListTile(
               leading: const Icon(Icons.favorite),
               title: const Text(Strings.followSplit),
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => FollowPage()));
-              },
+              onTap: () => Navigator.pushNamed(context, Router.followPage),
             ),
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text(Strings.settingsSplit),
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => SettingsPage()));
-              },
+              onTap: () => Navigator.pushNamed(context, Router.settingPage),
             ),
           ],
         ),
@@ -142,9 +150,24 @@ class _WebOHomePageState extends State<WebOHomePage> {
         drawer: drawer,
         appBar: AppBar(
           title: Text(widget.title),
+          bottom: TabBar(
+            controller: _tabController,
+            tabs: <Widget>[
+              Tab(
+                text: "发现",
+              ),
+              Tab(
+                text: "关注",
+              )
+            ],
+          ),
         ),
-        body: Center(
-          child: WebOListView(),
+        body: TabBarView(
+          controller: _tabController,
+          children: <Widget>[
+            WebOListView(mode: WebOListView.ALL),
+            WebOListView(mode: WebOListView.FOLLOW_ONLY)
+          ],
         ),
         floatingActionButton: Container(
           width: 64.0,
@@ -153,10 +176,7 @@ class _WebOHomePageState extends State<WebOHomePage> {
             child: FloatingActionButton(
               child: const Icon(Icons.create),
               backgroundColor: Colors.lightBlue,
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => WebOCreatePage()));
-              },
+              onPressed: () => Navigator.pushNamed(context, Router.createPage),
             ),
           ),
         ));

@@ -5,8 +5,8 @@ import 'package:webo/contants/values.dart';
 class GlobalDataWidget extends InheritedWidget {
   final Data<UserData> _userData;
 
-  GlobalDataWidget({UserData userData, Widget child}) :
-        this._userData = Data(userData),
+  GlobalDataWidget({UserData userData, Widget child})
+      : this._userData = Data(userData),
         super(child: child);
 
   UserData get user => _userData.data;
@@ -42,17 +42,14 @@ class UserData {
 
   UserData(this.userName, this.nickName, this.image);
 
-
-  UserData.undefined() :
-        this.userName = 'undefined',
+  UserData.undefined()
+      : this.userName = 'undefined',
         this.nickName = 'undefined',
         this.image = AssetImage(Strings.defaultAvatarPath);
 
-  UserData.withDefaultPic({this.userName, this.nickName}) :
-        this.image = AssetImage(Strings.defaultAvatarPath);
+  UserData.withDefaultPic({this.userName, this.nickName})
+      : this.image = AssetImage(Strings.defaultAvatarPath);
 
   static UserData notLogin() => UserData.withDefaultPic(
-    userName: Strings.notLoginUser,
-    nickName: Strings.notLoginUser
-  );
+      userName: Strings.notLoginUser, nickName: Strings.notLoginUser);
 }

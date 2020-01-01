@@ -2,13 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webo/contants/http_code.dart';
 import 'package:webo/contants/user.dart';
 import 'package:webo/contants/webo_url.dart';
 import 'package:webo/rom/user_provider.dart';
 import 'package:webo/util/encry.dart';
-import 'package:webo/view/main_view.dart';
+import 'package:webo/util/prefs.dart';
 import 'package:webo/widget/nothing.dart';
 
 import '../contants/values.dart';
@@ -170,15 +169,12 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.lightBlue,
-          leading: IconButton(
-              icon: Icon(mode == LOGIN_MODE ? Icons.close : Icons.arrow_back,
-                  color: Colors.white),
-              onPressed: () {
-                if (mode == LOGIN_MODE)
-                  Navigator.pop(context);
-                else
-                  setState(() => mode = LOGIN_MODE);
-              }),
+          leading: mode == LOGIN_MODE
+              ? const BackButton()
+              : IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () => setState(() => mode = LOGIN_MODE),
+                ),
           title: Text(mode == LOGIN_MODE ? Strings.login : Strings.register),
         ),
         body: SingleChildScrollView(
@@ -196,6 +192,7 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
       final String username = _usernameController.text.trim();
       final String pass = MD5.md5(_passwordController.text);
       setState(() => isLoading = true);
+      print(pass);
       try {
         Response resp = await Dio().post(WebOURL.login,
             data: {"username": username, "password": pass});
@@ -226,10 +223,16 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
 
   void _register() async {
     if (_formKey.currentState.validate()) {
+      final nullToEmpty = (String s) {
+        if (s?.trim()?.length == 0)
+          return null;
+        else
+          return s;
+      };
       final String username = _usernameController.text.trim();
       final String pass = MD5.md5(_passwordController.text);
-      final String nickname = _nicknameController.text;
-      final String email = _emailController.text;
+      final String nickname = nullToEmpty(_nicknameController.text);
+      final String email = nullToEmpty(_emailController.text);
       print(pass);
       setState(() => isLoading = true);
       try {
@@ -264,16 +267,10 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
     }
   }
 
-
   Future<bool> _save(dynamic data) async {
-    var user = User(
-        id: data['id'],
-        username: data['username'],
-        nickname: data['nickname'],
-        email: data['email']
-    );
+    var user = User.fromMap(data);
 
-    var p = await SharedPreferences.getInstance();
+    var p = Prefs.instance;
     var success = await Future.wait([
       p.setString("token", data['token']),
       p.setString("refreshToken", data['refreshToken']),
@@ -283,9 +280,9 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
       p.setString("email", user.email),
     ]).then((xs) => xs.reduce((x, y) => x && y));
 
-    final userProvider = Provider.of<UserProvider>(_buildContext, listen: false);
+    final userProvider =
+        Provider.of<UserProvider>(_buildContext, listen: false);
     userProvider.setUser(user);
     return success;
   }
-
 }

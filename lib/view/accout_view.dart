@@ -1,40 +1,64 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:webo/contants/user.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/rom/user_provider.dart';
+import 'package:webo/util/gravatar_config.dart';
+import 'package:webo/widget/nothing.dart';
+import 'package:webo/widget/real_divider.dart';
 
-class AccountView extends StatelessWidget {
+class AccountView extends StatefulWidget {
+  AccountView({Key key, @required this.user}) : super(key: key);
+
+  final User user;
+
+  @override
+  _AccountViewState createState() => _AccountViewState();
+}
+
+class _AccountViewState extends State<AccountView> {
   @override
   Widget build(BuildContext context) {
-    final _userProvider = Provider.of<UserProvider>(context);
+    final user = widget.user;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
-        title: const Text(Strings.account),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
+        title: const Text(Strings.personInfo),
+        leading: const BackButton(),
+        actions: <Widget>[
+          editable
+              ? GestureDetector(
+                  onTap: () {},
+                  child: Text('编辑'),
+                )
+              : Nothing()
+        ],
       ),
       body: ListView(
         children: <Widget>[
           Image(
             height: 300.0,
-            image: AssetImage(_userProvider.value.avatar),
+            image: getImageForUser(user),
             fit: BoxFit.fill,
           ),
-          _ListItem(title: '用户名', content: _userProvider.value.username),
-          const Divider(),
-          _ListItem(title: '昵称', content: _userProvider.value.nickname),
-          const Divider(),
-          _ListItem(title: '邮箱', content: _userProvider.value.email),
-          const Divider(),
-          _ListItem(title: '签名', content: _userProvider.value.bio),
-          const Divider(),
+          _ListItem(title: '用户名', content: user.username),
+          const RealDivider(),
+          _ListItem(title: '昵称', content: user.nickname),
+          const RealDivider(),
+          _ListItem(title: '邮箱', content: user.email),
+          const RealDivider(),
+          _ListItem(title: '签名', content: user.bio),
+          const RealDivider(),
         ],
       ),
     );
+  }
+
+  bool get editable {
+    var provider = Provider.of<UserProvider>(context, listen: false);
+    return widget.user.id == provider.user.id;
   }
 }
 
@@ -46,21 +70,24 @@ class _ListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 42.0,
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            title,
-            style: const TextStyle(fontSize: 16.0),
-          ),
-          Text(
-            content,
-            style: const TextStyle(color: Colors.grey),
-          )
-        ],
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        height: 56.0,
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              title,
+              style: const TextStyle(fontSize: 16.0),
+            ),
+            Text(
+              content ?? '',
+              style: const TextStyle(color: Colors.grey),
+            )
+          ],
+        ),
       ),
     );
   }

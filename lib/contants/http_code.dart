@@ -1,5 +1,4 @@
 abstract class WebOHttpCode {
-
   static const SUCCESS = 0;
 
   static const BAD_REQUEST = 1;
@@ -11,5 +10,4 @@ abstract class WebOHttpCode {
   static const TOKEN_EXPIRED = 4;
 
   static const SERVER_ERROR = 9;
-
 }

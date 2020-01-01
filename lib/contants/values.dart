@@ -1,5 +1,4 @@
 abstract class Strings {
-
   // App
   static const appName = 'WebO';
   static const defaultAvatarPath = 'images/avatar.jpeg';
@@ -39,17 +38,26 @@ abstract class Strings {
 
   //Account Page
   static const account = '账户';
+  static const personInfo = '个人信息';
 
   // Setting page
   static const settings = '设置';
+  static const changePass = '修改密码';
+  static const originPass = '原密码';
+  static const newPass = '新密码';
+  static const ackNewPass = '确认新密码';
   static const logout = '退出登录';
 
   // Actions
   static const like = '点赞';
-  static const reply = '评论';
+  static const comment = '评论';
   static const forward = '转发';
 
   // User Status
   static const follow = '关注';
   static const followed = '已关注';
+
+  // WebO Page
+  static const detail = '详情';
+  static const delete = '删除';
 }
