@@ -1,12 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webo/contants/http_code.dart';
 import 'package:webo/contants/webo.dart';
 import 'package:webo/contants/webo_url.dart';
 import 'package:webo/http/dio_with_token.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:webo/rom/user_provider.dart';
+import 'package:webo/util/prefs.dart';
 import 'package:webo/widget/webo_card.dart';
 
 class WebOListView extends StatefulWidget {
@@ -54,32 +57,32 @@ class _WebOListViewState extends State<WebOListView> {
 
   get _dio => mode == WebOListView.FOLLOW_ONLY ? Dio() : DioWithToken.getInstance();
 
-  get modeParams async {
+  get modeParams {
     var params = {};
     if (mode == WebOListView.FOLLOW_ONLY || mode == WebOListView.MINE) {
-      SharedPreferences refs = await SharedPreferences.getInstance();
-      int id = refs.getInt('id');
+      UserProvider provider = Provider.of<UserProvider>(context, listen: false);
+      int id = provider.user.id;
       print("MODEPARAMES: $id");
-      params["id"] = id.toString();
+      params["id"] = id;
     }
     return params;
   }
 
-  get _firstFetchParam async {
-    var params = await modeParams;
+  get _firstFetchParam {
+    var params = modeParams;
     return params;
   }
 
-  get _loadMoreParam async {
-    var params = await modeParams;
+  get _loadMoreParam {
+    var params = modeParams;
     params["before"] = nextForm;
     return params;
   }
 
   void _load() async {
     Dio dio = _dio;
-    var params = await _loadMoreParam;
-    final loaded = await addWebos(dio, params, (webo) => forms.add(webo));
+    var params = _loadMoreParam;
+    final loaded = await addWebOs(dio, params, (webo) => forms.add(webo));
     setState(() {});
     if (loaded > 0) {
       _controller.loadComplete();
@@ -93,7 +96,7 @@ class _WebOListViewState extends State<WebOListView> {
     forms.clear();
     Dio dio = _dio;
     var params = await _firstFetchParam;
-    final loaded = await addWebos(dio, params, (webo) => forms.add(webo));
+    final loaded = await addWebOs(dio, params, (webo) => forms.add(webo));
     setState(() {});
     if (loaded == 0) Fluttertoast.showToast(msg: "似乎没有什么东西🤔");
     _controller.refreshCompleted(resetFooterState: true);
@@ -105,7 +108,7 @@ class _WebOListViewState extends State<WebOListView> {
     WebOListView.MINE: WebOURL.myPosts,
   }[this.mode];
 
-  Future<int> addWebos(Dio dio, params, handler) async {
+  Future<int> addWebOs(Dio dio, params, handler) async {
     int loaded = 0;
     Response resp = await dio.get(_target, queryParameters: Map.castFrom(params));
     if (resp.statusCode == 200) {

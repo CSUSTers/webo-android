@@ -42,6 +42,7 @@ abstract class Strings {
 
   // Setting page
   static const settings = '设置';
+  static const changePass = '修改密码';
   static const logout = '退出登录';
 
   // Actions

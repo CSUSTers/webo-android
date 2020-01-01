@@ -6,10 +6,8 @@ import 'package:webo/contants/values.dart';
 import 'package:webo/rom/user_provider.dart';
 import 'package:webo/util/gravatar_config.dart';
 import 'package:webo/util/prefs.dart';
-import 'package:webo/view/login_view.dart';
 import 'package:webo/view/router.dart';
 import 'package:webo/view/webo_list_view.dart';
-import 'package:webo/widget/circle_image.dart';
 
 class WebOApp extends StatelessWidget {
   @override

@@ -5,6 +5,7 @@ import 'package:webo/contants/values.dart';
 import 'package:webo/rom/global_data.dart';
 import 'package:webo/rom/user_provider.dart';
 import 'package:webo/util/prefs.dart';
+import 'package:webo/view/router.dart';
 
 class SettingsPage extends StatelessWidget {
 
@@ -21,6 +22,17 @@ class SettingsPage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
+          InkWell(
+            onTap: () => Navigator.pushNamed(context, Router.passChangePage),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text('修改密码', style: TextStyle(fontSize: 16.0)),
+                Icon(Icons.chevron_right)
+              ],
+            )
+          ),
+          Divider(),
           Container(
             margin: const EdgeInsets.all(4.0),
             child: MaterialButton(
