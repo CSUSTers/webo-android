@@ -172,9 +172,11 @@ class CommentArea extends StatelessWidget {
               comment.text,
               style: mainTextFont,
             ),
+
             padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 8.0),
           ),
         ],
+        crossAxisAlignment: CrossAxisAlignment.start,
       ),
     );
   }
