@@ -25,7 +25,6 @@ class WebODetailPage extends StatelessWidget {
       ),
       body: Container(
           child: ListView(
-            shrinkWrap: true,
             children: <Widget>[
               WebOCard(data),
               Container(
@@ -88,9 +87,12 @@ class _CommentsCardState extends State<CommentsCard> {
             ..insert(0, first);
     }
     return Card(
-      child: Column(
-        children: list,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Container(
+        child: Column(
+          children: list,
+          crossAxisAlignment: CrossAxisAlignment.center,
+        ),
+        padding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 5.0),
       ),
     );
   }
