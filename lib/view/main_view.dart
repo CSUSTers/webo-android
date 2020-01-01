@@ -92,7 +92,7 @@ class _WebOHomePageState extends State<WebOHomePage>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              getImageForUser(_userProvider.user, size: 256),
+              getCircleImageForUser(_userProvider.user, size: 256),
               Padding(
                 padding: const EdgeInsets.all(4.0),
               ),

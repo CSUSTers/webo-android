@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:webo/contants/user.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/rom/user_provider.dart';
+import 'package:webo/util/gravatar_config.dart';
 
 class AccountView extends StatelessWidget {
   AccountView({Key key, @required this.user}):super(key: key);
@@ -23,7 +24,7 @@ class AccountView extends StatelessWidget {
         children: <Widget>[
           Image(
             height: 300.0,
-            image: AssetImage(user.avatar),
+            image: getImageForUser(user),
             fit: BoxFit.fill,
           ),
           _ListItem(title: '用户名', content: user.username),

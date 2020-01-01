@@ -16,13 +16,18 @@ String urlForGravatar(Gravatar gravatar, int size) {
   );
 }
 
-CircleImageWidget getImageOfEmail(String email, {int size: 128}) {
+NetworkImage getImageOfEmail(String email, {int size: 128}) {
   var url = urlForGravatar(gravatarForEmail(email), size);
-  return CircleImageWidget.fromImage(
-    image: NetworkImage(url),
-    radius: size.toDouble() / 2.0
-  );
+  return NetworkImage(url);
 }
 
-CircleImageWidget getImageForUser(User user, {int size: 128}) =>
-    getImageOfEmail(user.email ?? "", size: size);
+CircleImageWidget getCircleImageForUser(User user, {int size: 128}) =>
+    CircleImageWidget.fromImage(
+      image: getImageOfEmail(user.email??'', size: size),
+      radius: size.toDouble() / 2.0,
+    );
+
+
+NetworkImage getImageForUser(User user, {int size: 128}) =>
+    getImageOfEmail(user.email??'', size: size);
+
