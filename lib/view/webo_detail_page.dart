@@ -23,19 +23,18 @@ class WebODetailPage extends StatelessWidget {
         ),
         title: Text(Strings.detail),
       ),
-      body: SingleChildScrollView(
-        child: Container(
+      body: Container(
           child: ListView(
             children: <Widget>[
               WebOCard(data),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 3.5),
               ),
+              CommentsCard(data),
             ],
           ),
           margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
         ),
-      ),
     );
   }
 }
