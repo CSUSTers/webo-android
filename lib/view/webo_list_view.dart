@@ -38,8 +38,7 @@ class _WebOListViewState extends State<WebOListView> {
   }
 
   get _mainList =>
-      RefreshConfiguration(
-        child: SmartRefresher(
+      SmartRefresher(
           controller: _controller,
           onRefresh: _refresh,
           onLoading: _load,
@@ -55,7 +54,6 @@ class _WebOListViewState extends State<WebOListView> {
               },
               separatorBuilder: (BuildContext context, int index) =>
               const Divider()),
-        ),
       );
 
   @override
@@ -79,7 +77,7 @@ class _WebOListViewState extends State<WebOListView> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(Icons.sms_failed, size: 64.0, color: color),
+            Icon(Icons.warning, size: 64.0, color: color),
             Text("求求您登陆一下吧……", style: mainTextFont.apply(color: color))
           ],
         )

@@ -12,10 +12,7 @@ class MyPostPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
         title: Text(Strings.mine),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
+        leading: const BackButton(),
       ),
       body: WebOListView(mode: WebOListView.MINE),
     );

@@ -170,15 +170,12 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.lightBlue,
-          leading: IconButton(
-              icon: Icon(mode == LOGIN_MODE ? Icons.close : Icons.arrow_back,
-                  color: Colors.white),
-              onPressed: () {
-                if (mode == LOGIN_MODE)
-                  Navigator.pop(context);
-                else
-                  setState(() => mode = LOGIN_MODE);
-              }),
+          leading: mode == LOGIN_MODE
+              ? const BackButton()
+              : IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () => setState(() => mode = LOGIN_MODE),
+                ),
           title: Text(mode == LOGIN_MODE ? Strings.login : Strings.register),
         ),
         body: SingleChildScrollView(
@@ -194,8 +191,9 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
   void _login() async {
     if (_formKey.currentState.validate()) {
       final String username = _usernameController.text.trim();
-      final String pass = _passwordController.text;
+      final String pass = MD5.md5(_passwordController.text);
       setState(() => isLoading = true);
+      print(pass);
       try {
         Response resp = await Dio().post(WebOURL.login,
             data: {"username": username, "password": pass});
@@ -264,14 +262,12 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
     }
   }
 
-
   Future<bool> _save(dynamic data) async {
     var user = User(
         id: data['id'],
         username: data['username'],
         nickname: data['nickname'],
-        email: data['email']
-    );
+        email: data['email']);
 
     var p = Prefs.instance;
     var success = await Future.wait([
@@ -283,9 +279,9 @@ class _WebOLoginPageState extends State<WebOLoginPage> {
       p.setString("email", user.email),
     ]).then((xs) => xs.reduce((x, y) => x && y));
 
-    final userProvider = Provider.of<UserProvider>(_buildContext, listen: false);
+    final userProvider =
+        Provider.of<UserProvider>(_buildContext, listen: false);
     userProvider.setUser(user);
     return success;
   }
-
 }

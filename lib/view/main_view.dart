@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:webo/contants/user.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/rom/user_provider.dart';
@@ -15,25 +16,27 @@ class WebOApp extends StatelessWidget {
     UserProvider _userProvider = UserProvider();
     return ChangeNotifierProvider.value(
       value: _userProvider,
-      child: MaterialApp(
-        title: Strings.appName,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        initialRoute: Router.home,
+      child: RefreshConfiguration(
+        child: MaterialApp(
+          title: Strings.appName,
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          initialRoute: Router.home,
 //        routes: Router.routeTable,
-        onGenerateRoute: (RouteSettings settings) {
-          final routeName = settings.name;
-          var builder = Router.routeTable[routeName];
-          if(Prefs.user.id == -1 && Router.needLoginRoute.contains(routeName)) {
-            builder = Router.routeTable[Router.loginPage];
-            Fluttertoast.showToast(msg: "请先登录");
-          }
-          var router = MaterialPageRoute(builder: builder, settings: settings);
-          return router;
-        },
+          onGenerateRoute: (RouteSettings settings) {
+            final routeName = settings.name;
+            var builder = Router.routeTable[routeName];
+            if(Prefs.user.id == -1 && Router.needLoginRoute.contains(routeName)) {
+              builder = Router.routeTable[Router.loginPage];
+              Fluttertoast.showToast(msg: "请先登录");
+            }
+            var router = MaterialPageRoute(builder: builder, settings: settings);
+            return router;
+          },
 //        home: WebOHomePage(title: Strings.appName),
-        debugShowCheckedModeBanner: false,
+          debugShowCheckedModeBanner: false,
+        ),
       ),
     );
   }

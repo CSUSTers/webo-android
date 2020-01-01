@@ -23,10 +23,7 @@ class _WebOCreatePageState extends State<WebOCreatePage> {
     return Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.lightBlue,
-            leading: IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () => Navigator.pop(context)
-            ),
+            leading: const BackButton(),
             actions: <Widget>[
               IconButton(
                 icon: const Icon(Icons.file_upload),

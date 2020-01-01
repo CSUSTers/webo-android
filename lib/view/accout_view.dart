@@ -17,10 +17,7 @@ class AccountView extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
         title: const Text(Strings.account),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
+        leading: const BackButton(),
       ),
       body: ListView(
         children: <Widget>[
