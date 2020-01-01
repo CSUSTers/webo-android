@@ -38,22 +38,24 @@ class _WebOListViewState extends State<WebOListView> {
   }
 
   get _mainList =>
-      SmartRefresher(
-        controller: _controller,
-        onRefresh: _refresh,
-        onLoading: _load,
-        enablePullUp: true,
-        enablePullDown: true,
-        header: MaterialClassicHeader(),
-        footer: ClassicFooter(),
-        child: ListView.separated(
-            padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
-            itemCount: forms.length,
-            itemBuilder: (BuildContext context, int index) {
-              return WebOCard(forms[index]);
-            },
-            separatorBuilder: (BuildContext context, int index) =>
-            const Divider()),
+      RefreshConfiguration(
+        child: SmartRefresher(
+          controller: _controller,
+          onRefresh: _refresh,
+          onLoading: _load,
+          enablePullUp: true,
+          enablePullDown: true,
+          header: MaterialClassicHeader(),
+          footer: ClassicFooter(),
+          child: ListView.separated(
+              padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
+              itemCount: forms.length,
+              itemBuilder: (BuildContext context, int index) {
+                return WebOCard(forms[index]);
+              },
+              separatorBuilder: (BuildContext context, int index) =>
+              const Divider()),
+        ),
       );
 
   @override
