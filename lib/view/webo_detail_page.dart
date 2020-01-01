@@ -25,6 +25,7 @@ class WebODetailPage extends StatelessWidget {
       ),
       body: Container(
           child: ListView(
+            shrinkWrap: true,
             children: <Widget>[
               WebOCard(data),
               Container(
