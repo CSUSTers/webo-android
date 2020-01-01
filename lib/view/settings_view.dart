@@ -24,12 +24,16 @@ class SettingsPage extends StatelessWidget {
         children: <Widget>[
           InkWell(
             onTap: () => Navigator.pushNamed(context, Router.passChangePage),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text('修改密码', style: TextStyle(fontSize: 16.0)),
-                Icon(Icons.chevron_right)
-              ],
+            child: Container(
+              height: 46.0,
+              padding: const EdgeInsets.symmetric(horizontal: 6.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('修改密码', style: TextStyle(fontSize: 18.0)),
+                  Icon(Icons.chevron_right)
+                ],
+              ),
             )
           ),
           Divider(),
