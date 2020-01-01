@@ -125,12 +125,20 @@ class _WebOListViewState extends State<WebOListView> {
   }
 
   void _refresh() async {
+    /*
     forms.clear();
     Dio dio = _dio;
     var params = await _firstFetchParam;
     final loaded = await addWebOs(dio, params, (webo) => forms.add(webo));
-    setState(() {});
+    //setState(() {});
     if (loaded == 0) Fluttertoast.showToast(msg: "似乎没有什么东西🤔");
+    */
+    Dio dio = _dio;
+    var params = _firstFetchParam;
+    setState(() => forms.clear());
+    addWebOs(dio, params, (webo) => setState(() => forms.add(webo))).then((v){
+      if (v == 0) Fluttertoast.showToast(msg: "似乎没有什么东西🤔");
+    });
     _controller.refreshCompleted(resetFooterState: true);
   }
 

@@ -178,7 +178,9 @@ class _ActionButtonsState extends State<ActionButtons> {
               ),
               onTap: () {
                 DioWithToken.client.post(WebOURL.forwardPost,
-                    data: {'id': webo.id, 'message': webo.message}).then((v) {
+                    data: {'id': webo.id,
+                      'message': '@${webo.user.nickname}: ${webo.message}'})
+                    .then((v) {
                   if (v.statusCode == 200 &&
                       v.data['code'] == WebOHttpCode.SUCCESS) {
                     setState(() {
