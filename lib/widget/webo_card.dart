@@ -228,7 +228,7 @@ class _ActionButtonsState extends State<ActionButtons> {
                   if (v.statusCode == 200 &&
                       v.data['code'] == WebOHttpCode.SUCCESS) {
                     setState(() {
-                      likes += 1;
+                      likes += isLike ? -1 : 1;
                       isLike ^= true;
                     });
                   }
