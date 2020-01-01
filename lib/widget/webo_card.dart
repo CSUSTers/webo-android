@@ -217,7 +217,9 @@ class _ActionButtonsState extends State<ActionButtons> {
           Expanded(
             child: IconButtonWithMsg(
               icon: Icon(
-                isLike ? Icons.favorite_border : Icons.favorite,
+                isLike ?
+                  Icons.favorite :
+                  Icons.favorite_border,
                 size: size,
               ),
               msg: Text('${Strings.like} $likes'),
