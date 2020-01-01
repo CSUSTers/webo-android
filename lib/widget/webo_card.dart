@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:webo/actions/page_action.dart';
+import 'package:webo/actions/webo_action.dart';
 import 'package:webo/contants/http_code.dart';
 import 'package:webo/contants/style.dart';
 import 'package:webo/contants/values.dart';
@@ -203,15 +204,24 @@ class _ActionButtonsState extends State<ActionButtons> {
                 style: style,
               ),
               onTap: () {
-                DioWithToken.client.post(WebOURL.newComment,
-                    data: {'id': webo.id, 'text': '❤❤❤'}).then((v) {
-                  if (v.statusCode == 200 &&
-                      v.data['code'] == WebOHttpCode.SUCCESS) {
-                    setState(() {
-                      comments += 1;
+                inputText(
+                  context,
+                  onSubmit: (t) {
+                    DioWithToken.client.post(WebOURL.newComment,
+                        data: {'id': webo.id, 'text': t}).then((v) {
+                      if (v.statusCode == 200 &&
+                          v.data['code'] == WebOHttpCode.SUCCESS) {
+                        setState(() {
+                          Fluttertoast.showToast(msg: '发送成功');
+                          comments += 1;
+                        });
+                      } else {
+                        Fluttertoast.showToast(msg: '发送失败');
+                      }
                     });
                   }
-                });
+                );
+
               },
             ),
             flex: 4,
