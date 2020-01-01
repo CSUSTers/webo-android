@@ -14,6 +14,17 @@ class WebODetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var list = <Widget>[
+      WebOCard(data),
+      Container(
+        margin: EdgeInsets.symmetric(vertical: 3.5),
+      ),
+      CommentsCard(data),
+    ];
+    if (data.isForward) {
+      list.insert(0, WebOCard(data.forward));
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
@@ -25,13 +36,7 @@ class WebODetailPage extends StatelessWidget {
       ),
       body: Container(
         child: ListView(
-          children: <Widget>[
-            WebOCard(data),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 3.5),
-            ),
-            CommentsCard(data),
-          ],
+          children: list,
         ),
         margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
       ),
