@@ -1,5 +1,5 @@
 class WebOURL {
-  static final String base = 'http://123.57.50.102:8080';
+  static const base = 'http://123.57.50.102:8080';
 
   // Auth
   static final String login = base + '/user/login';
@@ -14,7 +14,9 @@ class WebOURL {
   static final String forwardPost = base + '/post/forward';
   static final String myPosts = base + '/post/mine';
   static final String followingPosts = base + '/post/following';
-
+  static const postDelete = base + '/post';
+  static const getComment = base + '/comment/all';
+  static const newComment = base + 'comment/new';
 
   // User
   static final String user = base + '/user';

@@ -52,10 +52,14 @@ abstract class Strings {
 
   // Actions
   static const like = '点赞';
-  static const reply = '评论';
+  static const comment = '评论';
   static const forward = '转发';
 
   // User Status
   static const follow = '关注';
   static const followed = '已关注';
+
+  // WebO Page
+  static const detail = '详情';
+  static const delete = '删除';
 }
