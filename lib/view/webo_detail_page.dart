@@ -23,20 +23,18 @@ class WebODetailPage extends StatelessWidget {
         ),
         title: Text(Strings.detail),
       ),
-      body: SingleChildScrollView(
-        child: Container(
+      body: Container(
           child: ListView(
-            shrinkWrap: true,
             children: <Widget>[
               WebOCard(data),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 3.5),
               ),
+              CommentsCard(data),
             ],
           ),
           margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
         ),
-      ),
     );
   }
 }
@@ -89,9 +87,12 @@ class _CommentsCardState extends State<CommentsCard> {
             ..insert(0, first);
     }
     return Card(
-      child: Column(
-        children: list,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Container(
+        child: Column(
+          children: list,
+          crossAxisAlignment: CrossAxisAlignment.center,
+        ),
+        padding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 5.0),
       ),
     );
   }
