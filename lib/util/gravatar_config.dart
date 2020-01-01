@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:simple_gravatar/simple_gravatar.dart';
 import 'package:webo/contants/user.dart';
-import 'package:webo/rom/global_data.dart';
 import 'package:webo/widget/circle_image.dart';
 
 Gravatar gravatarForEmail(String email) {
@@ -26,4 +25,4 @@ CircleImageWidget getImageOfEmail(String email, {int size: 128}) {
 }
 
 CircleImageWidget getImageForUser(User user, {int size: 128}) =>
-    getImageOfEmail(user.email, size: size);
+    getImageOfEmail(user.email ?? "", size: size);
