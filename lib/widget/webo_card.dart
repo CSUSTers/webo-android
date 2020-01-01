@@ -14,84 +14,81 @@ import 'package:webo/widget/touchable_widget.dart';
 
 class WebOCard extends StatelessWidget {
   final WebO data;
+  final shouldShowForwarding;
 
-  WebOCard(this.data);
+  WebOCard(this.data, {this.shouldShowForwarding: false});
 
   @override
   Widget build(BuildContext context) {
     final nickname = data.user.nickname;
     final username = '@${data.user.username}';
 
+    var nameView = Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          // 昵称
+          Text(
+            nickname,
+            style: bigUserNameFont,
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
+          ),
+          // 用户名
+          Text(
+            username,
+            style: smallUserNameFont,
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
+          )
+        ],
+      ),
+    );
+
+    var header = Container(
+      child: Row(
+        children: <Widget>[
+          TapWidget(
+                () => openUserPage(context, data.user),
+            nameView,
+          ),
+          Container(
+            child: Row(
+              children: <Widget>[
+                // 时间
+                Text(
+                  TimelineUtil.formatByDateTime(
+                    data.time,
+                    locDateTime: DateTime.now(),
+                  ),
+                ),
+                WebOMenuIcon(data),
+              ],
+            ),
+            margin: EdgeInsets.only(left: 5.0),
+            padding: EdgeInsets.all(0.0),
+          )
+        ],
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      ),
+    );
+
     return Card(
       child: TapWidget(
           () => openDetailPage(context, data),
           Container(
+            padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
             child: Column(
               children: <Widget>[
                 // 第一行
-                Container(
-                  // 昵称、用户名
-                  child: Row(
-                    children: <Widget>[
-                      TapWidget(
-                        () => openUserPage(context, data.user),
-                        Container(
-                          child: Row(
-                            children: <Widget>[
-                              // 昵称
-                              Text(
-                                nickname,
-                                style: bigUserNameFont,
-                                softWrap: true,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: 2.0),
-                              ),
-                              // 用户名
-                              Column(
-                                children: <Widget>[
-                                  Text(
-                                    username,
-                                    style: smallUserNameFont,
-                                    softWrap: true,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                                mainAxisAlignment: MainAxisAlignment.end,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Row(
-                          children: <Widget>[
-                            // 时间
-                            Text(
-                              TimelineUtil.formatByDateTime(
-                                data.time,
-                                locDateTime: DateTime.now(),
-                              ),
-                            ),
-                            WebOMenuIcon(data),
-                          ],
-                        ),
-                        margin: EdgeInsets.only(left: 5.0),
-                        padding: EdgeInsets.all(0.0),
-                      )
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  ),
-                ),
+                header,
                 // 第二行: 主体
-                WebOText(data),
+                WebOText(data, shouldShowForwarding: shouldShowForwarding),
                 // 第三行: 按钮
                 ActionButtons(data),
               ],
               crossAxisAlignment: CrossAxisAlignment.start,
             ),
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
           )),
     );
   }
@@ -257,8 +254,10 @@ class _ActionButtonsState extends State<ActionButtons> {
 
 class WebOText extends StatelessWidget {
   final WebO data;
+  final shouldShowForwarding;
 
-  WebOText(this.data);
+
+  WebOText(this.data, {this.shouldShowForwarding: false});
 
   @override
   Widget build(BuildContext context) {
@@ -269,10 +268,9 @@ class WebOText extends StatelessWidget {
       ),
     ];
 
-    if (data.isForward) {
+    if (shouldShowForwarding && data.isForward) {
       var f = data.forward;
       inner.add(Container(
-        padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[

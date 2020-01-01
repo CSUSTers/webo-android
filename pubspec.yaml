@@ -22,6 +22,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  timeline_list: ^0.0.3
+
   dio: ^3.0.7
 
   simple_gravatar: ^1.0.5

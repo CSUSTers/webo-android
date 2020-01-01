@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:timeline_list/timeline.dart';
+import 'package:timeline_list/timeline_model.dart';
 import 'package:webo/actions/page_action.dart';
 import 'package:webo/contants/http_code.dart';
 import 'package:webo/contants/style.dart';
@@ -15,20 +18,45 @@ import 'package:webo/widget/webo_card.dart';
 class WebODetailPage extends StatelessWidget {
   final WebO data;
 
-  WebODetailPage(this.data);
+  createTimelineByWebos(List<WebO> webos) {
+    var timeline;
+    if (webos.length > 1) {
+      final list = <TimelineModel>[];
+      for (int i = 0; i < webos.length; i ++) {
+        list.add(TimelineModel(
+            WebOCard(webos[i]),
+            icon: i != webos.length - 1 ?
+            Icon(Icons.arrow_downward, color: Colors.white) :
+            Icon(Icons.last_page, color: Colors.white),
+            iconBackground: Colors.blueAccent
+        ));
+      }
+      timeline = Timeline(
+        shrinkWrap: true,
+        lineColor: Colors.black26,
+        children: list,
+        position: TimelinePosition.Left,
+      );
+    } else {
+      timeline = WebOCard(data);
+    }
+    return timeline;
+  }
 
+  WebODetailPage(this.data);
   @override
   Widget build(BuildContext context) {
+    final webos = data.enumerateForwardChain();
+    final timeline = createTimelineByWebos(webos);
+
+
     var list = <Widget>[
-      WebOCard(data),
+      timeline,
       Container(
         margin: EdgeInsets.symmetric(vertical: 3.5),
       ),
       CommentsCard(data),
     ];
-    if (data.isForward) {
-      list.insert(0, WebOCard(data.forward));
-    }
 
     return Scaffold(
       appBar: AppBar(

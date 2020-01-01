@@ -40,6 +40,16 @@ class WebO {
 
   bool get isForward => this.forward != null;
 
+  List<WebO> enumerateForwardChain() {
+    var base = this;
+    final result = <WebO>[];
+    while (base != null) {
+      result.insert(0, base);
+      base = base.forward;
+    }
+    return result;
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

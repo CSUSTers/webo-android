@@ -15,7 +15,7 @@ const userNameFont = TextStyle(
 );
 
 const smallUserNameFont = TextStyle(
-  fontSize: 16.0,
+  fontSize: 12.0,
   color: Colors.grey,
   fontWeight: FontWeight.bold,
 );

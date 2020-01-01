@@ -49,7 +49,7 @@ class _WebOListViewState extends State<WebOListView> {
             padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
             itemCount: forms.length,
             itemBuilder: (BuildContext context, int index) {
-              return WebOCard(forms[index]);
+              return WebOCard(forms[index], shouldShowForwarding: true);
             },
             separatorBuilder: (BuildContext context, int index) =>
                 const RealDivider()),
