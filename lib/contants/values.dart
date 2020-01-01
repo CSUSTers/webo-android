@@ -39,10 +39,15 @@ abstract class Strings {
 
   //Account Page
   static const account = '账户';
+  static const personInfo = '个人信息';
+
 
   // Setting page
   static const settings = '设置';
   static const changePass = '修改密码';
+  static const originPass = '原密码';
+  static const newPass = '新密码';
+  static const ackNewPass = '确认新密码';
   static const logout = '退出登录';
 
   // Actions

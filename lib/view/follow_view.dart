@@ -11,7 +11,9 @@ import 'package:webo/contants/values.dart';
 import 'package:webo/contants/webo_url.dart';
 import 'package:webo/http/dio_with_token.dart';
 import 'package:webo/rom/user_provider.dart';
+import 'package:webo/util/gravatar_config.dart';
 import 'package:webo/widget/circle_image.dart';
+import 'package:webo/widget/real_divider.dart';
 
 class FollowPage extends StatefulWidget {
 
@@ -32,7 +34,7 @@ class _FollowPageState extends State<FollowPage> {
   List<User> _followingList = [];
   int _followerPage = 0;
   int _followingPage = 0;
-  final _pageSize = 10;
+  final _pageSize = 20;
 
 
   var _controller = RefreshController(initialRefresh: true);
@@ -50,28 +52,22 @@ class _FollowPageState extends State<FollowPage> {
       footer: ClassicFooter(),
       child: ListView.separated(
         padding: EdgeInsets.symmetric(vertical: 8.0),
-        itemCount: _mode == _FOLLOWERS ? _followerList.length : _followingList.length,
+        itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
               children: <Widget>[
-                CircleImageWidget.fromImage(radius: 48.0,
-                    image: AssetImage(Strings.defaultAvatarPath)),
+                getCircleImageForUser(list[index], size: 96),
                 Padding(padding: EdgeInsets.symmetric(horizontal: 4.0)),
                 Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          _mode == _FOLLOWERS ? _followerList[index].nickname
-                              : _followingList[index].nickname,
+                        Text(list[index].nickname,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          _mode == _FOLLOWERS ? _followerList[index].bio
-                              : _followingList[index].bio,
-                        )
+                        Text(list[index].bio)
                       ],
                     )
                 ),
@@ -86,7 +82,7 @@ class _FollowPageState extends State<FollowPage> {
               ],
             ),
           );
-        }, separatorBuilder: (BuildContext context, int index) => Divider(),
+        }, separatorBuilder: (BuildContext context, int index) => RealDivider(),
       ),
     );
 
@@ -107,6 +103,15 @@ class _FollowPageState extends State<FollowPage> {
 
   }
 
+  List<User> get list => _mode == _FOLLOWINGS ? _followingList : _followerList;
+
+  int get page => _mode == _FOLLOWINGS ? _followingPage : _followerPage;
+
+  set page (value) {
+    if(_mode == _FOLLOWINGS) _followingPage = 0;
+    else _followerPage = 0;
+  }
+
   void _load() async {
     final loaded = await _getFollowList();
     setState(() {});
@@ -119,13 +124,8 @@ class _FollowPageState extends State<FollowPage> {
   }
 
   void _refresh() async {
-    if(_mode == _FOLLOWINGS) {
-      _followingList.clear();
-      _followingPage = 0;
-    } else {
-      _followerList.clear();
-      _followerPage = 0;
-    }
+    list.clear();
+    page = 0;
     final loaded = await _getFollowList();
     setState(() {});
     if (loaded == 0) Fluttertoast.showToast(msg: "似乎没有东西呢");
@@ -137,7 +137,7 @@ class _FollowPageState extends State<FollowPage> {
     Dio dio = DioWithToken.client;
     var params = {
       "id": _provider.user.id,
-      "page": _mode == _FOLLOWINGS ? _followingPage : _followerPage,
+      "page": page,
       "size": _pageSize
     };
       Response resp = await dio.get(_mode == _FOLLOWERS
@@ -151,7 +151,7 @@ class _FollowPageState extends State<FollowPage> {
             print(u);
             User user = User(id: u['id'], username: u['username'],
                 nickname: u['nickname'], email: u['email'], bio: u['bio']??'');
-            _mode == _FOLLOWERS ? _followerList.add(user) : _followingList.add(user);
+            list.add(user);
             count += 1;
           }
         } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {

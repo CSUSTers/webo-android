@@ -9,6 +9,7 @@ import 'package:webo/contants/webo.dart';
 import 'package:webo/contants/webo_url.dart';
 import 'package:webo/http/dio_with_token.dart';
 import 'package:webo/rom/user_provider.dart';
+import 'package:webo/widget/real_divider.dart';
 import 'package:webo/widget/webo_card.dart';
 
 class WebOListView extends StatefulWidget {
@@ -26,7 +27,7 @@ class _WebOListViewState extends State<WebOListView> {
   _WebOListViewState({this.mode});
 
   final forms = List<WebO>();
-  String nextForm;
+  String nextFrom;
 
   var _controller;
 
@@ -44,7 +45,7 @@ class _WebOListViewState extends State<WebOListView> {
           onLoading: _load,
           enablePullUp: true,
           enablePullDown: true,
-          header: MaterialClassicHeader(),
+          header: WaterDropMaterialHeader(),
           footer: ClassicFooter(),
           child: ListView.separated(
               padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
@@ -53,7 +54,7 @@ class _WebOListViewState extends State<WebOListView> {
                 return WebOCard(forms[index]);
               },
               separatorBuilder: (BuildContext context, int index) =>
-              const Divider()),
+              const RealDivider()),
       );
 
   @override
@@ -107,7 +108,8 @@ class _WebOListViewState extends State<WebOListView> {
 
   get _loadMoreParam {
     var params = modeParams;
-    params["before"] = nextForm;
+    print(nextFrom);
+    params["before"] = nextFrom;
     return params;
   }
 
@@ -146,9 +148,8 @@ class _WebOListViewState extends State<WebOListView> {
     if (resp.statusCode == 200) {
       if (resp.data['code'] == WebOHttpCode.SUCCESS) {
         var data = resp.data['data'];
-        nextForm = data['nextForm'];
+        nextFrom = data['nextFrom'];
         for (var webo in data['webos']) {
-          print(webo);
           loaded += 1;
           handler(WebO.fromMap(webo));
         }
