@@ -27,7 +27,7 @@ class _WebOListViewState extends State<WebOListView> {
   _WebOListViewState({this.mode});
 
   final forms = List<WebO>();
-  String nextForm;
+  String nextFrom;
 
   var _controller;
 
@@ -108,7 +108,8 @@ class _WebOListViewState extends State<WebOListView> {
 
   get _loadMoreParam {
     var params = modeParams;
-    params["before"] = nextForm;
+    print(nextFrom);
+    params["before"] = nextFrom;
     return params;
   }
 
@@ -147,9 +148,8 @@ class _WebOListViewState extends State<WebOListView> {
     if (resp.statusCode == 200) {
       if (resp.data['code'] == WebOHttpCode.SUCCESS) {
         var data = resp.data['data'];
-        nextForm = data['nextForm'];
+        nextFrom = data['nextFrom'];
         for (var webo in data['webos']) {
-          print(webo);
           loaded += 1;
           handler(WebO.fromMap(webo));
         }
