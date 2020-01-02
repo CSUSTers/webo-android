@@ -312,6 +312,9 @@ class WebOText extends StatelessWidget {
           ],
           crossAxisAlignment: CrossAxisAlignment.start,
         ),
+        decoration: BoxDecoration(
+
+        ),
       ));
     }
 
