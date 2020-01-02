@@ -184,17 +184,21 @@ class _ActionButtonsState extends State<ActionButtons> {
                 style: style,
               ),
               onTap: () {
-                inputText(context, onSubmit: (t) {
-                  DioWithToken.client.post(WebOURL.forwardPost,
-                      data: {'id': webo.id, 'message': t}).then((v) {
-                    if (v.statusCode == 200 &&
-                        v.data['code'] == WebOHttpCode.SUCCESS) {
-                      setState(() {
-                        forwards += 1;
-                      });
-                    }
-                  });
-                });
+                inputText(
+                  context,
+                  onSubmit: (t) {
+                    DioWithToken.client.post(WebOURL.forwardPost,
+                        data: {'id': webo.id, 'message': t}).then((v) {
+                      if (v.statusCode == 200 &&
+                          v.data['code'] == WebOHttpCode.SUCCESS) {
+                        setState(() {
+                          forwards += 1;
+                        });
+                      }
+                    });
+                  },
+                  canEmpty: true,
+                );
               },
             ),
             flex: 4,
@@ -307,6 +311,8 @@ class WebOText extends StatelessWidget {
             Container(
               child: Text(
                 f.message,
+                maxLines: 5,
+                overflow: TextOverflow.ellipsis,
                 style: mainTextFont.apply(color: Colors.blueGrey),
               ),
             )

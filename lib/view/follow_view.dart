@@ -1,15 +1,11 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:webo/contants/http_code.dart';
 import 'package:webo/contants/user.dart';
 import 'package:webo/contants/values.dart';
-import 'package:webo/contants/webo_url.dart';
 import 'package:webo/http/api.dart';
-import 'package:webo/http/dio_with_token.dart';
 import 'package:webo/rom/user_provider.dart';
 import 'package:webo/util/gravatar_config.dart';
 import 'package:webo/widget/real_divider.dart';
@@ -30,7 +26,6 @@ class _FollowPageState extends State<FollowPage> {
   List<User> _followingList = [];
   int _followerPage = 0;
   int _followingPage = 0;
-  final _pageSize = 20;
 
   var _controller = RefreshController(initialRefresh: true);
 

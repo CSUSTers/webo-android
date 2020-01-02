@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:webo/contants/user.dart';
 import 'package:webo/contants/values.dart';
 
 class GlobalDataWidget extends InheritedWidget {
