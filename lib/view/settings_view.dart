@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webo/contants/values.dart';
-import 'package:webo/rom/global_data.dart';
 import 'package:webo/rom/user_provider.dart';
 import 'package:webo/util/prefs.dart';
 import 'package:webo/view/router.dart';

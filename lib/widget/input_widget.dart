@@ -5,8 +5,9 @@ import 'package:webo/contants/style.dart';
 class BottomInputDialog extends StatefulWidget {
   final Function onSubmit;
   final Function onChange;
+  final bool canEmpty;
 
-  BottomInputDialog({this.onSubmit, this.onChange});
+  BottomInputDialog({this.onSubmit, this.onChange, this.canEmpty: false});
 
   @override
   createState() => _BottomInputDialogState();
@@ -59,7 +60,7 @@ class _BottomInputDialogState extends State<BottomInputDialog> {
                   ),
                   onPressed: () {
                     var t = text.trim();
-                    if (t.length == 0) {
+                    if (!widget.canEmpty && t.length == 0) {
                       Fluttertoast.showToast(msg: '不能为空');
                     } else {
                       widget.onSubmit(text);

@@ -6,10 +6,11 @@ import 'package:webo/widget/pop_route.dart';
 void openMenu(WebO webo) {}
 
 
-void inputText(BuildContext context, {onSubmit}) {
+void inputText(BuildContext context, {onSubmit, bool canEmpty: false}) {
   Navigator.push(context, PopRoute(
       child: BottomInputDialog(
         onSubmit: onSubmit,
+        canEmpty: canEmpty,
       ),
   ));
 }

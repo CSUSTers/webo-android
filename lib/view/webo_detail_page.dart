@@ -20,28 +20,33 @@ class WebODetailPage extends StatelessWidget {
   final WebO data;
 
   createTimelineByWebos(List<WebO> webos) {
-    var timeline;
+    var timelineList = <Widget>[];
     if (webos.length > 1) {
       final list = <TimelineModel>[];
-      for (int i = 0; i < webos.length; i ++) {
+      for (int i = 0; i <= webos.length-2; i ++) {
         list.add(TimelineModel(
             WebOCard(webos[i]),
-            icon: i != webos.length - 1 ?
+            icon: i != webos.length - 2 ?
             Icon(Icons.arrow_downward, color: Colors.white) :
             Icon(Icons.last_page, color: Colors.white),
             iconBackground: Colors.blueAccent
         ));
       }
-      timeline = Timeline(
+      var timeline = Timeline(
         shrinkWrap: true,
         lineColor: Colors.black26,
         children: list,
         position: TimelinePosition.Left,
       );
-    } else {
-      timeline = WebOCard(data);
+      timelineList = <Widget>[
+          timeline,
+      ];
     }
-    return timeline;
+
+    timelineList.add(WebOCard(data, noLimitLines: true,));
+    return Column(
+      children: timelineList,
+    );
   }
 
   WebODetailPage(this.data);
@@ -49,7 +54,6 @@ class WebODetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final webos = data.enumerateForwardChain();
     final timeline = createTimelineByWebos(webos);
-
 
     var list = <Widget>[
       timeline,

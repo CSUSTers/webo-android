@@ -29,25 +29,41 @@ enum DateFormat {
 /// hour -> HH/H      minute -> mm/m   second -> ss/s
 class DataFormats {
   static String full = "yyyy-MM-dd HH:mm:ss";
+  // ignore: non_constant_identifier_names
   static String y_mo_d_h_m = "yyyy-MM-dd HH:mm";
+  // ignore: non_constant_identifier_names
   static String y_mo_d = "yyyy-MM-dd";
+  // ignore: non_constant_identifier_names
   static String y_mo = "yyyy-MM";
+  // ignore: non_constant_identifier_names
   static String mo_d = "MM-dd";
+  // ignore: non_constant_identifier_names
   static String mo_d_h_m = "MM-dd HH:mm";
+  // ignore: non_constant_identifier_names
   static String h_m_s = "HH:mm:ss";
+  // ignore: non_constant_identifier_names
   static String h_m = "HH:mm";
 
+  // ignore: non_constant_identifier_names
   static String zh_full = "yyyy年MM月dd日 HH时mm分ss秒";
+  // ignore: non_constant_identifier_names
   static String zh_y_mo_d_h_m = "yyyy年MM月dd日 HH时mm分";
+  // ignore: non_constant_identifier_names
   static String zh_y_mo_d = "yyyy年MM月dd日";
+  // ignore: non_constant_identifier_names
   static String zh_y_mo = "yyyy年MM月";
+  // ignore: non_constant_identifier_names
   static String zh_mo_d = "MM月dd日";
+  // ignore: non_constant_identifier_names
   static String zh_mo_d_h_m = "MM月dd日 HH时mm分";
+  // ignore: non_constant_identifier_names
   static String zh_h_m_s = "HH时mm分ss秒";
+  // ignore: non_constant_identifier_names
   static String zh_h_m = "HH时mm分";
 }
 
 /// month->days.
+// ignore: non_constant_identifier_names
 Map<int, int> MONTH_DAY = {
   1: 31,
   2: 28,

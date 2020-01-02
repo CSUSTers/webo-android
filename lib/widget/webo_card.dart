@@ -17,8 +17,12 @@ import 'package:webo/widget/touchable_widget.dart';
 class WebOCard extends StatelessWidget {
   final WebO data;
   final shouldShowForwarding;
+  final bool noLimitLines;
 
-  WebOCard(this.data, {this.shouldShowForwarding: false});
+  WebOCard(this.data, {
+    this.shouldShowForwarding: false,
+    this.noLimitLines: false
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +97,11 @@ class WebOCard extends StatelessWidget {
                 // 第一行
                 header,
                 // 第二行: 主体
-                WebOText(data, shouldShowForwarding: shouldShowForwarding),
+                WebOText(
+                    data,
+                    shouldShowForwarding: shouldShowForwarding,
+                    noLimitLines: noLimitLines,
+                ),
                 // 第三行: 按钮
                 ActionButtons(data),
               ],
@@ -184,17 +192,21 @@ class _ActionButtonsState extends State<ActionButtons> {
                 style: style,
               ),
               onTap: () {
-                inputText(context, onSubmit: (t) {
-                  DioWithToken.client.post(WebOURL.forwardPost,
-                      data: {'id': webo.id, 'message': t}).then((v) {
-                    if (v.statusCode == 200 &&
-                        v.data['code'] == WebOHttpCode.SUCCESS) {
-                      setState(() {
-                        forwards += 1;
-                      });
-                    }
-                  });
-                });
+                inputText(
+                  context,
+                  onSubmit: (t) {
+                    DioWithToken.client.post(WebOURL.forwardPost,
+                        data: {'id': webo.id, 'message': t}).then((v) {
+                      if (v.statusCode == 200 &&
+                          v.data['code'] == WebOHttpCode.SUCCESS) {
+                        setState(() {
+                          forwards += 1;
+                        });
+                      }
+                    });
+                  },
+                  canEmpty: true,
+                );
               },
             ),
             flex: 4,
@@ -262,14 +274,22 @@ class _ActionButtonsState extends State<ActionButtons> {
 class WebOText extends StatelessWidget {
   final WebO data;
   final shouldShowForwarding;
+  final noLimitLines;
 
-  WebOText(this.data, {this.shouldShowForwarding: false});
+  WebOText(
+      this.data,
+      {
+        this.shouldShowForwarding: false,
+        this.noLimitLines: false,
+      });
 
   @override
   Widget build(BuildContext context) {
     var inner = <Widget>[
       Text(
         data.message,
+        maxLines: noLimitLines ? null : 5,
+        overflow: TextOverflow.ellipsis,
         style: bigMainTextFont,
       ),
     ];
@@ -307,6 +327,8 @@ class WebOText extends StatelessWidget {
             Container(
               child: Text(
                 f.message,
+                maxLines: 3,
+                overflow: TextOverflow.clip,
                 style: mainTextFont.apply(color: Colors.blueGrey),
               ),
             )
