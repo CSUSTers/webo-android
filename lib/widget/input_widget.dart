@@ -39,14 +39,17 @@ class _BottomInputDialogState extends State<BottomInputDialog> {
 
               children: <Widget>[
                 Expanded(
-                  child: TextField(
-                    autofocus: true,
-                    onChanged: (v) => text = v,
-                    maxLength: 220,
-                    keyboardType: TextInputType.multiline,
-                    style: bigMainTextFont,
-                    maxLines: 10,
-                    minLines: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                    child: TextField(
+                      autofocus: true,
+                      onChanged: (v) => text = v,
+                      maxLength: 220,
+                      keyboardType: TextInputType.multiline,
+                      style: bigMainTextFont,
+                      maxLines: 10,
+                      minLines: 1,
+                    ),
                   ),
                 ),
                 IconButton(

@@ -8,6 +8,7 @@ import 'package:webo/contants/values.dart';
 import 'package:webo/http/api.dart';
 import 'package:webo/rom/user_provider.dart';
 import 'package:webo/util/gravatar_config.dart';
+import 'package:webo/widget/nothing.dart';
 import 'package:webo/widget/real_divider.dart';
 
 class FollowPage extends StatefulWidget {
@@ -49,8 +50,8 @@ class _FollowPageState extends State<FollowPage> {
             child: Row(
               children: <Widget>[
                 GestureDetector(
-                  onTap: () => User.openUserPage(context, _provider.user),
-                  child: getCircleImageForUser(list[index], size: 96),
+                  onTap: () => User.openUserPage(context, list[index]),
+                  child: getCircleImageForUser(list[index], size: 88),
                 ),
                 Padding(padding: EdgeInsets.symmetric(horizontal: 4.0)),
                 Expanded(
@@ -63,14 +64,18 @@ class _FollowPageState extends State<FollowPage> {
                       ),
                       Text(list[index].bio)
                     ])),
-                MaterialButton(
+                _mode == _FOLLOWINGS
+                    ? MaterialButton(
                   minWidth: 72,
                   height: 36,
                   child: const Text(Strings.cancelFollow),
                   color: Colors.white,
                   textColor: Colors.lightBlue,
-                  onPressed: () {},
-                )
+                  onPressed: () {
+                    Api.follow(list[index].id);
+                    setState(() => list.removeAt(index));
+                  },
+                ) : Nothing()
               ],
             ),
           );
@@ -88,8 +93,10 @@ class _FollowPageState extends State<FollowPage> {
         actions: <Widget>[
           IconButton(
               icon: const Icon(Icons.swap_horiz),
-              onPressed: () => setState(() =>
-                  _mode = _mode == _FOLLOWINGS ? _FOLLOWERS : _FOLLOWINGS))
+              onPressed: () => setState(() {
+                _mode = _mode == _FOLLOWINGS ? _FOLLOWERS : _FOLLOWINGS;
+                _refresh();
+              }))
         ],
       ),
       body: widget,
