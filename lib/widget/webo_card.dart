@@ -274,6 +274,8 @@ class WebOText extends StatelessWidget {
     var inner = <Widget>[
       Text(
         data.message,
+        maxLines: 5,
+        overflow: TextOverflow.ellipsis,
         style: bigMainTextFont,
       ),
     ];
@@ -311,8 +313,8 @@ class WebOText extends StatelessWidget {
             Container(
               child: Text(
                 f.message,
-                maxLines: 5,
-                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                overflow: TextOverflow.clip,
                 style: mainTextFont.apply(color: Colors.blueGrey),
               ),
             )
