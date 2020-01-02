@@ -23,10 +23,10 @@ class WebODetailPage extends StatelessWidget {
     var timeline;
     if (webos.length > 1) {
       final list = <TimelineModel>[];
-      for (int i = 0; i < webos.length; i ++) {
+      for (int i = 0; i <= webos.length-2; i ++) {
         list.add(TimelineModel(
             WebOCard(webos[i]),
-            icon: i != webos.length - 1 ?
+            icon: i != webos.length - 2 ?
             Icon(Icons.arrow_downward, color: Colors.white) :
             Icon(Icons.last_page, color: Colors.white),
             iconBackground: Colors.blueAccent
@@ -37,6 +37,12 @@ class WebODetailPage extends StatelessWidget {
         lineColor: Colors.black26,
         children: list,
         position: TimelinePosition.Left,
+      );
+      timeline = Column(
+        children: <Widget>[
+          timeline,
+          WebOCard(webos[webos.length-1]),
+        ],
       );
     } else {
       timeline = WebOCard(data);
