@@ -91,6 +91,8 @@ class _WebOHomePageState extends State<WebOHomePage>
   @override
   Widget build(BuildContext context) {
     final _userProvider = Provider.of<UserProvider>(context);
+    final _followingProvider = Provider.of<FollowingProvider>(context, listen: false);
+    _followingProvider.update(context);
 
     Container drawerHeader = Container(
         height: 256.0,
