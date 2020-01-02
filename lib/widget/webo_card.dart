@@ -9,6 +9,7 @@ import 'package:webo/contants/webo.dart';
 import 'package:webo/contants/webo_url.dart';
 import 'package:webo/http/dio_with_token.dart';
 import 'package:webo/rom/user_provider.dart';
+import 'package:webo/util/gravatar_config.dart';
 import 'package:webo/util/timeline.dart';
 import 'package:webo/widget/touchable_widget.dart';
 
@@ -24,23 +25,30 @@ class WebOCard extends StatelessWidget {
     final username = '@${data.user.username}';
 
     var nameView = Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: <Widget>[
-          // 昵称
-          Text(
-            nickname,
-            style: bigUserNameFont,
-            softWrap: true,
-            overflow: TextOverflow.ellipsis,
+          getCircleImageForUser(data.user, size: 64),
+          Padding(padding: EdgeInsets.only(left: 4),),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              // 昵称
+              Text(
+                nickname,
+                style: bigUserNameFont,
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+              ),
+              // 用户名
+              Text(
+                username,
+                style: smallUserNameFont,
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+              )
+            ],
           ),
-          // 用户名
-          Text(
-            username,
-            style: smallUserNameFont,
-            softWrap: true,
-            overflow: TextOverflow.ellipsis,
-          )
         ],
       ),
     );
