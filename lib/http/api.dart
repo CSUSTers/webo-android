@@ -36,12 +36,14 @@ abstract class Api {
   static Future<List<User>> getFollowingList(int id, int page) async {
     List<User> list = [];
     var data = await call(WebOURL.followings, data: {
-      "id": id,
+      "id": id??-1,
       "page": page,
       "size": _followPageSize
     }, method: "GET");
-    for (var u in data) {
-      list.add(User.fromMap(u));
+    if(data != null) {
+      for (var u in data) {
+        list.add(User.fromMap(u));
+      }
     }
     return list;
   }
@@ -50,12 +52,14 @@ abstract class Api {
   static Future<List<User>> getFollowerList(int id, int page) async {
     List<User> list = [];
     var data = await call(WebOURL.followers, data: {
-      "id": id,
+      "id": id??-1,
       "page": page,
       "size": _followPageSize
     }, method: "GET");
-    for (var u in data) {
-      list.add(User.fromMap(u));
+    if(data != null) {
+      for (var u in data) {
+        list.add(User.fromMap(u));
+      }
     }
     return list;
   }

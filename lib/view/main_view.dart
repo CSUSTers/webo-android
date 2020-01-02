@@ -10,6 +10,7 @@ import 'package:webo/util/gravatar_config.dart';
 import 'package:webo/util/prefs.dart';
 import 'package:webo/view/router.dart';
 import 'package:webo/view/webo_list_view.dart';
+import 'package:webo/widget/nothing.dart';
 
 class WebOApp extends StatelessWidget {
   @override
@@ -123,11 +124,11 @@ class _WebOHomePageState extends State<WebOHomePage>
           padding: EdgeInsets.zero,
           children: <Widget>[
             drawerHeader,
-            ListTile(
+            _userProvider.user.id == null || _userProvider.user.id < 0 ? ListTile(
               leading: const Icon(Icons.vpn_key),
               title: const Text(Strings.login),
               onTap: () => Navigator.pushNamed(context, Router.loginPage),
-            ),
+            ): Nothing(),
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text(Strings.accountSplit),

@@ -14,7 +14,7 @@ class FollowingProvider  with ChangeNotifier {
     var provider = Provider.of<UserProvider>(context, listen: false);
     User curUser = provider.user;
     var res = await Api.getFollowingList(curUser.id, 0);
-    if(res != null) _followingList = res;
+    if (res != null) _followingList = res;
     notifyListeners();
   }
 
