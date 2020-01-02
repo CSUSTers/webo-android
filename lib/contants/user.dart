@@ -42,7 +42,7 @@ class User {
             username: data['username'],
             nickname: data['nickname'],
             email: data['email'],
-            bio: data['bio']);
+            bio: data['bio'] ?? '');
 
   static openUserPage(BuildContext context, User user) {
     Navigator.pushNamed(context, Router.userPage, arguments: user);

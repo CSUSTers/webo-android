@@ -17,13 +17,16 @@ class WebOListView extends StatefulWidget {
   static const FOLLOW_ONLY = 1;
   static const MINE = 2;
   final mode;
+
   WebOListView({this.mode: WebOListView.ALL});
+
   @override
   _WebOListViewState createState() => _WebOListViewState(mode: mode);
 }
 
 class _WebOListViewState extends State<WebOListView> {
   final mode;
+
   _WebOListViewState({this.mode});
 
   final forms = List<WebO>();
@@ -73,13 +76,12 @@ class _WebOListViewState extends State<WebOListView> {
     final color = Colors.blue.withOpacity(0.88);
     return Center(
         child: Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Icon(Icons.warning, size: 64.0, color: color),
-        Text("求求您登陆一下吧……", style: mainTextFont.apply(color: color))
-      ],
-    ));
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+          Icon(Icons.warning, size: 64.0, color: color),
+          Text("求求您登陆一下吧……", style: mainTextFont.apply(color: color))
+        ]));
   }
 
   get _dio =>
@@ -139,7 +141,7 @@ class _WebOListViewState extends State<WebOListView> {
     Dio dio = _dio;
     var params = _firstFetchParam;
     setState(() => forms.clear());
-    addWebOs(dio, params, (webo) => setState(() => forms.add(webo))).then((v){
+    addWebOs(dio, params, (webo) => setState(() => forms.add(webo))).then((v) {
       if (v == 0) Fluttertoast.showToast(msg: "似乎没有什么东西🤔");
     });
     _controller.refreshCompleted(resetFooterState: true);

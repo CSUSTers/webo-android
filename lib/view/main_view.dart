@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:webo/contants/user.dart';
 import 'package:webo/contants/values.dart';
+import 'package:webo/rom/following_provider.dart';
 import 'package:webo/rom/user_provider.dart';
 import 'package:webo/util/gravatar_config.dart';
 import 'package:webo/util/prefs.dart';
@@ -14,8 +15,12 @@ class WebOApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserProvider _userProvider = UserProvider();
-    return ChangeNotifierProvider.value(
-      value: _userProvider,
+    FollowingProvider _followingProvider = FollowingProvider();
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: _userProvider),
+        ChangeNotifierProvider.value(value: _followingProvider),
+      ],
       child: RefreshConfiguration(
         child: MaterialApp(
           title: Strings.appName,

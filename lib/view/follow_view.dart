@@ -8,6 +8,7 @@ import 'package:webo/contants/http_code.dart';
 import 'package:webo/contants/user.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/contants/webo_url.dart';
+import 'package:webo/http/api.dart';
 import 'package:webo/http/dio_with_token.dart';
 import 'package:webo/rom/user_provider.dart';
 import 'package:webo/util/gravatar_config.dart';
@@ -106,12 +107,13 @@ class _FollowPageState extends State<FollowPage> {
 
   set page(value) {
     if (_mode == _FOLLOWINGS)
-      _followingPage = 0;
+      _followingPage = value;
     else
-      _followerPage = 0;
+      _followerPage = value;
   }
 
   void _load() async {
+    page ++;
     final loaded = await _getFollowList();
     setState(() {});
     if (loaded > 0) {
@@ -132,34 +134,13 @@ class _FollowPageState extends State<FollowPage> {
   }
 
   Future<int> _getFollowList() async {
-    int count = 0;
-    Dio dio = DioWithToken.client;
-
-    var params = {"id": _provider.user.id, "page": page, "size": _pageSize};
-    Response resp = await dio.get(
-        _mode == _FOLLOWERS ? WebOURL.followers : WebOURL.followings,
-        queryParameters: params);
-    if (resp.statusCode == 200) {
-      if (resp.data['code'] == WebOHttpCode.SUCCESS) {
-        var data = resp.data['data'];
-        for (var u in data) {
-          print(u);
-          User user = User(
-              id: u['id'],
-              username: u['username'],
-              nickname: u['nickname'],
-              email: u['email'],
-              bio: u['bio'] ?? '');
-          list.add(user);
-          count += 1;
-        }
-      } else if (resp.data['code'] == WebOHttpCode.SERVER_ERROR) {
-        Fluttertoast.showToast(
-            msg: "Error: " + resp.data['data']['exceptionMessage']);
-      }
+    List<User> tmp = [];
+    if(_mode == _FOLLOWERS) {
+      tmp = await Api.getFollowerList(_provider.user.id, page);
     } else {
-      Fluttertoast.showToast(msg: "Error: " + resp.statusCode.toString());
+      tmp = await Api.getFollowingList(_provider.user.id, page);
     }
-    return count;
+    list.addAll(tmp);
+    return tmp.length;
   }
 }
