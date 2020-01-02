@@ -13,12 +13,12 @@ abstract class Api {
   static const POST = "POST";
   static const GET = "GET";
 
-  static Future<dynamic> call(String url, dynamic params, String method) async {
+  static Future<dynamic> call(String url, {dynamic data, String method = POST}) async {
     Response resp;
     if(method == POST) {
-      resp = await _dio.post(url, data: params);
+      resp = await _dio.post(url, data: data);
     } else {
-      resp = await _dio.get(url, queryParameters: params);
+      resp = await _dio.get(url, queryParameters: data);
     }
     if (resp.statusCode == 200) {
       if (resp.data['code'] == WebOHttpCode.SUCCESS) {
@@ -35,11 +35,11 @@ abstract class Api {
   //呐呐，大五哥哥说这个不行呢~
   static Future<List<User>> getFollowingList(int id, int page) async {
     List<User> list = [];
-    var data = await call(WebOURL.followings, {
+    var data = await call(WebOURL.followings, data: {
       "id": id,
       "page": page,
       "size": _followPageSize
-    }, "GET");
+    }, method: "GET");
     for (var u in data) {
       list.add(User.fromMap(u));
     }
@@ -49,15 +49,23 @@ abstract class Api {
 
   static Future<List<User>> getFollowerList(int id, int page) async {
     List<User> list = [];
-    var data = await call(WebOURL.followers, {
+    var data = await call(WebOURL.followers, data: {
       "id": id,
       "page": page,
       "size": _followPageSize
-    }, "GET");
+    }, method: "GET");
     for (var u in data) {
       list.add(User.fromMap(u));
     }
     return list;
+  }
+
+
+  static Future<bool> follow(int id) async {
+    var data = await call(WebOURL.follow, data: {
+      "to": id
+    });
+    return data != null;
   }
 
 
