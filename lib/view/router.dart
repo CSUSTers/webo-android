@@ -10,6 +10,8 @@ import 'package:webo/view/main_view.dart';
 import 'package:webo/view/my_post_view.dart';
 import 'package:webo/view/settings_view.dart';
 
+import 'about_page.dart';
+
 class Router {
   static const home = "/";
   static const loginPage = "/login";
@@ -20,6 +22,7 @@ class Router {
   static const myPostPage = "/my-post";
   static const followPage = "/follow";
   static const settingPage = "/settings";
+  static const aboutPage = "/about";
 
   static List<String> needLoginRoute = [
     userPage,
@@ -42,5 +45,6 @@ class Router {
     myPostPage: (context) => MyPostPage(),
     followPage: (context) => FollowPage(),
     settingPage: (context) => SettingsPage(),
+    aboutPage: (context) => AboutPage(),
   };
 }

@@ -379,7 +379,7 @@ class _WebOMenuState extends State<WebOMenuIcon> {
     else {
       isFollowing = FollowingProvider
           .of(context, listen: true)
-          .followerList
+          .followingList
           .contains(webo.user);
       list.add(PopupMenuItem(
         value: 'follow',

@@ -8,6 +8,7 @@ abstract class Strings {
   static const settingsSplit = '设 置';
   static const followSplit = '关 注 列 表';
   static const mineSplit = '我 的 帖 子';
+  static const aboutSplit = '关 于';
 
   // User
   static const notLoginUser = '未登录';
@@ -64,5 +65,6 @@ abstract class Strings {
 
   //Other
   static const save = '保存';
+  static const about = '关于';
 
 }

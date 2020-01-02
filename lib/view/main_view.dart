@@ -148,6 +148,11 @@ class _WebOHomePageState extends State<WebOHomePage>
               title: const Text(Strings.settingsSplit),
               onTap: () => Navigator.pushNamed(context, Router.settingPage),
             ),
+            ListTile(
+              leading: const Icon(Icons.announcement),
+              title: const Text(Strings.aboutSplit),
+              onTap: () => Navigator.pushNamed(context, Router.aboutPage),
+            ),
           ],
         ),
       ),
