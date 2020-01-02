@@ -11,6 +11,7 @@ import 'package:webo/contants/webo.dart';
 import 'package:webo/contants/webo_url.dart';
 import 'package:webo/http/dio_with_token.dart';
 import 'package:webo/rom/user_provider.dart';
+import 'package:webo/util/gravatar_config.dart';
 import 'package:webo/util/timeline.dart';
 import 'package:webo/widget/touchable_widget.dart';
 import 'package:webo/widget/webo_card.dart';
@@ -157,6 +158,14 @@ class CommentArea extends StatelessWidget {
                   Container(
                     child: Row(
                       children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 2.5),
+                        ),
+                        // 头像
+                        getCircleImageForUser(comment.user, size: 58),
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 2.5),
+                        ),
                         // 昵称
                         Text(
                           nickname,
@@ -197,7 +206,7 @@ class CommentArea extends StatelessWidget {
                       //CommentMenuIcon(comment),
                     ],
                   ),
-                  margin: EdgeInsets.only(left: 5.0),
+                  margin: EdgeInsets.only(left: 5.0, right: 8.0),
                   padding: EdgeInsets.all(0.0),
                 )
               ],

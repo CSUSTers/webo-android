@@ -8,6 +8,7 @@ import 'package:webo/contants/values.dart';
 import 'package:webo/contants/webo.dart';
 import 'package:webo/contants/webo_url.dart';
 import 'package:webo/http/dio_with_token.dart';
+import 'package:webo/rom/following_provider.dart';
 import 'package:webo/rom/user_provider.dart';
 import 'package:webo/util/gravatar_config.dart';
 import 'package:webo/util/timeline.dart';
@@ -337,9 +338,15 @@ class WebOMenuIcon extends StatefulWidget {
 
 class _WebOMenuState extends State<WebOMenuIcon> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final webo = widget.data;
     var list = <PopupMenuItem>[];
+    var isFollowing = false;
 
     // 删除
     if (webo.user.id == UserProvider.of(context).user?.id)
@@ -347,11 +354,17 @@ class _WebOMenuState extends State<WebOMenuIcon> {
         value: 'delete',
         child: Text(Strings.delete),
       ));
-    else
+    else {
+      isFollowing = FollowingProvider
+          .of(context, listen: true)
+          .followerList
+          .contains(webo.user);
       list.add(PopupMenuItem(
-        enabled: false,
-        child: Text('Nothing'),
+        value: 'follow',
+        child: Text(isFollowing ? Strings.followed : Strings.follow),
       ));
+    }
+
 
     return PopupMenuButton(
       itemBuilder: (context) => list,
@@ -379,6 +392,39 @@ class _WebOMenuState extends State<WebOMenuIcon> {
                 });
               },
             );
+            break;
+          case 'follow':{
+              DioWithToken.client.post(
+                WebOURL.follow,
+                data: {
+                  'to': webo.user.id,
+                },
+              ).then((v) {
+                if (v.statusCode == 200 &&
+                    v.data['code'] == WebOHttpCode.SUCCESS) {
+                  /*
+                  var list = FollowingProvider
+                      .of(context, listen: false)
+                      .followerList;
+                    */
+                  FollowingProvider.of(context, listen: false)
+                      .update(context)
+                      .then((v) => setState((){}));
+                  setState(() {
+                    if(isFollowing) {
+                      //list.remove(webo.user);
+                      Fluttertoast.showToast(msg: '取关成功');
+                    } else {
+                      //list.add(webo.user);
+                      Fluttertoast.showToast(msg: '关注成功');
+                    }
+                  });
+                } else {
+                  Fluttertoast.showToast(msg: '操作失败');
+                }
+              });
+              break;
+            }
         }
       },
     );

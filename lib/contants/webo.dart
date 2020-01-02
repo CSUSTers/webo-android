@@ -41,7 +41,7 @@ class WebO {
   bool get isForward => this.forward != null;
 
   List<WebO> enumerateForwardChain() {
-    var base = this;
+    var base = this.forward;
     final result = <WebO>[];
     while (base != null) {
       result.insert(0, base);

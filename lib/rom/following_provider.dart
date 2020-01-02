@@ -20,5 +20,5 @@ class FollowingProvider  with ChangeNotifier {
   void clear() => _followerList = [];
 
   static FollowingProvider of(BuildContext context, {listen: true}) =>
-  Provider.of<FollowingProvider>(context, listen: listen);
+    Provider.of<FollowingProvider>(context, listen: listen);
 }
