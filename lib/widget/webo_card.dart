@@ -17,8 +17,12 @@ import 'package:webo/widget/touchable_widget.dart';
 class WebOCard extends StatelessWidget {
   final WebO data;
   final shouldShowForwarding;
+  final bool noLimitLines;
 
-  WebOCard(this.data, {this.shouldShowForwarding: false});
+  WebOCard(this.data, {
+    this.shouldShowForwarding: false,
+    this.noLimitLines: false
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +100,7 @@ class WebOCard extends StatelessWidget {
                 WebOText(
                     data,
                     shouldShowForwarding: shouldShowForwarding,
-                    noLimitLines: false,
+                    noLimitLines: noLimitLines,
                 ),
                 // 第三行: 按钮
                 ActionButtons(data),
@@ -276,7 +280,7 @@ class WebOText extends StatelessWidget {
       this.data,
       {
         this.shouldShowForwarding: false,
-        this.noLimitLines: true,
+        this.noLimitLines: false,
       });
 
   @override
@@ -284,7 +288,7 @@ class WebOText extends StatelessWidget {
     var inner = <Widget>[
       Text(
         data.message,
-        maxLines: noLimitLines ? 0 : 5,
+        maxLines: noLimitLines ? null : 5,
         overflow: TextOverflow.ellipsis,
         style: bigMainTextFont,
       ),

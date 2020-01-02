@@ -20,7 +20,7 @@ class WebODetailPage extends StatelessWidget {
   final WebO data;
 
   createTimelineByWebos(List<WebO> webos) {
-    var timeline;
+    var timelineList = <Widget>[];
     if (webos.length > 1) {
       final list = <TimelineModel>[];
       for (int i = 0; i <= webos.length-2; i ++) {
@@ -32,22 +32,21 @@ class WebODetailPage extends StatelessWidget {
             iconBackground: Colors.blueAccent
         ));
       }
-      timeline = Timeline(
+      var timeline = Timeline(
         shrinkWrap: true,
         lineColor: Colors.black26,
         children: list,
         position: TimelinePosition.Left,
       );
-      timeline = Column(
-        children: <Widget>[
+      timelineList = <Widget>[
           timeline,
-          WebOCard(webos[webos.length-1]),
-        ],
-      );
-    } else {
-      timeline = WebOCard(data);
+      ];
     }
-    return timeline;
+
+    timelineList.add(WebOCard(data, noLimitLines: true,));
+    return Column(
+      children: timelineList,
+    );
   }
 
   WebODetailPage(this.data);
