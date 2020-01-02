@@ -275,7 +275,12 @@ class WebOText extends StatelessWidget {
 
     if (shouldShowForwarding && data.isForward) {
       var f = data.forward;
+      inner.add(Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Divider(),
+      ));
       inner.add(Container(
+        padding: EdgeInsets.only(left: 16.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -284,14 +289,15 @@ class WebOText extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     f.user.nickname,
-                    style: userNameFont,
+                    style: userNameFont.apply(color: Colors.blueAccent),
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 1.5),
                   ),
                   Text(
                     '@${f.user.username}',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                        color: Colors.blueGrey, fontStyle: FontStyle.italic),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
@@ -300,13 +306,12 @@ class WebOText extends StatelessWidget {
             Container(
               child: Text(
                 f.message,
-                style: mainTextFont.apply(color: Colors.white),
+                style: mainTextFont.apply(color: Colors.blueGrey),
               ),
             )
           ],
           crossAxisAlignment: CrossAxisAlignment.start,
         ),
-        decoration: BoxDecoration(color: Colors.blueGrey),
       ));
     }
 

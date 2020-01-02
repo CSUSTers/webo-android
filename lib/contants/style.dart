@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 const bigUserNameFont = TextStyle(
   fontSize: 20.0,
-  color: Colors.lightBlueAccent,
+  color: Colors.black87,
   fontWeight: FontWeight.bold,
 );
 
@@ -20,14 +20,14 @@ const smallUserNameFont = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
-const bigMainTextFont = TextStyle(
+final bigMainTextFont = TextStyle(
   fontSize: 20.0,
-  color: Colors.black87,
+  color: Colors.black.withOpacity(.64),
 );
 
-const mainTextFont = TextStyle(
+final mainTextFont = TextStyle(
   fontSize: 18.0,
-  color: Colors.black87,
+  color: Colors.black.withOpacity(.64),
 );
 
 const timeTextFont = TextStyle(
