@@ -93,7 +93,11 @@ class WebOCard extends StatelessWidget {
                 // 第一行
                 header,
                 // 第二行: 主体
-                WebOText(data, shouldShowForwarding: shouldShowForwarding),
+                WebOText(
+                    data,
+                    shouldShowForwarding: shouldShowForwarding,
+                    noLimitLines: false,
+                ),
                 // 第三行: 按钮
                 ActionButtons(data),
               ],
@@ -266,15 +270,21 @@ class _ActionButtonsState extends State<ActionButtons> {
 class WebOText extends StatelessWidget {
   final WebO data;
   final shouldShowForwarding;
+  final noLimitLines;
 
-  WebOText(this.data, {this.shouldShowForwarding: false});
+  WebOText(
+      this.data,
+      {
+        this.shouldShowForwarding: false,
+        this.noLimitLines: true,
+      });
 
   @override
   Widget build(BuildContext context) {
     var inner = <Widget>[
       Text(
         data.message,
-        maxLines: 5,
+        maxLines: noLimitLines ? 0 : 5,
         overflow: TextOverflow.ellipsis,
         style: bigMainTextFont,
       ),
