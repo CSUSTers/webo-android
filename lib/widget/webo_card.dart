@@ -288,7 +288,7 @@ class WebOText extends StatelessWidget {
     var inner = <Widget>[
       Text(
         data.message,
-        maxLines: noLimitLines ? null : 5,
+        maxLines: noLimitLines ? 1000 : 5,
         overflow: TextOverflow.ellipsis,
         style: bigMainTextFont,
       ),
