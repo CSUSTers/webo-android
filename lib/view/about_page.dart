@@ -22,7 +22,7 @@ class AboutPage extends StatelessWidget {
             Image.asset("images/logo.PNG"),
             Padding(padding: const EdgeInsets.symmetric(vertical: 16.0)),
             Text('开发团队', style: TextStyle(fontSize: 24.0)),
-            Text('胡耀豪（2017160801xx）', style: TextStyle(fontSize: 18.0)),
+            Text('胡耀豪（201716080117）', style: TextStyle(fontSize: 18.0)),
             Text('余峻岑（201716080221）', style: TextStyle(fontSize: 18.0)),
             Text('晏政（201716080223）', style: TextStyle(fontSize: 18.0)),
             Text('吴文远（201716080422）', style: TextStyle(fontSize: 18.0)),
