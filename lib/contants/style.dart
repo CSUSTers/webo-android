@@ -20,12 +20,12 @@ const smallUserNameFont = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
-final bigMainTextFont = TextStyle(
+const bigMainTextFont = TextStyle(
   fontSize: 20.0,
   color: Colors.black.withOpacity(.64),
 );
 
-final mainTextFont = TextStyle(
+const mainTextFont = TextStyle(
   fontSize: 18.0,
   color: Colors.black.withOpacity(.64),
 );
