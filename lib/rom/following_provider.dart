@@ -15,6 +15,7 @@ class FollowingProvider  with ChangeNotifier {
     User curUser = provider.user;
     var res = await Api.getFollowingList(curUser.id, 0);
     if(res != null) _followerList = res;
+    notifyListeners();
   }
 
   void clear() => _followerList = [];
