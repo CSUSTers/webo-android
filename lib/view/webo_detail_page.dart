@@ -55,7 +55,6 @@ class WebODetailPage extends StatelessWidget {
     final webos = data.enumerateForwardChain();
     final timeline = createTimelineByWebos(webos);
 
-
     var list = <Widget>[
       timeline,
       Container(
