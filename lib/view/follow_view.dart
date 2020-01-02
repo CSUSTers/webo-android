@@ -59,15 +59,14 @@ class _FollowPageState extends State<FollowPage> {
                 Padding(padding: EdgeInsets.symmetric(horizontal: 4.0)),
                 Expanded(
                     child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      list[index].nickname,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(list[index].bio)
-                  ],
-                )),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                      Text(
+                        list[index].nickname,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(list[index].bio)
+                    ])),
                 MaterialButton(
                   minWidth: 72,
                   height: 36,

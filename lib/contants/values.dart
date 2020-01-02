@@ -39,6 +39,7 @@ abstract class Strings {
   //Account Page
   static const account = '账户';
   static const personInfo = '个人信息';
+  static const bio = '个性签名';
 
   // Setting page
   static const settings = '设置';
@@ -60,4 +61,8 @@ abstract class Strings {
   // WebO Page
   static const detail = '详情';
   static const delete = '删除';
+
+  //Other
+  static const save = '保存';
+
 }

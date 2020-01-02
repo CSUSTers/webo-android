@@ -5,6 +5,7 @@ import 'package:webo/contants/user.dart';
 import 'package:webo/contants/values.dart';
 import 'package:webo/rom/user_provider.dart';
 import 'package:webo/util/gravatar_config.dart';
+import 'package:webo/view/router.dart';
 import 'package:webo/widget/nothing.dart';
 import 'package:webo/widget/real_divider.dart';
 
@@ -18,10 +19,15 @@ class AccountView extends StatefulWidget {
 }
 
 class _AccountViewState extends State<AccountView> {
+  User user;
+  bool firstTime = true;
+
   @override
   Widget build(BuildContext context) {
-    final user = widget.user;
-
+    if (firstTime) {
+      user = widget.user;
+      firstTime = false;
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
@@ -29,9 +35,14 @@ class _AccountViewState extends State<AccountView> {
         leading: const BackButton(),
         actions: <Widget>[
           editable
-              ? GestureDetector(
-                  onTap: () {},
-                  child: Text('编辑'),
+              ? IconButton(
+                  icon: const Icon(Icons.mode_edit),
+                  onPressed: () async {
+                    final result = await Navigator.pushNamed(
+                        context, Router.accountEditPage,
+                        arguments: user);
+                    setState(() => user = result);
+                  },
                 )
               : Nothing()
         ],
